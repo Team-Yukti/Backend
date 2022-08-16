@@ -76,7 +76,6 @@ router.post('/Login', (req, res) => {
             onFailure: function(err) {
                 console.log("Login Failure");
                 if(err.code === 'UserNotConfirmedException'){
-                    resendotp(Username)
                     console.log("Not Verified");
                     res.redirect('/ConfirmOTP?email='+req.body.email);
                 }else{
@@ -109,7 +108,9 @@ router.post('/ConfirmUser', (req, res) => {
     );
 })
 
+//forgot password
 router.post('/ForgotPassword', (req, res) => {
+    console.log(req.body.email)
     var userData = {
         Username : req.body.email, // your username here
         Pool : userPool
@@ -117,10 +118,18 @@ router.post('/ForgotPassword', (req, res) => {
     var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.forgotPassword({
         onSuccess: function (result) {
+            console.log('Forgot Password Success => \n');
             res.redirect('/ConfirmPassword?email='+req.body.email);
         }
+        ,
+        onFailure: function(err) {
+            console.log('Forgot Password Failure => \n', err);
+            res.send(err);
+        }
     });
-})
+}
+)
+
 
 // function to confirm forgotted password
 router.post('/ConfirmForgotPassword', (req, res) => {
@@ -134,10 +143,6 @@ router.post('/ConfirmForgotPassword', (req, res) => {
             res.json(result);
         }
     });
-})
-
-router.get('/ConfirmPassword', (req, res) => {
-    res.render('confirm', {email: req.query.email});
 })
 
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({apiVersion: '2016-04-18',region: 'ap-south-1'});

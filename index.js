@@ -31,6 +31,10 @@ app.get('/Signup', (req, res) => {
 app.get('/ConfirmOTP', (req, res) => {
     res.render('auth/confirmOTP', {email: req.query.email});
 })
-
-
+app.get('/ConfirmPassword', (req, res) => {
+    res.render('auth/confirmPassword', {email: req.query.email});
+})
+app.get('/ForgotPassword', (req, res) => {
+    res.render('auth/forgotPassword');
+})
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
