@@ -5,6 +5,8 @@ const path = require('path');
 const { sendfile } = require('express/lib/response');
 var app = express();
 
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
