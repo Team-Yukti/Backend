@@ -76,9 +76,11 @@ router.post('/Login', (req, res) => {
             onFailure: function(err) {
                 console.log("Login Failure");
                 if(err.code === 'UserNotConfirmedException'){
+                    resendotp(Username)
                     console.log("Not Verified");
                     res.redirect('/ConfirmOTP?email='+req.body.email);
                 }else{
+
                     console.log("User Not Found");
                     res.json(err);
                 }
@@ -138,6 +140,18 @@ router.get('/ConfirmPassword', (req, res) => {
     res.render('confirm', {email: req.query.email});
 })
 
-
+var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({apiVersion: '2016-04-18',region: 'ap-south-1'});
+function resendotp(email){
+    var params = {
+        ClientId: '521l6du1g1tn6pdbrt7j2ounqr', /* required */
+        Username: email, /* required */
+       
+      };
+      cognitoidentityserviceprovider.resendConfirmationCode(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+      });
+      
+}
 
 module.exports = router;
