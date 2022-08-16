@@ -34,7 +34,7 @@ router.post('/Signup', (req, res) => {
     
         var attributeList = [];
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"name",Value:req.body.name}));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"preferred_username",Value:req.body.addhar}));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"preferred_username",Value:req.body.aadhar}));
         attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({Name:"phone_number",Value:req.body.phone}));
         userPool.signUp(req.body.email, req.body.password, attributeList, null, function(err, result){
             if (err) {
@@ -50,7 +50,7 @@ router.post('/Signup', (req, res) => {
 
 
 router.post('/Login', (req, res) => {
-    
+        console.log("In Login");
         var authenticationData = {
             Username : req.body.email, // your username here
             Password : req.body.password, // your password here
@@ -66,9 +66,11 @@ router.post('/Login', (req, res) => {
             onSuccess: function (result) {
                 req.session.user = result;
                 res.send(req.session.user);
-            //    console.log('Login success => \n');
+                console.log("Login Success");
+            //console.log('Login success => \n');
             },
             onFailure: function(err) {
+                console.log("Login Failure");
                 if(err.code === 'UserNotConfirmedException'){
                     res.redirect('/ConfirmUser?email='+req.body.email);
                 }else{

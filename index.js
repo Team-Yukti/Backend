@@ -16,8 +16,14 @@ app.get('/', (req, res) => {
     res.json({"hello": "world"});
 })
 
-app.get('/home', (req, res) => {
+app.get('/Home', (req, res) => {
     res.render('home');
+})
+app.get('/Login', (req, res) => {
+    res.render('login');
+})
+app.get('/Signup', (req, res) => {
+    res.render('signup');
 })
 
 app.get('/ConfirmPassword', (req, res) => {
