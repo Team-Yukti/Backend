@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth'));
-app.use('/user', require('./routes/user'));
+app.use('/', require('./routes/user/User'));
 
 app.get('/', (req, res) => {
     res.json({"hello": "world"});
