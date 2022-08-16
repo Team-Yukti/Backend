@@ -5,25 +5,21 @@ const path = require('path');
 const { sendfile } = require('express/lib/response');
 var app = express();
 
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth'));
-app.use('/', require('./routes/user/User'));
+app.use('/user', require('./routes/user'));
 
 app.get('/', (req, res) => {
     res.json({"hello": "world"});
 })
 
-app.get('/Home', (req, res) => {
+app.get('/home', (req, res) => {
     res.render('home');
-})
-app.get('/Login', (req, res) => {
-    res.render('login');
-})
-app.get('/Signup', (req, res) => {
-    res.render('signup');
 })
 
 app.get('/ConfirmPassword', (req, res) => {
