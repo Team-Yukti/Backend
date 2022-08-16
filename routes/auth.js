@@ -41,9 +41,13 @@ router.post('/Signup', (req, res) => {
                 console.log(err);
                 return;
             }
-            cognitoUser = result.user;
-            res.json(cognitoUser);
-            console.log('user name is ' + cognitoUser.getUsername());
+            else
+            {
+                cognitoUser = result.user;
+                console.log('user name is ' + cognitoUser.getUsername());
+                //console.log(userPool);
+                res.redirect('/ConfirmOTP?email='+req.body.email);
+            }
             
         });
     });
@@ -72,8 +76,10 @@ router.post('/Login', (req, res) => {
             onFailure: function(err) {
                 console.log("Login Failure");
                 if(err.code === 'UserNotConfirmedException'){
-                    res.redirect('/ConfirmUser?email='+req.body.email);
+                    console.log("Not Verified");
+                    res.redirect('/ConfirmOTP?email='+req.body.email);
                 }else{
+                    console.log("User Not Found");
                     res.json(err);
                 }
             }
@@ -82,10 +88,14 @@ router.post('/Login', (req, res) => {
 })
 
 router.post('/ConfirmUser', (req, res) => {
+    console.log(req.body.email)
+    console.log(req.body.code)
+
     var userData = {
         Username : req.body.email, // your username here
         Pool : userPool
     };
+    console.log(userPool);
     var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.confirmRegistration(req.body.code, true, function(err, result) {
         if (err) {
@@ -127,6 +137,7 @@ router.post('/ConfirmForgotPassword', (req, res) => {
 router.get('/ConfirmPassword', (req, res) => {
     res.render('confirm', {email: req.query.email});
 })
+
 
 
 module.exports = router;

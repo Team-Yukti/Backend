@@ -17,17 +17,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/Home', (req, res) => {
-    res.render('home');
+    res.render('auth/home');
 })
 app.get('/Login', (req, res) => {
-    res.render('login');
+    res.render('auth/login');
 })
 app.get('/Signup', (req, res) => {
-    res.render('signup');
+    res.render('auth/signup');
 })
 
-app.get('/ConfirmPassword', (req, res) => {
-        console.log("Hello");
+app.get('/ConfirmOTP', (req, res) => {
+    res.render('auth/confirmOTP', {email: req.query.email});
 })
 
 

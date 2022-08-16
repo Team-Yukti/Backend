@@ -7,10 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/Login" method="post">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="password">
-        <input type="submit" value="Send">
+    <form action="/ConfirmUser" method="post">
+        <input type="email" name="email" value="<%=email%>" placeholder="Enter email">
+        <input type="number" name="code" placeholder="OTP">
+        <input type="submit" value="Verify">
     </form>
 </body>
 </html>
