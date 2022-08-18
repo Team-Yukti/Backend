@@ -5,25 +5,22 @@ var AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-south-1'});
 
 function Insert(json){
-    // var params = {
-    //     Item: {
-    //      "uid": {
-    //        S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
-    //       }, 
-    //      "Name": {
-    //        S: "Pradyumna Gayake"
-    //       }, 
-    //      "SongTitle": {
-    //        S: "Call Me Today"
-    //       }
-    //     }, 
-    //     ReturnConsumedCapacity: "TOTAL", 
-    //     TableName: "user"
-    //    };
+    var params = {
+        Item: {
+         "uid": {
+           S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
+          }, 
+          "map":{
+            M: json
+            }
+        }, 
+        ReturnConsumedCapacity: "TOTAL", 
+        TableName: "user"
+       };
     
-    // //  put item in dynamo db
+    //  put item in dynamo db
     var dynamodb = new AWS.DynamoDB();
-    dynamodb.putItem(json, function(err, data) {
+    dynamodb.putItem(params, function(err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else     console.log(data);           // successful response
     });
