@@ -28,6 +28,10 @@ app.get('/Signup', (req, res) => {
     res.render('auth/signup');
 })
 
+app.get('/RegisterComplaint', (req, res) => {
+    res.render('user/complaintRegistration');
+})
+
 app.get('/ConfirmOTP', (req, res) => {
     res.render('auth/confirmOTP', {email: req.query.email});
 })
