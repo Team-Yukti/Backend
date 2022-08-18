@@ -3,7 +3,8 @@ const isLoggedIn = require('../../middleware');
 const router = express.Router();
 const crud = require('../../crud');
 
-router.post('/LodgeComplaint',isLoggedIn, (req, res) => {
+
+router.post('/LodgeComplaint', (req, res) => {
     res.json(req.body);
     complaintData = {
         Name: req.body.Name,
