@@ -4,18 +4,18 @@ const router = express.Router();
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-south-1'});
 
-function Insert(json){
+function Insert(json, tableName, primaryKey){
     var params = {
         Item: {
-         "uid": {
-           S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
+        pid: {
+           S: primaryKey
           }, 
-          "map":{
+            Data:{
             M: json
             }
         }, 
         ReturnConsumedCapacity: "TOTAL", 
-        TableName: "user"
+        TableName: tableName
        };
     
     //  put item in dynamo db

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const crud = require('../crud');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 // Express Session has started
@@ -45,7 +46,10 @@ router.post('/Signup', (req, res) => {
             {
                 cognitoUser = result.user;
                 console.log('user name is ' + cognitoUser.getUsername());
-                //console.log(userPool);
+
+                
+                
+
                 res.redirect('/ConfirmOTP?email='+req.body.email);
             }
             
@@ -69,6 +73,14 @@ router.post('/Login', (req, res) => {
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
                 req.session.user = result;
+
+                //make userdata
+                userData = {
+                    Email: {S:result.idToken.payload.email},
+                    Aadhar: {S:result.idToken.payload.preferred_username},
+                    Phone: {S:result.idToken.payload.phone_number}
+                }
+                crud.Insert(userData, 'users', 'uid', result.idToken.payload.sub);
                 res.send(req.session.user);
                 console.log("Login Success");
             //console.log('Login success => \n');
@@ -81,6 +93,7 @@ router.post('/Login', (req, res) => {
                 }else{
 
                     console.log("User Not Found");
+                    
                     res.json(err);
                 }
             }
