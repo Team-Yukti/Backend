@@ -20,7 +20,7 @@ router.post('/LodgeComplaint', (req, res) => {
     }
     console.log(complaintData);
 
-    crud.Insert(complaintData, 'complaints', req.session.user.idToken.payload.sub);
+    crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub);
     
 })
 
