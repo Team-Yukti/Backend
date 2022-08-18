@@ -4,26 +4,26 @@ const router = express.Router();
 var AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-south-1'});
 
-function Insert(){
-    var params = {
-        Item: {
-         "uid": {
-           S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
-          }, 
-         "Name": {
-           S: "Pradyumna Gayake"
-          }, 
-         "SongTitle": {
-           S: "Call Me Today"
-          }
-        }, 
-        ReturnConsumedCapacity: "TOTAL", 
-        TableName: "user"
-       };
+function Insert(json){
+    // var params = {
+    //     Item: {
+    //      "uid": {
+    //        S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
+    //       }, 
+    //      "Name": {
+    //        S: "Pradyumna Gayake"
+    //       }, 
+    //      "SongTitle": {
+    //        S: "Call Me Today"
+    //       }
+    //     }, 
+    //     ReturnConsumedCapacity: "TOTAL", 
+    //     TableName: "user"
+    //    };
     
-    //  put item in dynamo db
+    // //  put item in dynamo db
     var dynamodb = new AWS.DynamoDB();
-    dynamodb.putItem(params, function(err, data) {
+    dynamodb.putItem(json, function(err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else     console.log(data);           // successful response
     });
@@ -79,3 +79,5 @@ function deleteItem(){
 //Insert();
 // update();
 deleteItem();
+
+module.exports ={Insert,update,deleteItem};
