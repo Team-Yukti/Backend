@@ -7,12 +7,10 @@ AWS.config.update({region: 'ap-south-1'});
 function Insert(json){
     var params = {
         Item: {
-         "uid": {
-           S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
-          }, 
-          "map":{
-            M: json
-            }
+            "uid": {
+                S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
+               }, 
+            json
         }, 
         ReturnConsumedCapacity: "TOTAL", 
         TableName: "user"
