@@ -13,6 +13,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth/auth'));
 app.use('/', require('./routes/user/user'));
+app.use('/', require('./routes/user/userComplaints'));
+
 
 app.get('/', (req, res) => {
     res.json({"hello": "world"});
