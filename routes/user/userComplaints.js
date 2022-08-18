@@ -2,6 +2,7 @@ const express = require('express');
 const isLoggedIn = require('../../middleware');
 const router = express.Router();
 const crud = require('../crud');
+const upload  = require('../uploadFiles');
 
 
 router.post('/LodgeComplaint', (req, res) => {
@@ -18,6 +19,9 @@ router.post('/LodgeComplaint', (req, res) => {
         "ComplaintBody": {S:req.body.ComplaintBody}
     }
     crud.Insert(complaintData)
+    console.log(req.body);
+    // upload.uploadFilestoS3(req.files.docs)
+    
 })
 
 
