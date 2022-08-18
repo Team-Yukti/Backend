@@ -5,7 +5,7 @@ const crud = require('../crud');
 const upload  = require('../uploadFiles');
 
 
-router.post('/LodgeComplaint',isLoggedIn, (req, res) => {
+router.post('/LodgeComplaint', (req, res) => {
     res.json(req.body);
     complaintData = {
         Name: {S:req.body.Name},
@@ -18,7 +18,10 @@ router.post('/LodgeComplaint',isLoggedIn, (req, res) => {
         Mobile: {S:req.body.Mobile},
         ComplaintBody: {S:req.body.ComplaintBody}
     }
-    crud.Insert(complaintData, 'complaints', res.session.user.idToken.payload.sub);
+    console.log(complaintData);
+
+    crud.Insert(complaintData, 'complaints', req.session.user.idToken.payload.sub);
+    
 })
 
 

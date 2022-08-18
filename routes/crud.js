@@ -30,7 +30,7 @@ function Insert(json, tableName, primaryKey){
 
 function update(){
     var params = {
-        TableName: "user",
+        TableName: "users",
         Key: {
             "uid": {
                 S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
@@ -75,6 +75,6 @@ function deleteItem(){
 }
 //Insert();
 // update();
-deleteItem();
+//deleteItem();
 
 module.exports ={Insert,update,deleteItem};
