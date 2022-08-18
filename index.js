@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use('/', require('./routes/auth'));
-app.use('/', require('./routes/user/User'));
+app.use('/', require('./routes/auth/auth'));
+app.use('/', require('./routes/user/user'));
 
 app.get('/', (req, res) => {
     res.json({"hello": "world"});
@@ -26,10 +26,6 @@ app.get('/Login', (req, res) => {
 })
 app.get('/Signup', (req, res) => {
     res.render('auth/signup');
-})
-
-app.get('/RegisterComplaint', (req, res) => {
-    res.render('user/complaintRegistration');
 })
 
 app.get('/ConfirmOTP', (req, res) => {

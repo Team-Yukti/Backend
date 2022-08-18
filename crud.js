@@ -18,7 +18,7 @@ function Insert(){
           }
         }, 
         ReturnConsumedCapacity: "TOTAL", 
-        TableName: "users"
+        TableName: "user"
        };
     
     //  put item in dynamo db
@@ -33,7 +33,7 @@ function Insert(){
 
 function update(){
     var params = {
-        TableName: "users",
+        TableName: "user",
         Key: {
             "uid": {
                 S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
@@ -61,7 +61,7 @@ function update(){
 // Delete item from table in dynamo db
 function deleteItem(){
     var params = {
-        TableName: "users",
+        TableName: "user",
         Key: {
             "uid": {
                 S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
@@ -76,6 +76,6 @@ function deleteItem(){
         else     console.log(data);           // successful response
     });
 }
-// Insert();
+//Insert();
 // update();
 deleteItem();
