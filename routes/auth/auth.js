@@ -80,7 +80,7 @@ router.post('/Login', (req, res) => {
                 Phone: { S: result.idToken.payload.phone_number }
             }
 
-            crud.readItemNInsert(result.idToken.payload.sub, userData)
+            crud.readItemNInsert(result.idToken.payload.sub, userData, 'users');
 
             res.send(req.session.user);
             console.log("Login Success");

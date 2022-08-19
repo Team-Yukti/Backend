@@ -28,12 +28,12 @@ function insertItem(json, tableName, primaryKey) {
 }
 
 
-function update() {
+function update(pid,tablename) {
     var params = {
-        TableName: "users",
+        TableName: tablename,
         Key: {
-            "uid": {
-                S: "skfhjdsbjhsvk;jadnjvjvjbavbdsv"
+            pid: {
+                S: pid
             }
         },
         UpdateExpression: "set #name = :n",
@@ -75,8 +75,35 @@ function deleteItem() {
 }
 
 //Read item from table in dynamo db
-function readItemNInsert(pid, userData) {
+function readItemNInsert(pid, userData, tableName) {
     console.log("pid: " + pid);
+    var params = {
+        TableName: tableName,
+        Key: {
+            pid: {
+                S: pid
+            }
+        }
+    }
+    var dynamodb = new AWS.DynamoDB();
+    dynamodb.getItem(params, function (err, data) {
+        if (err) {
+            console.log(err, err.stack)
+        } // an error occurred
+        else {
+            if (data.Item == null) {
+                insertItem(userData, tableName, pid);
+            }
+            else {
+                console.log("Item found");
+            }
+        };           // successful response
+    }).promise();
+}
+
+//Insert Complaint
+function InsertComplaint(pid, complaintData) {
+
     var params = {
         TableName: "users",
         Key: {
@@ -91,8 +118,33 @@ function readItemNInsert(pid, userData) {
             console.log(err, err.stack)
         } // an error occurred
         else {
+            if (data.Item.complaintData == null) {
+                insertItem(userData, tableName, pid);
+            }
+            else {
+                console.log("Item found");
+            }
+        };           // successful response
+    }).promise();
+
+
+    console.log("pid: " + pid);
+    var params = {
+        TableName: "complaints",
+        Key: {
+            pid: {
+                S: pid
+            }
+        }
+    }
+    var dynamodb = new AWS.DynamoDB();
+    dynamodb.getItem(params, function (err, data) {
+        if (err) {
+            console.log(err, err.stack)
+        } // an error occurred
+        else {
             if (data.Item == null) {
-                insertItem(userData, "users", pid);
+                insertItem(userData, tableName, pid);
             }
             else {
                 console.log("Item found");
@@ -100,7 +152,6 @@ function readItemNInsert(pid, userData) {
         };           // successful response
     }).promise();
 }
-
 
 
 

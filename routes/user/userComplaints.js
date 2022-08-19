@@ -19,9 +19,9 @@ router.post('/LodgeComplaint', (req, res) => {
         ComplaintBody: {S:req.body.ComplaintBody}
     }
     console.log(complaintData);
-
-    crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub);
-    
+    var today = new Date();
+    console.log(today.getTime());
+    crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub+today.getTime());
 })
 
 
