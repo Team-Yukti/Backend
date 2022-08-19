@@ -21,7 +21,8 @@ router.post('/LodgeComplaint', (req, res) => {
     console.log(complaintData);
     var today = new Date();
     console.log(today.getTime());
-    crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub+today.getTime());
+    crud.InsertComplaint(req.session.user.idToken.payload.sub,"users");
+    // crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub+today.getTime());
 })
 
 
