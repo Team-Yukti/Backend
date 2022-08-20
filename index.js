@@ -5,9 +5,9 @@ const path = require('path');
 const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
+const crud = require('./routes/crud.js');
 
-
-
+//crud.addComment("pS3VJ2vsKr24f5BBCIbP","ndjkafgklfd","fkdnbkl")
 
 
 
