@@ -29,7 +29,6 @@ app.use('/', require('./routes/crud.js').router);
 
 
 app.get('/', (req, res) => {
-    sendsms();
     res.json({"hello": "world"});
 })
 
