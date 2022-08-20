@@ -19,10 +19,9 @@ const serviceAccount = require('../keys/firebase.json');
 initializeApp({
     credential: cert(serviceAccount)
 });
+var admin = require('firebase-admin')
 
 const db = getFirestore();
-
-
 
 
 //insert Json
@@ -121,7 +120,8 @@ router.get('/GetComplaintTypes', (req,res)=>{
 router.get('/GetFullComplaint',(req,res)=>{
 
     db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
-        res.render('user/complaintpage',{complaint:querySnapshot.data()});
+
+        res.render('user/complaintpage',{complaint:querySnapshot.data(),cid:req.query.cid});
     });
 })
 
@@ -138,6 +138,16 @@ function addComment(cid,uid,comment)
         console.log('Added document with ID: ', ref.id);
     }).catch(err => {
         console.log('Error adding document: ', err);
+    });
+}
+
+//get comments
+function getComments(cid)
+{
+    db.collection('complaints').doc(cid).get().then((querySnapshot) => {
+        return querySnapshot.data().comments;
+    }).catch(err => {
+        console.log('Error getting document', err);
     });
 }
 

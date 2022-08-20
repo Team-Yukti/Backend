@@ -19,6 +19,9 @@
 
     <form action="/AddComment" method="post">
         <input type="text" name="comment" style="width: 400px;height: 80px;"><br><br>
+        <input type="text" name="cid" id="" value="<%=cid%>" hidden>
+        <input type="text" name="uid" id="" value="<%=complaint.UID%>" hidden>
+
         <button type="submit"> Post</button>
     </form>
 </body>
