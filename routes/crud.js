@@ -24,8 +24,6 @@ var admin = require('firebase-admin')
 const db = getFirestore();
 
 
-
-
 //insert Json
 function insertItem(json, collection, doc) {
     if (doc == null) {
@@ -110,6 +108,16 @@ function addComment(cid,uid,comment)
         console.log('Added document with ID: ', ref.id);
     }).catch(err => {
         console.log('Error adding document: ', err);
+    });
+}
+
+//get comments
+function getComments(cid)
+{
+    db.collection('complaints').doc(cid).get().then((querySnapshot) => {
+        return querySnapshot.data().comments;
+    }).catch(err => {
+        console.log('Error getting document', err);
     });
 }
 
