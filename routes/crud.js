@@ -68,4 +68,12 @@ function insertComplaint(uid,json,time)
     });
 }
 
+// read items from firebase 
+
+
+function GetFullComplaint(){
+    db.collection('')
+}
+
+
 module.exports = { insertItem, checkFirstTimeLogin,insertComplaint };
