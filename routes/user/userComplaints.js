@@ -3,6 +3,14 @@ const isLoggedIn = require('../../middleware');
 const router = express.Router();
 const crud = require('../crud');
 const upload  = require('../uploadFiles');
+const fileUpload = require('express-fileupload')
+const path = require('path')
+router.use(
+    fileUpload({
+      limits: { fileSize: 2 * 1024 * 1024 },
+    })
+  )
+  
 
 
 router.post('/LodgeComplaint', (req, res) => {
@@ -20,7 +28,31 @@ router.post('/LodgeComplaint', (req, res) => {
         UID: req.session.user.idToken.payload.sub
     }
     console.log(complaintData);
+
     crud.insertComplaint(req.session.user.idToken.payload.sub,complaintData);
+    try {
+        const file = req.files.docs
+        console.log(req.files.docs);  
+        console.log(file)
+        upload.uploadFilestoS3(file)
+        const fileName = new Date().getTime().toString() + path.extname(file.name)
+        if (file.truncated) {
+          throw new Error('File size is too big...')
+        }
+        
+      } catch (error) {
+      }
+
+      
+
+})
+
+router.get('/GetFullComplaint',(req,res)=>{
+    
+})
+
+router.post('/AddComment',(req,res)=>{
+
 })
 
 

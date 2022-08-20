@@ -7,7 +7,7 @@ const s3 = new AWS.S3({
     accessKeyId: "AKIAUNTJLAUF4DV2WFHS",
     secretAccessKey: "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"
 })
-function uploadFilestoS3(file, callback) {
+function uploadFilestoS3(file) {
     var s3 = new AWS.S3();
     var params = {
         Bucket: 'complaint-bucket-sih',
@@ -17,10 +17,10 @@ function uploadFilestoS3(file, callback) {
     s3.upload(params, function(err, data) {
         if (err) {
             console.log(err);
-            callback(err);
+            // callback(err);
         } else {
             console.log("Successfully uploaded data to S3");
-            callback(null, data);
+            // callback(null, data);
         }
     }).on('httpUploadProgress', function(progress) {
         console.log(progress);

@@ -76,6 +76,4 @@ function insertComplaint(uid,json)
     });
 }
 
-
-
-module.exports = { insertItem, checkFirstTimeLogin,insertComplaint};
+module.exports = { insertItem, checkFirstTimeLogin,insertComplaint };
