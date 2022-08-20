@@ -8,5 +8,18 @@
 </head>
 <body>
     <h1>Full Complaint detail page</h1>
+    Name: <p><%=complaint.Name%></p><br>
+    Date: <p><%=complaint.Date%></p><br>
+    Mobile: <p><%=complaint.Mobile%></p><br>
+    UID: <p><%=complaint.UID%></p><br>
+    State: <p><%=complaint.State%></p><br>
+    City: <p><%=complaint.City%></p><br>
+    Gender: <p><%=complaint.Gender%></p><br>
+    Complaint Body : <p><%=complaint.ComplaintBody%></p><br>
+
+    <form action="/AddComment" method="post">
+        <input type="text" name="comment" style="width: 400px;height: 80px;"><br><br>
+        <button type="submit"> Post</button>
+    </form>
 </body>
 </html>

@@ -5,12 +5,13 @@ const crud = require('../crud');
 const upload  = require('../uploadFiles');
 const fileUpload = require('express-fileupload')
 const path = require('path')
+
+
 router.use(
     fileUpload({
       limits: { fileSize: 2 * 1024 * 1024 },
     })
   )
-  
 
 
 router.post('/LodgeComplaint', (req, res) => {
@@ -51,9 +52,6 @@ router.post('/LodgeComplaint', (req, res) => {
 
 })
 
-router.get('/GetFullComplaint',(req,res)=>{
-    
-})
 
 router.post('/AddComment',(req,res)=>{
 

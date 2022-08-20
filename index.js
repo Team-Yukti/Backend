@@ -22,6 +22,8 @@ app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth/auth'));
 app.use('/', require('./routes/user/user'));
 app.use('/', require('./routes/user/userComplaints'));
+app.use('/', require('./routes/crud.js').router);
+
 
 
 app.get('/', (req, res) => {
