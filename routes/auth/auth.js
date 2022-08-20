@@ -74,14 +74,18 @@ router.post('/Login', (req, res) => {
         onSuccess: function (result) {
             req.session.user = result;
 
-            userData = {
-                Email: result.idToken.payload.email ,
-                Aadhar:  result.idToken.payload.preferred_username ,
-                Phone:  result.idToken.payload.phone_number 
+            if (crud.checkFirstTimeLogin(result.idToken.payload.sub)) {
+                console.log("First Time Login");
+                userData = {
+                    Email: result.idToken.payload.email,
+                    Aadhar: result.idToken.payload.preferred_username,
+                    Phone: result.idToken.payload.phone_number
+                }
+
+                crud.insertItem(userData, "users", result.idToken.payload.sub);
             }
-
-            crud.insertItem(userData,"users",result.idToken.payload.sub);
-
+            else
+                console.log("Not First Time Login");
             res.send(req.session.user);
             console.log("Login Success");
             //console.log('Login success => \n');

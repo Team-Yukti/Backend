@@ -36,4 +36,23 @@ function insertItem(json,collection,doc)
         });
     }
 }
-module.exports = { insertItem};
+
+
+//check is first time login
+function checkFirstTimeLogin(uid)
+{
+    db.collection('users').doc(uid).get()
+    .then(doc => {
+        if(doc.exists)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }).catch(err => {
+        console.log('Error getting document', err);
+    });
+}
+module.exports = { insertItem, checkFirstTimeLogin };
