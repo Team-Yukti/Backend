@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+var admin = require('firebase-admin');
 
 
 const {
@@ -90,14 +90,45 @@ function insertComplaint(uid,json)
     });
 }
 
+router.get('/GetComplaints', (req,res)=>{
+  const type = req.body.type;
+  console.log(type);
+  db.collection("complaints").where("type", "==", type).get().then((querySnapshot) => {
+    var complaints = [];
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        complaints.push(doc.data());
+        console.log(doc.id, " => ", doc.data());
+    });
+    return res.status(200).send({"complaints": complaints});
+  });
+})
 
+router.get('/GetComplaintTypes', (req,res)=>{
+  const name = req.body.name;
+  db.collection("ministries").where("Name", "==", name).get().then((querySnapshot) => {
+    var complaints_types = [];
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaints_types.push(data[i]);
+    });
+    return res.status(200).send({"complaints_types": complaints_types});
+  })
+})
 
 router.get('/GetFullComplaint',(req,res)=>{
-    
+
     db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
         res.render('user/complaintpage',{complaint:querySnapshot.data()});
     });
 })
+
+function updateComplaint(cid, data)
+{
+  db.collection("complaints").doc(cid).update(data);
+}
 
 function addComment(cid,uid,comment)
 {
@@ -111,12 +142,13 @@ function addComment(cid,uid,comment)
 }
 
 
+
 module.exports = {
     router:router,
     insertItem:insertItem,
     checkFirstTimeLogin:checkFirstTimeLogin,
     insertComplaint:insertComplaint,
     getAllComplaints:getAllComplaints,
-    addComment: addComment
+    addComment: addComment,
+    updateComplaint: updateComplaint,
 };
-
