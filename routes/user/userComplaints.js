@@ -20,10 +20,7 @@ router.post('/LodgeComplaint', (req, res) => {
         UID: req.session.user.idToken.payload.sub
     }
     console.log(complaintData);
-    var today = new Date();
-    console.log(today.getTime());
-
-    crud.insertComplaint(req.session.user.idToken.payload.sub,complaintData,today.getTime());
+    crud.insertComplaint(req.session.user.idToken.payload.sub,complaintData);
 })
 
 
