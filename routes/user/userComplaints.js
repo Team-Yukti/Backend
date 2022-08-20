@@ -8,21 +8,22 @@ const upload  = require('../uploadFiles');
 router.post('/LodgeComplaint', (req, res) => {
     res.json(req.body);
     complaintData = {
-        Name: {S:req.body.Name},
-        Age: {S:req.body.Age},
-        Date: {S:req.body.Date},
-        Gender: {S:req.body.Gender},
-        Address: {S:req.body.Address},
-        State: {S:req.body.State},
-        City: {S:req.body.City},
-        Mobile: {S:req.body.Mobile},
-        ComplaintBody: {S:req.body.ComplaintBody}
+        Name: req.body.Name,
+        Age: req.body.Age,
+        Date: req.body.Date,
+        Gender: req.body.Gender,
+        Address: req.body.Address,
+        State: req.body.State,
+        City: req.body.City,
+        Mobile: req.body.Mobile,
+        ComplaintBody: req.body.ComplaintBody,
+        UID: req.session.user.idToken.payload.sub
     }
     console.log(complaintData);
     var today = new Date();
     console.log(today.getTime());
-    crud.InsertComplaint(req.session.user.idToken.payload.sub,"users");
-    // crud.insertItem(complaintData, 'complaints', req.session.user.idToken.payload.sub+today.getTime());
+
+    crud.insertComplaint(req.session.user.idToken.payload.sub,complaintData,today.getTime());
 })
 
 

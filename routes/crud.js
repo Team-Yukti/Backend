@@ -55,4 +55,17 @@ function checkFirstTimeLogin(uid)
         console.log('Error getting document', err);
     });
 }
-module.exports = { insertItem, checkFirstTimeLogin };
+
+
+//insert complaint
+function insertComplaint(uid,json,time)
+{
+    db.collection('complaints').doc(uid+time).set(json)
+    .then(ref => {
+        console.log('Added document with ID: ', ref.id);
+    }).catch(err => {
+        console.log('Error adding document: ', err);
+    });
+}
+
+module.exports = { insertItem, checkFirstTimeLogin,insertComplaint };
