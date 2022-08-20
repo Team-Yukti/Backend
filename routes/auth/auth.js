@@ -75,12 +75,12 @@ router.post('/Login', (req, res) => {
             req.session.user = result;
 
             userData = {
-                Email: { S: result.idToken.payload.email },
-                Aadhar: { S: result.idToken.payload.preferred_username },
-                Phone: { S: result.idToken.payload.phone_number }
+                Email: result.idToken.payload.email ,
+                Aadhar:  result.idToken.payload.preferred_username ,
+                Phone:  result.idToken.payload.phone_number 
             }
 
-            crud.readItemNInsert(result.idToken.payload.sub, userData, 'users');
+            crud.insertItem(userData,"users",result.idToken.payload.sub);
 
             res.send(req.session.user);
             console.log("Login Success");

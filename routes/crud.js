@@ -1,17 +1,39 @@
 // insert data in dynamo db
 const express = require('express');
 const router = express.Router();
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
+const serviceAccount = require('../keys/firebase.json');
 
-
-function insertItem(db1)
-{
-    const docRef = db1.collection('users');
-
-docRef.set({
-  first: 'dcsf',
-  last: 'Lovelace',
-  born: 1815
+initializeApp({
+  credential: cert(serviceAccount)
 });
+
+const db = getFirestore();
+
+
+
+//insert Json
+function insertItem(json,collection,doc)
+{
+    if(doc==null)
+    {
+        db.collection(collection).add(json)
+        .then(ref => {
+            console.log('Added document with ID: ', ref.id);
+        }).catch(err => {
+            console.log('Error adding document: ', err);
+        });
+    }
+    else
+    {
+        db.collection(collection).doc(doc).set(json)
+        .then(ref => {
+            console.log('Added document with ID: ', ref.id);
+        }).catch(err => {
+            console.log('Error adding document: ', err);
+        });
+    }
 }
 module.exports = { insertItem};

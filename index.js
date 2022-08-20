@@ -5,18 +5,9 @@ const path = require('path');
 const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
 
-const crud = require('./routes/crud.js');
-const serviceAccount = require('./keys/firebase.json');
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
-const db = getFirestore();
 
 
 
