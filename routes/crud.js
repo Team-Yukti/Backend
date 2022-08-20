@@ -19,6 +19,7 @@ const serviceAccount = require('../keys/firebase.json');
 initializeApp({
     credential: cert(serviceAccount)
 });
+var admin = require('firebase-admin')
 
 const db = getFirestore();
 
@@ -95,9 +96,11 @@ function insertComplaint(uid,json)
 router.get('/GetFullComplaint',(req,res)=>{
     
     db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
-        res.render('user/complaintpage',{complaint:querySnapshot.data()});
+
+        res.render('user/complaintpage',{complaint:querySnapshot.data(),cid:req.query.cid});
     });
 })
+
 
 function addComment(cid,uid,comment)
 {
