@@ -76,4 +76,16 @@ function insertComplaint(uid,json)
     });
 }
 
-module.exports = { insertItem, checkFirstTimeLogin,insertComplaint };
+
+function addComment(cid,uid,comment)
+{
+    db.collection('complaints').doc(cid).update({
+        comments: admin.firestore.FieldValue.arrayUnion({uid:uid,time:admin.firestore.Timestamp.fromDate(new Date()),comment:comment})
+    }).then(ref => {
+        console.log('Added document with ID: ', ref.id);
+    }).catch(err => {
+        console.log('Error adding document: ', err);
+    });
+}
+
+module.exports = { insertItem, checkFirstTimeLogin,insertComplaint,addComment };
