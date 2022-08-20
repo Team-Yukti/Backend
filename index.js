@@ -7,7 +7,9 @@ var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
 
-//crud.addComment("pS3VJ2vsKr24f5BBCIbP","ndjkafgklfd","fkdnbkl")
+
+
+
 
 
 
@@ -27,6 +29,7 @@ app.use('/', require('./routes/crud.js').router);
 
 
 app.get('/', (req, res) => {
+    sendsms();
     res.json({"hello": "world"});
 })
 
