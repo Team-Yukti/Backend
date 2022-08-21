@@ -22,6 +22,7 @@ const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 const AWS = require('aws-sdk');
 const request = require('request');
 const e = require('express');
+const { json } = require('body-parser');
 global.fetch = require('node-fetch');
 
 const poolData = {
@@ -38,6 +39,11 @@ router.post('/Signup', (req, res) => {
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "preferred_username", Value: req.body.aadhar }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "phone_number", Value: req.body.phone }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "aadhar", Value:   req.body.adhar }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "age", Value: req.body.age }));
+    
+
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
         if (err) {
             console.log(err);
@@ -47,18 +53,18 @@ router.post('/Signup', (req, res) => {
             cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
 
-            userdata = {
-                Name:req.body.name,
-                Gender:req.body.gender,
-                Email:req.body.email,
-                Age:req.body.age,
-                Aadhar:req.body.adhar,
-                Phone:req.body.phone
-            }
+            // userdata = {
+            //     Name:req.body.name,
+            //     Gender:req.body.gender,
+            //     Email:req.body.email,
+            //     Age:req.body.age,
+            //     Aadhar:req.body.adhar,
+            //     Phone:req.body.phone
+            // }
             
+            console.log(JSON.stringify(cognitoUser));
 
-
-            crud.insertItem()
+            // crud.insertItem()
             res.redirect('/ConfirmOTP?email=' + req.body.email);
         }
 
