@@ -87,7 +87,7 @@
                                     <form class="row g-3 needs-validation" action="/Signup" method="post" novalidate>
 
                                         <div class="col-12">
-                                            <label for="yourEmail" class="form-label">Name</label>
+                                            <label for="yourName" class="form-label">Name</label>
                                             <input type="text" name="name" class="form-control" id="Name" required>
                                             <div class="invalid-feedback">Name</div>
                                         </div>
@@ -120,15 +120,16 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Aadhar Number</label>
+                                            <label for="yourAadhar" class="form-label">Aadhar Number</label>
                                             <input type="number" name="aadhar" class="form-control" required>
                                             <div class="invalid-feedback">Please enter your aadhar number!</div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Mobile Number</label>
-                                            <input type="tel" name="phone" class="form-control" required>
+                                            <label for="yourMobile" class="form-label">Mobile Number</label>
+                                            <input id="mob" type="tel" name="phone" class="form-control" required placeholder="+9100000000000">
                                             <div class="invalid-feedback">Please enter your Mobile Number!</div>
+                                            <label id="moblabel" for="yourMobile" class="form-label" style="color: red;">Invalid Mobile Number. (Include country code)</label>
                                         </div>
 
                                         <div class="col-12">
@@ -143,11 +144,19 @@
                                         <div class="col-12" id="message">
                                             <label class="form-label">Password must contain the following:</label>
                                             <div>
-                                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-                                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                                            <p id="number" class="invalid">A <b>number</b></p>
-                                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                                <p id="number" class="invalid">A <b>number</b></p>
+                                                <p id="length" class="invalid">Minimum <b>8 characters</b></p>
                                             </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Confirm Password</label>
+                                            <input type="password" name="confirmpassword" class="form-control"
+                                                id="confirm_psw" required>
+                                            <div class="invalid-feedback">Please confirm your password!</div>
+                                            <label id="conpsw" class="form-label" style="color: red;">Password not matched</label>
                                         </div>
 
                                         <div class="col-12">
@@ -192,7 +201,8 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <input type="submit" class="btn btn-primary w-100" value="Create Account">
+                                            <input type="submit" disabled id="submitBtn" class="btn btn-primary w-100"
+                                                value="Create Account">
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Already have an account? <a href="/Login">Log
@@ -216,6 +226,13 @@
         </div>
         <script>
             var myInput = document.getElementById("psw");
+            var myInput2 = document.getElementById("confirm_psw");
+            var myInput3 = document.getElementById("mob");
+
+
+            var label = document.getElementById("conpsw");
+            var label2 = document.getElementById("moblabel");
+
             var letter = document.getElementById("letter");
             var capital = document.getElementById("capital");
             var number = document.getElementById("number");
@@ -267,9 +284,34 @@
                 if (myInput.value.length >= 8) {
                     length.classList.remove("invalid");
                     length.classList.add("valid");
+
                 } else {
                     length.classList.remove("valid");
                     length.classList.add("invalid");
+                }
+            }
+
+            myInput2.onkeyup = function () {
+
+                // Validate length
+                if (myInput.value == myInput2.value) {
+                    label.style.display = "none";
+                    document.getElementById("submitBtn").disabled = false;
+                } else {
+                    label.style.display = "block";
+                    document.getElementById("submitBtn").disabled = true;
+                }
+            }
+
+            myInput3.onkeyup = function () {
+
+                // Validate length
+                if (myInput3.value.length == 13 && myInput3.value.charAt(0) == '+') {
+                    label2.style.display = "none";
+                    document.getElementById("submitBtn").disabled = false;
+                } else {
+                    label2.style.display = "block";
+                    document.getElementById("submitBtn").disabled = true;
                 }
             }
         </script>
