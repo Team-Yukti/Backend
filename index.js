@@ -42,6 +42,10 @@ app.get('/Login', (req, res) => {
 app.get('/Signup', (req, res) => {
     res.render('auth/signup');
 })
+app.get('/AdminDashboard', (req, res) => {
+    res.render('admin/admindashbord');
+})
+
 app.get('/UserComplaints',isLoggedIn, (req, res) => {
     res.render('user/complaintRegistration');
 })
