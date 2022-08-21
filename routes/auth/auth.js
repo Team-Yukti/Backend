@@ -110,7 +110,20 @@ router.post('/Login', (req, res) => {
             }
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
 
-            res.send(req.session.user);
+            if(result.idToken.payload.role="user")
+            {
+                res.redirect('/Dashboard');
+            }
+            else if(result.idToken.payload.role="desk1")
+            {
+                res.redirect('/Desk1-Dashboard');
+            }
+            else if(result.idToken.payload.role="desk2")
+            {
+                res.redirect('/Desk2-Dashboard');
+            }
+
+
             console.log("Login Success");
         },
         onFailure: function (err) {
@@ -120,9 +133,7 @@ router.post('/Login', (req, res) => {
                 console.log("Not Verified");
                 res.redirect('/ConfirmOTP?email=' + req.body.email);
             } else {
-
                 console.log("User Not Found");
-
                 res.json(err);
             }
         }
@@ -148,7 +159,7 @@ router.post('/ConfirmUser', (req, res) => {
         else
         {
             console.log("User Confirmed");
-            res.json(result);
+            //res.json(result);
             res.redirect('/Login');
         }
     }
