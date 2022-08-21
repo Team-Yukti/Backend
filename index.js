@@ -46,9 +46,7 @@ app.get('/AdminDashboard', (req, res) => {
 app.get('/UserComplaints',isLoggedIn, (req, res) => {
     res.render('user/complaintRegistration');
 })
-app.get('/Dashboard',isLoggedIn,(req,res)=>{
-    res.render('user/dashboard');
-})
+
 app.get('/OnboardAdmin',isLoggedIn, (req,res) => {
     res.render('superadmin/onboard_admins');
 })

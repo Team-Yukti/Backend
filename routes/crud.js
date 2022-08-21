@@ -117,7 +117,7 @@ router.get('/GetFullComplaint', async (req, res) => {
 
 })
 
-router.get('/GetUserComplaints', isLoggedIn, async (req,res)=>{
+router.get('/Dashboard', isLoggedIn, async (req,res)=>{
   const email = req.session.user.idToken.payload.email;
   var complaint_ids;
   var userinfo;
