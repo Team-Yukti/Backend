@@ -1,4 +1,9 @@
 // create simple express server
+// AWS conginto Authentication declaration starts here
+
+const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+const AWS = require('aws-sdk');
 var express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -6,6 +11,15 @@ const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
+
+
+const poolData = {
+    UserPoolId: "ap-south-1_9ErMvHoXm", // Your user pool id here
+    ClientId: "521l6du1g1tn6pdbrt7j2ounqr" // Your client id here
+};
+const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -60,10 +74,11 @@ app.get('/ConfirmPassword', (req, res) => {
     res.render('auth/confirmPassword', {email: req.query.email});
 })
 app.get('/ForgotPassword', (req, res) => {
-    res.render('auth/forgotPassword');
+    res.render('auth/forgotPassword', {email: req.query.email});
 })
+
 app.get('/Logout',(req,res)=>{
      req.session.destroy();
-
+     res.redirect('/Login');
 })
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
