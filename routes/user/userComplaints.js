@@ -64,6 +64,7 @@ router.post('/LodgeComplaint', (req, res) => {
 
 
 router.post('/AddComment',(req,res)=>{
+  console.log(req.body);
   crud.addComment(req.body.cid,req.body.uid,req.body.comment);
   res.redirect('/GetFullComplaint?cid='+req.body.cid);
 })
