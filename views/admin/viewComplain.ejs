@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Complaint Page</title>
+  <title>View Complaint</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -43,7 +43,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/UserDashbord" class="logo d-flex align-items-center">
+      <a href="\AdminDashboard" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Yukti</span>
       </a>
@@ -531,57 +531,61 @@
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-3 col-form-label">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=complaint.Name%>" class="form-control" readonly>
+                    <input type="text" class="form-control" readonly>
                   </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Gender%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Age%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Address%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                       <label for="inputText" class="col-sm-3 col-form-label">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=complaint.City%>" class="form-control" readonly>
+                        <input type="text" class="form-control" readonly>
                       </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.State%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Mobile%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Date</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Date%>" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Body</label>
+                  <label for="compaint" class="col-sm-3 col-form-label">Complaint Body</label>
                   <div class="col-sm-9">
-                    <textarea class="form-control"  style="height: 100px" readonly>
-                        <%=complaint.ComplaintBody%>
-                    </textarea>
+                    <textarea class="form-control" style="height: 100px" readonly></textarea>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="summary" class="col-sm-3 col-form-label">Complaint Summary</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" style="height: 100px" readonly></textarea>
                   </div>
                 </div>
                 
@@ -604,35 +608,42 @@
                 <section style="background-color: #ffffff;">
                     <div class="container py-5">
                       
-                      <div class="row" style="overflow:scroll; height:400px">                  
+                      <div class="row" style="overflow:scroll; height:510px">                  
                         <div class="col-md-6 col-lg-7 col-xl-8">
                   
                           <ul class="centerlist-unstyled">
-                            
-                              <%for(var i =1;i< complaint.comments.length;i++){%>
-                                <li class="d-flex justify-content-between mb-6">
-                                    <div class="card w-100">
-                                      <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0"><%=complaint.comments[i].uid%></p>
-
-                                        
-                                        <%const dateObject = new Date(complaint.comments[i].time._seconds)%>
-                                        <%const date = dateObject.getDate();%>
-                                        <%const month = dateObject.getMonth() + 1;%>
-                                        <%const year = dateObject.getFullYear();%>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"><%=`${year}-${month}-${date}`%></i> </p>
-                                      </div>
-                                      <div class="card-body">
-                                        <p class="mb-0">
-                                            <%=complaint.comments[i].comment%>
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                                      class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                                  </li> 
-                                  <%}%>  
-                                
+                            <li class="d-flex justify-content-between mb-6">
+                              <div class="card w-100">
+                                <div class="card-header d-flex justify-content-between p-3">
+                                  <p class="fw-bold mb-0">Lara Croft</p>
+                                  <p class="text-muted small mb-0"><i class="far fa-clock"></i> 13 mins ago</p>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0">
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                    laudantium.
+                                  </p>
+                                </div>
+                              </div>
+                              <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                                class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                            </li>
+                            <li class="d-flex justify-content-between mb-4">
+                              <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                                class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                              <div class="card">
+                                <div class="card-header d-flex justify-content-between p-3">
+                                  <p class="fw-bold mb-0">Brad Pitt</p>
+                                  <p class="text-muted small mb-0"><i class="far fa-clock"></i> 10 mins ago</p>
+                                </div>
+                                <div class="card-body">
+                                  <p class="mb-0">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                    labore et dolore magna aliqua.
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
                           </ul>
                           </div>
                         </div>
@@ -640,14 +651,10 @@
                         <div>
                             <li class="bg-white mb-3">
                               <div class="form-outline">
-                                  <form action="/AddComment" method="post">
-                                <textarea class="form-control" id="textAreaExample2" name="comment" rows="4"></textarea>
+                                <textarea class="form-control" id="textAreaExample2" rows="4"></textarea>
                                 <label class="form-label" for="textAreaExample2">Message</label>
-                                <input type="text" name="uid" value="<%=complaint.UID%>" hidden>
-                                <input type="text" name="cid" value="<%=cid%>" hidden>
-                                <button type="submit" class="btn btn-primary btn-rounded float-end">Send</button>
+                                <button type="button" class="btn btn-primary btn-rounded float-end">Send</button>
                                 <br>
-                            </form>
                               </div>
                             </li>
                             
@@ -677,7 +684,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="">Team Yukti</a>
+      Designed by <a href="">Tem Yukti</a>
     </div>
   </footer><!-- End Footer -->
 
