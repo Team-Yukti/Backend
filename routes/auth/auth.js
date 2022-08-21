@@ -47,9 +47,18 @@ router.post('/Signup', (req, res) => {
             cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
 
+            userdata = {
+                Name:req.body.name,
+                Gender:req.body.gender,
+                Email:req.body.email,
+                Age:req.body.age,
+                Aadhar:req.body.adhar,
+                Phone:req.body.phone
+            }
+            
 
 
-
+            crud.insertItem()
             res.redirect('/ConfirmOTP?email=' + req.body.email);
         }
 

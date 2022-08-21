@@ -26,7 +26,8 @@ router.post('/LodgeComplaint', (req, res) => {
         City: req.body.City,
         Mobile: req.body.Mobile,
         ComplaintBody: req.body.ComplaintBody,
-        UID: req.session.user.idToken.payload.sub
+        UID: req.session.user.idToken.payload.sub,
+        comments:[]
     }
     console.log(complaintData);
 
@@ -50,6 +51,7 @@ router.post('/LodgeComplaint', (req, res) => {
 
 
 router.post('/AddComment',(req,res)=>{
+  console.log(req.body);
   crud.addComment(req.body.cid,req.body.uid,req.body.comment);
   res.redirect('/GetFullComplaint?cid='+req.body.cid);
 })

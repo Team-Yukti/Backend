@@ -91,12 +91,20 @@ function insertComplaint(uid,json)
 
 
 
-router.get('/GetFullComplaint',(req,res)=>{
-    
-    db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
+router.get('/GetFullComplaint',async (req,res)=>{
+     var jsonData={}
+    await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
+       jsonData = querySnapshot.data();
 
-        res.render('user/complaintpage',{complaint:querySnapshot.data(),cid:req.query.cid});
     });
+    for(var i=0;i<jsonData.comments.length;i++)
+    {
+        await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) =>{
+            jsonData.comments[i]["uid"]=userdata.data().Name;
+        })
+    }
+    res.render('user/complaintpage',{complaint:jsonData,cid:req.query.cid});
+
 })
 
 
@@ -115,11 +123,12 @@ function addComment(cid,uid,comment)
 function getComments(cid)
 {
     db.collection('complaints').doc(cid).get().then((querySnapshot) => {
-        return querySnapshot.data().comments;
+         console.log(querySnapshot.data().comments);
     }).catch(err => {
         console.log('Error getting document', err);
     });
 }
+// getComments('34e0a738-9426-4efb-b721-bb7502fe96c01660976645775')
 
 
 module.exports = {
