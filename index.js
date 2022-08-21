@@ -39,7 +39,9 @@ app.get('/Signup', (req, res) => {
 app.get('/UserComplaints',isLoggedIn, (req, res) => {
     res.render('user/complaintRegistration');
 })
-
+app.get('/OnboardAdmin',isLoggedIn, (req,res) => {
+    res.render('superadmin/onboard_admins');
+})
 app.get('/EditProfile',(req,res)=>{
     res.render('user/editProfile')
 })

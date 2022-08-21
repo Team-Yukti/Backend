@@ -25,7 +25,7 @@ const e = require('express');
 global.fetch = require('node-fetch');
 
 const poolData = {
-    UserPoolId: "ap-south-1_9ErMvHoXm", // Your user pool id here    
+    UserPoolId: "ap-south-1_9ErMvHoXm", // Your user pool id here
     ClientId: "521l6du1g1tn6pdbrt7j2ounqr" // Your client id here
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
@@ -53,9 +53,10 @@ router.post('/Signup', (req, res) => {
                 Email:req.body.email,
                 Age:req.body.age,
                 Aadhar:req.body.adhar,
-                Phone:req.body.phone
+                Phone:req.body.phone,
+                Admin: 0
             }
-            
+
 
 
             crud.insertItem()
