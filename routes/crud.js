@@ -117,6 +117,25 @@ router.get('/GetFullComplaint', async (req, res) => {
 
 })
 
+router.get('/GetUserComplaints', isLoggedIn, async (req,res)=>{
+  const email = req.session.user.idToken.payload.email;
+  var complaint_ids;
+  await db.collection("users").where("Email", "==", email).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        complaint_ids=doc.data().complaints;
+    });
+  });
+  console.log(complaint_ids);
+  var complaints = [];
+  for(var i=0;i<complaint_ids.length;i++){
+    await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
+        complaints.push(querySnapshot.data());
+    });
+  }
+  return res.status(200).send({"complaints": complaints});
+})
+
 router.get('/GetDesk1Complaints', isLoggedIn, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
   console.log(ministry);
