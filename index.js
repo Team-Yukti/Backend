@@ -46,6 +46,8 @@ app.get('/AdminDashboard', (req, res) => {
     res.render('admin/admindashbord');
 })
 
+// "/UserDashbord" added in frontend
+
 app.get('/UserComplaints',isLoggedIn, (req, res) => {
     res.render('user/complaintRegistration');
 })
