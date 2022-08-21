@@ -26,4 +26,17 @@ function uploadFilestoS3(file) {
         console.log(progress);
     });
 }
+function getobject(){
+    var s3 = new AWS.S3();
+    var params = {
+        Bucket: 'complaint-bucket-sih',
+        Key:'post05.png'
+    };
+    s3.getObject(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+      });
+}
+
+// getobject()
 module.exports = {uploadFilestoS3};

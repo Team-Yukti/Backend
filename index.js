@@ -37,8 +37,17 @@ app.get('/Login', (req, res) => {
 app.get('/Signup', (req, res) => {
     res.render('auth/signup');
 })
+app.get('/AdminDashboard', (req, res) => {
+    res.render('admin/admindashbord');
+})
+
+// "/UserDashbord" added in frontend
+
 app.get('/UserComplaints',isLoggedIn, (req, res) => {
     res.render('user/complaintRegistration');
+})
+app.get('/Dashboard',isLoggedIn,(req,res)=>{
+    res.render('user/dashboard');
 })
 app.get('/OnboardAdmin',isLoggedIn, (req,res) => {
     res.render('superadmin/onboard_admins');

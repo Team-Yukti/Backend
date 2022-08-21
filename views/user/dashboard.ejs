@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Complaint Page</title>
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -43,9 +43,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/UserDashbord" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">Yukti</span>
+        <span class="d-none d-lg-block">NiceAdmin</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -274,7 +274,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link " href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -359,12 +359,12 @@
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link " data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html" class="active">
+            <a href="forms-elements.html">
               <i class="bi bi-circle"></i><span>Form Elements</span>
             </a>
           </li>
@@ -508,161 +508,371 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Form Elements</h1>
+      <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Elements</li>
+          <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <section class="section dashboard">
       <div class="row">
-        <div class="col-lg-6">
 
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Approved</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="ps-3">
+                      <h6>145</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Pending</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="ps-3">
+                      <h6>145</h6>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+          </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Rejected</h5>  
+                  <div class="d-flex align-items-center">
+                    <div class="ps-3">
+                      <h6>145</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+          </div><!-- End Customers Card -->
+
+            <!-- Reports -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Reports <span>/Today</span></h5>
+
+                  Line Chart -->
+                  <div id="reportsChart"></div>
+
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                      new ApexCharts(document.querySelector("#reportsChart"), {
+                        series: [{
+                          name: 'Approved',
+                          data: [31, 40, 28, 51, 42, 82, 56],
+                        }, {
+                          name: 'Pending',
+                          data: [11, 32, 45, 32, 34, 52, 41]
+                        }, {
+                          name: 'Rejected',
+                          data: [15, 11, 32, 18, 9, 24, 11]
+                        }],
+                        chart: {
+                          height: 350,
+                          type: 'area',
+                          toolbar: {
+                            show: false
+                          },
+                        },
+                        markers: {
+                          size: 4
+                        },
+                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                        fill: {
+                          type: "gradient",
+                          gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.3,
+                            opacityTo: 0.4,
+                            stops: [0, 90, 100]
+                          }
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        stroke: {
+                          curve: 'smooth',
+                          width: 2
+                        },
+                        xaxis: {
+                          type: 'datetime',
+                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                        },
+                        tooltip: {
+                          x: {
+                            format: 'dd/MM/yy HH:mm'
+                          },
+                        }
+                      }).render();
+                    });
+                  </script>
+                  <!-- End Line Chart -->
+
+                </div>
+
+              </div>
+            </div>End Reports -->
+
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Approved</a></li>
+                    <li><a class="dropdown-item" href="#">Pending</a></li>
+                    <li><a class="dropdown-item" href="#">Rejected</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Recent Status</h5>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Complaint Type</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">View Profile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#">#2457</a></th>
+                        <td>Brandon Jacob</td>
+                        <td>At praesentium minu</td>
+                        <td>22/05/2022</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm"  value="View Complaint" onclick=""></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#2147</a></th>
+                        <td>Bridie Kessler</td>
+                        <td>Blanditiis dolor omnis</td>
+                        <td>22/05/2022</td>
+                        <td><span class="badge bg-warning">Pending</span></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm"  value="View Complaint" onclick=""></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#2049</a></th>
+                        <td>Ashleigh Langosh</td>
+                        <td>At recusandae consectetur</td>
+                        <td>22/05/2022</td>
+                        <td><span class="badge bg-danger">Rejected</span></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm"  value="View Complaint" onclick=""></td>
+                      </tr>
+                     </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->         </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+          <!-- Budget Report -->
           <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Complaint Form</h5>
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
 
-              <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 col-form-label">Name</label>
-                  <div class="col-sm-9">
-                    <input type="text" value="<%=complaint.Name%>" class="form-control" readonly>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Gender%>" class="form-control" readonly>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Age</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Age%>" class="form-control" readonly>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Address</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Address%>" class="form-control" readonly>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                      <label for="inputText" class="col-sm-3 col-form-label">City</label>
-                      <div class="col-sm-9">
-                        <input type="text" value="<%=complaint.City%>" class="form-control" readonly>
-                      </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">State</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.State%>" class="form-control" readonly>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Mobile%>" class="form-control" readonly>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Date</label>
-                    <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Date%>" class="form-control" readonly>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Body</label>
-                  <div class="col-sm-9">
-                    <textarea class="form-control"  style="height: 100px" readonly>
-                        <%=complaint.ComplaintBody%>
-                    </textarea>
-                  </div>
-                </div>
-                
-                <div class="row mb-3">
-                  <label class="col-sm-5 col-form-label"></label>
-                  <div class="col-sm-7">
-                    <button type="submit" class="btn btn-primary">Next</button>
-                  </div>
-                </div>
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
 
-              </form><!-- End General Form Elements -->
+            <div class="card-body pb-0">
+              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
+
+              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
+                    legend: {
+                      data: ['Allocated Budget', 'Actual Spending']
+                    },
+                    radar: {
+                      // shape: 'circle',
+                      indicator: [{
+                          name: 'Sales',
+                          max: 6500
+                        },
+                        {
+                          name: 'Administration',
+                          max: 16000
+                        },
+                        {
+                          name: 'Information Technology',
+                          max: 30000
+                        },
+                        {
+                          name: 'Customer Support',
+                          max: 38000
+                        },
+                        {
+                          name: 'Development',
+                          max: 52000
+                        },
+                        {
+                          name: 'Marketing',
+                          max: 25000
+                        }
+                      ]
+                    },
+                    series: [{
+                      name: 'Budget vs spending',
+                      type: 'radar',
+                      data: [{
+                          value: [4200, 3000, 20000, 35000, 50000, 18000],
+                          name: 'Allocated Budget'
+                        },
+                        {
+                          value: [5000, 14000, 28000, 26000, 42000, 21000],
+                          name: 'Actual Spending'
+                        }
+                      ]
+                    }]
+                  });
+                });
+              </script>
 
             </div>
-          </div>
+          </div><!-- End Budget Report -->
 
-        </div>
-        <!-- <section class="section">
-            <div class="row"> -->
-              <div class="col-lg-6">
-                <section style="background-color: #ffffff;">
-                    <div class="container py-5">
-                      
-                      <div class="row" style="overflow:scroll; height:400px">                  
-                        <div class="col-md-6 col-lg-7 col-xl-8">
-                  
-                          <ul class="centerlist-unstyled">
-                            
-                              <%for(var i =1;i< complaint.comments.length;i++){%>
-                                <li class="d-flex justify-content-between mb-6">
-                                    <div class="card w-100">
-                                      <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0"><%=complaint.comments[i].uid%></p>
+          <!-- Website Traffic -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
 
-                                        
-                                        <%const dateObject = new Date(complaint.comments[i].time._seconds)%>
-                                        <%const date = dateObject.getDate();%>
-                                        <%const month = dateObject.getMonth() + 1;%>
-                                        <%const year = dateObject.getFullYear();%>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"><%=`${year}-${month}-${date}`%></i> </p>
-                                      </div>
-                                      <div class="card-body">
-                                        <p class="mb-0">
-                                            <%=complaint.comments[i].comment%>
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                                      class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                                  </li> 
-                                  <%}%>  
-                                
-                          </ul>
-                          </div>
-                        </div>
-                      </div>
-                        <div>
-                            <li class="bg-white mb-3">
-                              <div class="form-outline">
-                                  <form action="/AddComment" method="post">
-                                <textarea class="form-control" id="textAreaExample2" name="comment" rows="4"></textarea>
-                                <label class="form-label" for="textAreaExample2">Message</label>
-                                <input type="text" name="uid" value="<%=complaint.UID%>" hidden>
-                                <input type="text" name="cid" value="<%=cid%>" hidden>
-                                <button type="submit" class="btn btn-primary btn-rounded float-end">Send</button>
-                                <br>
-                            </form>
-                              </div>
-                            </li>
-                            
-                          
-                  
-                        </div>
-                  
-                     
-                  
-                    </div>
-                  </section>
-                </div>
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
 
-                </div>
-      
+            <div class="card-body pb-0">
+              <h5 class="card-title">User Traffic</h5>
+
+              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#trafficChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      name: 'Access From',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '18',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: [{
+                          value: 145,
+                          name: 'Approved'
+                        },
+                        {
+                          value: 145,
+                          name: 'Pending'
+                        },
+                        {
+                          value: 145,
+                          name: 'Rejected'
+                        },
+                        // {
+                        //   value: 484,
+                        //   name: 'Union Ads'
+                        // },
+                        // {
+                        //   value: 300,
+                        //   name: 'Video Ads'
+                        // }
+                      ]
+                    }]
+                  });
+                });
+              </script>
+
+            </div>
+          </div><!-- End Website Traffic -->
+
+          </div><!-- End Right side columns -->
+
+      </div>
     </section>
 
   </main><!-- End #main -->
@@ -670,14 +880,14 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Yukti</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="">Team Yukti</a>
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
 

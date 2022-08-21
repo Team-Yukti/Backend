@@ -42,7 +42,7 @@
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <a href="\UserDashbord" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="">
                   <span class="d-none d-lg-block">Yukti</span>
                 </a>
@@ -65,17 +65,17 @@
                       <div class="input-group has-validation">
                         
                         <!-- changes made M-->                  
-                        <input type="text" name="email" class="form-control" id="Email" required placeholder="Email"> 
+                        <input type="text" name="email" class="form-control" value="<%=email%>" id="Email" required > 
                         <div class="invalid-feedback">Please enter your Email.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
-                        <label for="yourUsername" class="form-label">Email</label>
+                        <label for="yourUsername" class="form-label">OTP</label>
                         <div class="input-group has-validation">
                           
                           <!-- changes made M-->                  
-                          <input  type="number" name="code" placeholder="OTP" class="form-control" id="Email" required > 
+                          <input  type="number" name="code" placeholder="OTP" class="form-control" id="otp" required > 
                           <div class="invalid-feedback">Please enter your OTP.</div>
                         </div>
                       </div>
@@ -86,7 +86,9 @@
                     <div class="col-12">
                       <button class="btn btn-primary w-100"type="submit" value="Verify">Submit</button>
                     </div>
-                   
+                    <div class="col-12">
+                        <a href="/Resendotp?email=<%=email%>">Resend OTP</a>
+                    </div>
                   </form>
 
                 </div>
