@@ -88,9 +88,9 @@ router.post('/Login', (req, res) => {
                 Aadhar: result.idToken.payload.name,
                 Aadhar: result.idToken.payload["custom:age"],
                 Phone: result.idToken.payload.phone_number,
-                Address: result.idToken.payload.address,
+                Address: result.idToken.payload.address.formatted,
                 State: result.idToken.payload["custom:state"],
-                City: result.idToken.payload["custon:city"],
+                City: result.idToken.payload["custom:city"],
                 Pincode: result.idToken.payload["custom:pincode"],
                 Country: result.idToken.payload["custom:country"],
                 Role: result.idToken.payload["custom:role"],
@@ -99,7 +99,6 @@ router.post('/Login', (req, res) => {
 
             res.send(req.session.user);
             console.log("Login Success");
-            //console.log('Login success => \n');
         },
         onFailure: function (err) {
             console.log("Login Failure");
