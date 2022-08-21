@@ -51,7 +51,7 @@ router.post('/Signup', (req, res) => {
 
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
         if (err) {
-            console.log(err);
+            res.send(err);
             return;
         }
         else {
@@ -85,8 +85,8 @@ router.post('/Login', (req, res) => {
             userData = {
                 Email: result.idToken.payload.email,
                 Aadhar: result.idToken.payload["custom:aadhar"],
-                Aadhar: result.idToken.payload.name,
-                Aadhar: result.idToken.payload["custom:age"],
+                Name: result.idToken.payload.name,
+                Age: result.idToken.payload["custom:age"],
                 Phone: result.idToken.payload.phone_number,
                 Address: result.idToken.payload.address.formatted,
                 State: result.idToken.payload["custom:state"],

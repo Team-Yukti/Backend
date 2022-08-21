@@ -31,12 +31,30 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.3.1
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <style>
+        /* Add a green text color and a checkmark when the requirements are right */
+        .valid {
+            color: green;
+        }
+
+        .valid:before {
+            position: relative;
+            left: 0px;
+            content: "✔";
+        }
+
+        /* Add a red text color and an "x" when the requirements are wrong */
+        .invalid {
+            color: red;
+        }
+
+        .invalid:before {
+            position: relative;
+            left: 0px;
+            content: "✖";
+        }
+    </style>
+
 </head>
 
 <body>
@@ -76,15 +94,15 @@
 
                                         <div class="col-12">
                                             <label class="form-label">Gender</label>
-                                            
-                                                <select name="gender" class="form-select"
-                                                    aria-label="Default select example">
-                                                    <option selected> Select Gender</option>
-                                                    <option value="1">Male</option>
-                                                    <option value="2">Female</option>
-                                                    <option value="3">Other</option>
-                                                </select>
-                                            
+
+                                            <select name="gender" class="form-select"
+                                                aria-label="Default select example">
+                                                <option selected> Select Gender</option>
+                                                <option value="1">Male</option>
+                                                <option value="2">Female</option>
+                                                <option value="3">Other</option>
+                                            </select>
+
                                         </div>
 
                                         <div class="col-12">
@@ -114,20 +132,28 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">New Password</label>
-                                            <input type="password" name="password" class="form-control" required>
+                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control" id="psw"
+                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                                required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
 
-
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Confirm Password</label>
-                                            <input type="password" name="confirmPassword" class="form-control" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                        <div class="col-12" id="message">
+                                            <label class="form-label">Password must contain the following:</label>
+                                            <div>
+                                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                            <p id="number" class="invalid">A <b>number</b></p>
+                                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                            </div>
                                         </div>
+
                                         <div class="col-12">
                                             <label for="address" class="form-label">Address</label>
-                                            <input type="text" name="address" class="form-control" id="address" required>
+                                            <input type="text" name="address" class="form-control" id="address"
+                                                required>
                                             <div class="invalid-feedback">Addess</div>
                                         </div>
                                         <div class="col-12">
@@ -144,13 +170,15 @@
 
                                         <div class="col-12">
                                             <label for="country" class="form-label">Country</label>
-                                            <input type="text" name="country" class="form-control" id="country" required>
+                                            <input type="text" name="country" class="form-control" id="country"
+                                                required>
                                             <div class="invalid-feedback">Country</div>
                                         </div>
 
                                         <div class="col-12">
                                             <label for="pincode" class="form-label">Pincode</label>
-                                            <input type="text" name="pincode" class="form-control" id="pincode" required>
+                                            <input type="text" name="pincode" class="form-control" id="pincode"
+                                                required>
                                             <div class="invalid-feedback">Pincode</div>
                                         </div>
 
@@ -164,8 +192,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <input type="submit" class="btn btn-primary w-100" value="Create Account"
-                                                onclick="OpenOtpTab()">
+                                            <input type="submit" class="btn btn-primary w-100" value="Create Account">
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Already have an account? <a href="/Login">Log
@@ -177,10 +204,6 @@
                             </div>
 
                             <div class="credits">
-                                <!-- All the links in the footer should remain intact. -->
-                                <!-- You can delete the links only if you purchased the pro version. -->
-                                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
                                 Designed by <a href="">Team Yukti</a>
                             </div>
 
@@ -191,6 +214,65 @@
             </section>
 
         </div>
+        <script>
+            var myInput = document.getElementById("psw");
+            var letter = document.getElementById("letter");
+            var capital = document.getElementById("capital");
+            var number = document.getElementById("number");
+            var length = document.getElementById("length");
+
+            // When the user clicks on the password field, show the message box
+            myInput.onfocus = function () {
+                document.getElementById("message").style.display = "block";
+            }
+
+            // When the user clicks outside of the password field, hide the message box
+            myInput.onblur = function () {
+                document.getElementById("message").style.display = "none";
+            }
+
+            // When the user starts to type something inside the password field
+            myInput.onkeyup = function () {
+                // Validate lowercase letters
+                var lowerCaseLetters = /[a-z]/g;
+                if (myInput.value.match(lowerCaseLetters)) {
+                    letter.classList.remove("invalid");
+                    letter.classList.add("valid");
+                } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                }
+
+                // Validate capital letters
+                var upperCaseLetters = /[A-Z]/g;
+                if (myInput.value.match(upperCaseLetters)) {
+                    capital.classList.remove("invalid");
+                    capital.classList.add("valid");
+                } else {
+                    capital.classList.remove("valid");
+                    capital.classList.add("invalid");
+                }
+
+                // Validate numbers
+                var numbers = /[0-9]/g;
+                if (myInput.value.match(numbers)) {
+                    number.classList.remove("invalid");
+                    number.classList.add("valid");
+                } else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                }
+
+                // Validate length
+                if (myInput.value.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                } else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                }
+            }
+        </script>
     </main><!-- End #main -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
@@ -212,12 +294,3 @@
 </body>
 
 </html>
-
-<!-- <form action="/Signup" method="post">
-  <input type="email" name="email" placeholder="Email">
-  <input type="number" name="aadhar" placeholder="Aadhar">
-  <input type="tel" name="phone" placeholder="Mobile Number">
-  <input type="password" name="password" placeholder="Password">
-  <input type="password" name="confirmPassword" placeholder="Confirm Password">
-  <input type="submit" value="Send" onclick="OpenOtpTab()">
-</form> -->
