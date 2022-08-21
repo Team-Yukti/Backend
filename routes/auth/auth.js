@@ -41,11 +41,12 @@ router.post('/Signup', (req, res) => {
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:aadhar", Value:req.body.aadhar }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:age", Value: req.body.age }));
-    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:address", Value: req.body.address }));
-    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:city", Value: req.body.city }));
-    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:state", Value: req.body.state }));
-    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:country", Value: req.body.country }));
-    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:pincode", Value: req.body.pincode }));\
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "address", Value: req.body.address }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:city", Value: req.body.city }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:state", Value: req.body.state }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:country", Value: req.body.country }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:pincode", Value: req.body.pincode }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "user" }));
 
 
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
@@ -86,14 +87,14 @@ router.post('/Login', (req, res) => {
                 Aadhar: result.idToken.payload["custom:aadhar"],
                 Aadhar: result.idToken.payload.name,
                 Aadhar: result.idToken.payload["custom:age"],
-                Phone: result.idToken.payload.phone_number
-                //Address: result.idToken.payload.address
-                //State: result.idToken.payload.state
-                //City: result.idToken.payload.city
-                //Pincode: result.idToken.payload.pincode
-                //Country: result.idToken.payload.country
+                Phone: result.idToken.payload.phone_number,
+                Address: result.idToken.payload.address,
+                State: result.idToken.payload["custom:state"],
+                City: result.idToken.payload["custon:city"],
+                Pincode: result.idToken.payload["custom:pincode"],
+                Country: result.idToken.payload["custom:country"],
+                Role: result.idToken.payload["custom:role"],
             }
-
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
 
             res.send(req.session.user);
