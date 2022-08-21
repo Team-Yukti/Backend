@@ -83,25 +83,10 @@ function insertComplaint(uid,json)
  function getAllComplaints(cid) {
     db.collection("complaints").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            // console.log(doc.data());
             return doc.data();
         });
     });
 }
-
-router.get('/GetComplaints', (req,res)=>{
-  const type = req.body.type;
-  console.log(type);
-  db.collection("complaints").where("type", "==", type).get().then((querySnapshot) => {
-    var complaints = [];
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        complaints.push(doc.data());
-        console.log(doc.id, " => ", doc.data());
-    });
-    return res.status(200).send({"complaints": complaints});
-  });
-})
 
 router.get('/GetComplaintTypes', (req,res)=>{
   const name = req.body.name;
@@ -125,9 +110,39 @@ router.get('/GetFullComplaint',(req,res)=>{
     });
 })
 
+router.get('/GetDesk1Complaints', async (req,res)=>{
+  const type = req.body.type;
+  console.log(type);
+  db.collection("complaints").where("type", "==", type).where("current_desk", "==", 1).get().then((querySnapshot) => {
+    var complaints = [];
+    querySnapshot.forEach((doc) => {
+        complaints.push(doc.data());
+    });
+    return res.status(200).send({"complaints": complaints});
+  });
+})
+
+router.get('/GetDesk2Complaints', (req,res)=>{
+  const type = req.body.type;
+  console.log(type);
+  db.collection("complaints").where("type", "==", type).where("current_desk", "==", 2).get().then((querySnapshot) => {
+    var complaints = [];
+    querySnapshot.forEach((doc) => {
+        complaints.push(doc.data());
+        console.log(doc.id, " => ", doc.data());
+    });
+    return res.status(200).send({"complaints": complaints});
+  });
+})
+
 function updateComplaint(cid, data)
 {
   db.collection("complaints").doc(cid).update(data);
+}
+
+function approveComplaint(cid)
+{
+  db.collection("complaints").doc(cid).update({current_desk: 2});
 }
 
 function addComment(cid,uid,comment)
@@ -161,4 +176,5 @@ module.exports = {
     getAllComplaints:getAllComplaints,
     addComment: addComment,
     updateComplaint: updateComplaint,
+    approveComplaint: approveComplaint
 };

@@ -7,13 +7,6 @@ var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
 
-
-
-
-
-
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const publicDirectory = path.join(__dirname, './public');
@@ -24,7 +17,8 @@ app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth/auth'));
 app.use('/', require('./routes/user/user'));
 app.use('/', require('./routes/user/userComplaints'));
-app.use('/', require('./routes/desk1/complaints'));
+app.use('/', require('./routes/desk1/desk1complaints'));
+app.use('/', require('./routes/desk2/desk2complaints'));
 app.use('/', require('./routes/crud.js').router);
 
 

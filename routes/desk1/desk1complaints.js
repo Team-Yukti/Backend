@@ -11,4 +11,10 @@ router.post('/UpdateComplaint', (req,res)=>{
   return res.status(200).send({"message": "Success"});
 });
 
+router.post('/approveComplaint', (req,res)=>{
+  var complaint_id = req.body.id;
+  crud.approveComplaint(complaint_id);
+  return res.status(200).send({"message": "Success"});
+});
+
 module.exports = router;
