@@ -22,6 +22,7 @@ const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 const AWS = require('aws-sdk');
 const request = require('request');
 const e = require('express');
+const { json } = require('body-parser');
 global.fetch = require('node-fetch');
 
 const poolData = {
@@ -36,8 +37,12 @@ router.post('/Signup', (req, res) => {
 
     var attributeList = [];
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
-    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "preferred_username", Value: req.body.aadhar }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "phone_number", Value: req.body.phone }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:aadhar", Value:req.body.aadhar }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:age", Value: req.body.age }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "user" }));
+
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
         if (err) {
             console.log(err);
@@ -46,20 +51,7 @@ router.post('/Signup', (req, res) => {
         else {
             cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
-
-            userdata = {
-                Name:req.body.name,
-                Gender:req.body.gender,
-                Email:req.body.email,
-                Age:req.body.age,
-                Aadhar:req.body.adhar,
-                Phone:req.body.phone,
-                Admin: 0
-            }
-
-
-
-            crud.insertItem()
+            console.log(JSON.stringify(cognitoUser));
             res.redirect('/ConfirmOTP?email=' + req.body.email);
         }
 
@@ -86,8 +78,11 @@ router.post('/Login', (req, res) => {
 
             userData = {
                 Email: result.idToken.payload.email,
-                Aadhar: result.idToken.payload.preferred_username,
-                Phone: result.idToken.payload.phone_number
+                Aadhar: result.idToken.payload["custom:aadhar"],
+                Aadhar: result.idToken.payload.name,
+                Aadhar: result.idToken.payload["custom:age"],
+                Phone: result.idToken.payload.phone_number,
+                Role: result.idToken.payload["custom:role"]
             }
 
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
@@ -128,7 +123,11 @@ router.post('/ConfirmUser', (req, res) => {
             res.json(err);
             return;
         }
-        res.json(result);
+        else
+        {
+            console.log("User Confirmed");
+            res.json(result);
+        }
     }
     );
 })

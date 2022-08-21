@@ -39,4 +39,29 @@ router.post('/OnboardAdmin', (req,res)=>{
   return res.status(200).send({"message": "Success"});
 });
 
+router.post('/OnboardAdmin', (req, res) => {
+
+    var attributeList = [];
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
+    if(desk == 1){
+      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk1" }));
+    } else {
+      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk2" }));
+    }
+
+    userPool.signUp(req.body.email, req.body.email, attributeList, null, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        else {
+            cognitoUser = result.user;
+            console.log('user name is ' + cognitoUser.getUsername());
+            console.log(JSON.stringify(cognitoUser));
+        }
+
+    });
+});
+
 module.exports = router;
