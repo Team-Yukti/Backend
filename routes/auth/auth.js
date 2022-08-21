@@ -179,17 +179,18 @@ router.post('/ConfirmForgotPassword', (req, res) => {
 })
 
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ apiVersion: '2016-04-18', region: 'ap-south-1' });
-function resendotp(email) {
+router.get('/Resendotp',(req,res)=>{
     var params = {
         ClientId: '521l6du1g1tn6pdbrt7j2ounqr', /* required */
-        Username: email, /* required */
+        Username: req.query.email, /* required */
 
     };
     cognitoidentityserviceprovider.resendConfirmationCode(params, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data);           // successful response
+        else {
+            res.redirect('/ConfirmOTP?email='+req.query.email);
+        }          // successful response
     });
-
-}
+})
 
 module.exports = router;
