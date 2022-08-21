@@ -531,49 +531,53 @@
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-3 col-form-label">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=complaint.Name%>" class="form-control" readonly>
+                    <input type="text" value="<%=UserData.idToken.payload.name%>" class="form-control" readonly>
                   </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Gender%>" class="form-control" readonly>
+                      <input type="text" value="<%=UserData.idToken.payload.gender%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Age%>" class="form-control" readonly>
+                      <input type="text" value="<%=UserData.idToken.payload['custom:age']%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Address%>" class="form-control" readonly>
+                      <input type="text" value="<%=UserData.idToken.payload.address['formatted']%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                       <label for="inputText" class="col-sm-3 col-form-label">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=complaint.City%>" class="form-control" readonly>
+                        <input type="text" value="<%=UserData.idToken.payload['custom:city']%>" class="form-control" readonly>
                       </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.State%>" class="form-control" readonly>
+                      <input type="text" value="<%=UserData.idToken.payload['custom:state']%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Mobile%>" class="form-control" readonly>
+                      <input type="text" value="<%=UserData.idToken.payload.phone_number%>" class="form-control" readonly>
                     </div>
                   </div>
+                  <%const dateObject = new Date(complaint.Time["_seconds"]*1000)%>
+                  <%const date = dateObject.getDate();%>
+                  <%const month = dateObject.getMonth() + 1;%>
+                  <%const year = dateObject.getFullYear();%>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Date</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=complaint.Date%>" class="form-control" readonly>
+                      <input type="text" value="<%=`${date}-${month}-${year}`%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -609,18 +613,18 @@
                   
                           <ul class="centerlist-unstyled">
                             
-                              <%for(var i =1;i< complaint.comments.length;i++){%>
+                              <%for(var i =0;i< complaint.comments.length;i++){%>
                                 <li class="d-flex justify-content-between mb-6">
                                     <div class="card w-100">
                                       <div class="card-header d-flex justify-content-between p-3">
                                         <p class="fw-bold mb-0"><%=complaint.comments[i].uid%></p>
 
                                         
-                                        <%const dateObject = new Date(complaint.comments[i].time._seconds)%>
+                                        <%const dateObject = new Date(complaint.comments[i].time._seconds*1000)%>
                                         <%const date = dateObject.getDate();%>
                                         <%const month = dateObject.getMonth() + 1;%>
                                         <%const year = dateObject.getFullYear();%>
-                                        <p class="text-muted small mb-0"><i class="far fa-clock"><%=`${year}-${month}-${date}`%></i> </p>
+                                        <p class="text-muted small mb-0"><i class="far fa-clock"><%=`${date}-${month}-${year}`%></i> </p>
                                       </div>
                                       <div class="card-body">
                                         <p class="mb-0">

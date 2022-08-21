@@ -110,7 +110,7 @@ router.post('/Login', (req, res) => {
             }
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
 
-            res.send(req.session.user);
+            res.redirect('/Dashboard');
             console.log("Login Success");
         },
         onFailure: function (err) {
