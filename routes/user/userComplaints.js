@@ -31,14 +31,6 @@ router.post('/LodgeComplaint', (req, res) => {
       console.log("Body", body);
       complaint_summary=body.extracted_text;
       complaintData = {
-          Name: req.body.Name,
-          Age: req.body.Age,
-          Date: req.body.Date,
-          Gender: req.body.Gender,
-          Address: req.body.Address,
-          State: req.body.State,
-          City: req.body.City,
-          Mobile: req.body.Mobile,
           ComplaintBody: req.body.ComplaintBody,
           UID: req.session.user.idToken.payload.sub,
           type: "Salary",
@@ -65,7 +57,6 @@ router.post('/LodgeComplaint', (req, res) => {
         }
     });
 })
-
 
 router.post('/AddComment',(req,res)=>{
   console.log(req.body);
