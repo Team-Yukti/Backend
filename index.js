@@ -62,4 +62,8 @@ app.get('/ConfirmPassword', (req, res) => {
 app.get('/ForgotPassword', (req, res) => {
     res.render('auth/forgotPassword');
 })
+app.get('/Logout',(req,res)=>{
+     req.session.destroy();
+
+})
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
