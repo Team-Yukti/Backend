@@ -39,18 +39,20 @@ router.post('/OnboardAdmin', (req,res)=>{
   return res.status(200).send({"message": "Success"});
 });
 
-router.post('/OnboardAdmin', (req, res) => {
+router.post('/createAdminAccount', (req, res) => {
 
     var attributeList = [];
+    console.log(req.body.desk);
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
-    if(desk == 1){
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:ministry", Value: req.body.ministry }));
+    if(req.body.desk == 1){
       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk1" }));
     } else {
       attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk2" }));
     }
 
-    userPool.signUp(req.body.email, req.body.email, attributeList, null, function (err, result) {
+    userPool.signUp(req.body.email, "Admin@2022", attributeList, null, function (err, result) {
         if (err) {
             console.log(err);
             return;
@@ -59,6 +61,7 @@ router.post('/OnboardAdmin', (req, res) => {
             cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
             console.log(JSON.stringify(cognitoUser));
+            return res.status(200).send({"message": "Success"});
         }
 
     });

@@ -86,7 +86,7 @@
                                         <p class="text-center small">Enter your personal details to create account</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" action="/OnboardAdmin" method="post" novalidate>
+                                    <form class="row g-3 needs-validation" action="/createAdminAccount" method="post" novalidate>
 
                                         <div class="col-12">
                                             <label for="Name" class="form-label">Name</label>
@@ -112,6 +112,17 @@
                                             <input type="email" name="email" class="form-control" id="yourEmail"
                                                 required>
                                             <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Ministry</label>
+
+                                                <select name="ministry" class="form-select"
+                                                    aria-label="Default select example">
+                                                    <option selected> Select Ministry</option>
+                                                    <option value="Ministry of Employment">Ministry of Employment</option>
+                                                </select>
+
                                         </div>
 
                                         <div class="col-12">

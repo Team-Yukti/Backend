@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 var admin = require('firebase-admin');
-
+const isLoggedIn = require('../middleware');
 
 const {
     initializeApp,
@@ -88,9 +88,8 @@ function insertComplaint(uid,json)
     });
 }
 
-router.get('/GetComplaintTypes', (req,res)=>{
-  const name = req.body.name;
-  db.collection("ministries").where("Name", "==", name).get().then((querySnapshot) => {
+function getComplaintTypes(ministry){
+  db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     var complaints_types = [];
     querySnapshot.forEach((doc) => {
         console.log(doc.data());
@@ -98,9 +97,23 @@ router.get('/GetComplaintTypes', (req,res)=>{
         for(var i=0;i<data.length;i++)
           complaints_types.push(data[i]);
     });
-    return res.status(200).send({"complaints_types": complaints_types});
+    return complaints_types;
   })
-})
+}
+//
+// router.get('/GetComplaintTypes', (req,res)=>{
+//   const name = req.body.name;
+//   db.collection("ministries").where("Name", "==", name).get().then((querySnapshot) => {
+//     var complaints_types = [];
+//     querySnapshot.forEach((doc) => {
+//         console.log(doc.data());
+//         const data = doc.data().complaint_types;
+//         for(var i=0;i<data.length;i++)
+//           complaints_types.push(data[i]);
+//     });
+//     return res.status(200).send({"complaints_types": complaints_types});
+//   })
+// })
 
 
 router.get('/GetFullComplaint',async (req,res)=>{
@@ -119,10 +132,12 @@ router.get('/GetFullComplaint',async (req,res)=>{
 
 })
 
-router.get('/GetDesk1Complaints', async (req,res)=>{
-  const type = req.body.type;
-  console.log(type);
-  db.collection("complaints").where("type", "==", type).where("current_desk", "==", 1).get().then((querySnapshot) => {
+router.get('/GetDesk1Complaints', isLoggedIn, async (req,res)=>{
+  const ministry = req.session.user.idToken.payload['custom:ministry'];
+  console.log(ministry);
+  complaint_types = await getComplaintTypes(ministry);
+  console.log(complaint_types);
+  db.collection("complaints").where("type", "in", complaint_types).where("current_desk", "==", 1).get().then((querySnapshot) => {
     var complaints = [];
     querySnapshot.forEach((doc) => {
         complaints.push(doc.data());

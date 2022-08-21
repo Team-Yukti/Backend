@@ -41,7 +41,13 @@ router.post('/Signup', (req, res) => {
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:aadhar", Value:req.body.aadhar }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:age", Value: req.body.age }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "address", Value: req.body.address }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:city", Value: req.body.city }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:state", Value: req.body.state }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:country", Value: req.body.country }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:pincode", Value: req.body.pincode }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "user" }));
+
 
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
         if (err) {
@@ -76,15 +82,31 @@ router.post('/Login', (req, res) => {
         onSuccess: function (result) {
             req.session.user = result;
 
-            userData = {
-                Email: result.idToken.payload.email,
-                Aadhar: result.idToken.payload["custom:aadhar"],
-                Aadhar: result.idToken.payload.name,
-                Aadhar: result.idToken.payload["custom:age"],
-                Phone: result.idToken.payload.phone_number,
-                Role: result.idToken.payload["custom:role"]
+            if(result.idToken.payload["custom:role"] == "user"){
+              userData = {
+                  Email: result.idToken.payload.email,
+                  Aadhar: result.idToken.payload["custom:aadhar"],
+                  Name: result.idToken.payload.name,
+                  Age: result.idToken.payload["custom:age"],
+                  Phone: result.idToken.payload.phone_number,
+                  Gender: result.idToken.payload.gender,
+                  Address: result.idToken.payload.address,
+                  State: result.idToken.payload["custom:state"],
+                  City: result.idToken.payload["custom:city"],
+                  Pincode: result.idToken.payload["custom:pincode"],
+                  Country: result.idToken.payload["custom:country"],
+                  Role: result.idToken.payload["custom:role"],
+              }
             }
-
+            else{
+              userData = {
+                  Email: result.idToken.payload.email,
+                  Name: result.idToken.payload.name,
+                  Gender: result.idToken.payload.gender,
+                  Role: result.idToken.payload["custom:role"],
+                  Ministry: result.idToken.payload["custom:ministry"]
+              }
+            }
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
 
             res.send(req.session.user);
