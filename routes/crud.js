@@ -45,42 +45,39 @@ function insertItem(json, collection, doc) {
 
 
 //check is first time login
-function checkFirstTimeLogin(json,uid)
-{
+function checkFirstTimeLogin(json, uid) {
     db.collection('users').doc(uid).get()
-    .then(doc => {
-        if(!doc.exists)
-        {
-            console.log("first time login");
-            insertItem(json,'users',uid);
-        }
-    }).catch(err => {
-        console.log('Error getting document', err);
-    });
+        .then(doc => {
+            if (!doc.exists) {
+                console.log("first time login");
+                insertItem(json, 'users', uid);
+            }
+        }).catch(err => {
+            console.log('Error getting document', err);
+        });
 }
 
 
 //insert complaint
-function insertComplaint(uid,json)
-{
-    json["Time"]= admin.firestore.Timestamp.fromDate(new Date());
+function insertComplaint(uid, json) {
+    json["Time"] = admin.firestore.Timestamp.fromDate(new Date());
     db.collection('complaints').add(json)
-    .then(ref => {
-        console.log('Added document with ID: ', ref.id);
-        db.collection('users').doc(uid).update({
-            complaints: admin.firestore.FieldValue.arrayUnion(ref.id)
-        }).then(ref => {
+        .then(ref => {
             console.log('Added document with ID: ', ref.id);
+            db.collection('users').doc(uid).update({
+                complaints: admin.firestore.FieldValue.arrayUnion(ref.id)
+            }).then(ref => {
+                console.log('Added document with ID: ', ref.id);
+            }).catch(err => {
+                console.log('Error adding document: ', err);
+            });
         }).catch(err => {
             console.log('Error adding document: ', err);
         });
-    }).catch(err => {
-        console.log('Error adding document: ', err);
-    });
 }
 
 
- function getAllComplaints(cid) {
+function getAllComplaints(cid) {
     db.collection("complaints").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // console.log(doc.data());
@@ -89,60 +86,68 @@ function insertComplaint(uid,json)
     });
 }
 
-router.get('/GetComplaints', (req,res)=>{
-  const type = req.body.type;
-  console.log(type);
-  db.collection("complaints").where("type", "==", type).get().then((querySnapshot) => {
-    var complaints = [];
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        complaints.push(doc.data());
-        console.log(doc.id, " => ", doc.data());
+router.get('/GetComplaints', (req, res) => {
+    const type = req.body.type;
+    console.log(type);
+    db.collection("complaints").where("type", "==", type).get().then((querySnapshot) => {
+        var complaints = [];
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            complaints.push(doc.data());
+            console.log(doc.id, " => ", doc.data());
+        });
+        return res.status(200).send({
+            "complaints": complaints
+        });
     });
-    return res.status(200).send({"complaints": complaints});
-  });
 })
 
-router.get('/GetComplaintTypes', (req,res)=>{
-  const name = req.body.name;
-  db.collection("ministries").where("Name", "==", name).get().then((querySnapshot) => {
-    var complaints_types = [];
-    querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        const data = doc.data().complaint_types;
-        for(var i=0;i<data.length;i++)
-          complaints_types.push(data[i]);
-    });
-    return res.status(200).send({"complaints_types": complaints_types});
-  })
+router.get('/GetComplaintTypes', (req, res) => {
+    const name = req.body.name;
+    db.collection("ministries").where("Name", "==", name).get().then((querySnapshot) => {
+        var complaints_types = [];
+        querySnapshot.forEach((doc) => {
+            console.log(doc.data());
+            const data = doc.data().complaint_types;
+            for (var i = 0; i < data.length; i++)
+                complaints_types.push(data[i]);
+        });
+        return res.status(200).send({
+            "complaints_types": complaints_types
+        });
+    })
 })
 
 
-router.get('/GetFullComplaint',async (req,res)=>{
-     var jsonData={}
+router.get('/GetFullComplaint', async (req, res) => {
+    var jsonData = {}
     await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
-       jsonData = querySnapshot.data();
+        jsonData = querySnapshot.data();
 
     });
-    for(var i=0;i<jsonData.comments.length;i++)
-    {
-        await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) =>{
-            jsonData.comments[i]["uid"]=userdata.data().Name;
+    for (var i = 0; i < jsonData.comments.length; i++) {
+        await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
+            jsonData.comments[i]["uid"] = userdata.data().Name;
         })
     }
-    res.render('user/complaintpage',{complaint:jsonData,cid:req.query.cid});
+    res.render('user/complaintpage', {
+        complaint: jsonData,
+        cid: req.query.cid
+    });
 
 })
 
-function updateComplaint(cid, data)
-{
-  db.collection("complaints").doc(cid).update(data);
+function updateComplaint(cid, data) {
+    db.collection("complaints").doc(cid).update(data);
 }
 
-function addComment(cid,uid,comment)
-{
+function addComment(cid, uid, comment) {
     db.collection('complaints').doc(cid).update({
-        comments: admin.firestore.FieldValue.arrayUnion({uid:uid,time:admin.firestore.Timestamp.fromDate(new Date()),comment:comment})
+        comments: admin.firestore.FieldValue.arrayUnion({
+            uid: uid,
+            time: admin.firestore.Timestamp.fromDate(new Date()),
+            comment: comment
+        })
     }).then(ref => {
         console.log('Added document with ID: ', ref.id);
     }).catch(err => {
@@ -151,10 +156,9 @@ function addComment(cid,uid,comment)
 }
 
 //get comments
-function getComments(cid)
-{
+function getComments(cid) {
     db.collection('complaints').doc(cid).get().then((querySnapshot) => {
-         console.log(querySnapshot.data().comments);
+        console.log(querySnapshot.data().comments);
     }).catch(err => {
         console.log('Error getting document', err);
     });
@@ -164,11 +168,11 @@ function getComments(cid)
 
 
 module.exports = {
-    router:router,
-    insertItem:insertItem,
-    checkFirstTimeLogin:checkFirstTimeLogin,
-    insertComplaint:insertComplaint,
-    getAllComplaints:getAllComplaints,
+    router: router,
+    insertItem: insertItem,
+    checkFirstTimeLogin: checkFirstTimeLogin,
+    insertComplaint: insertComplaint,
+    getAllComplaints: getAllComplaints,
     addComment: addComment,
     updateComplaint: updateComplaint,
 };
