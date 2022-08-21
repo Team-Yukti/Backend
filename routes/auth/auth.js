@@ -90,12 +90,13 @@ router.post('/Login', (req, res) => {
                   Age: result.idToken.payload["custom:age"],
                   Phone: result.idToken.payload.phone_number,
                   Gender: result.idToken.payload.gender,
-                  Address: result.idToken.payload.address,
+                  Address: result.idToken.payload.address.formatted,
                   State: result.idToken.payload["custom:state"],
                   City: result.idToken.payload["custom:city"],
                   Pincode: result.idToken.payload["custom:pincode"],
                   Country: result.idToken.payload["custom:country"],
                   Role: result.idToken.payload["custom:role"],
+                  complaints: []
               }
             }
             else{
@@ -148,6 +149,7 @@ router.post('/ConfirmUser', (req, res) => {
         {
             console.log("User Confirmed");
             res.json(result);
+            res.redirect('/Login');
         }
     }
     );
