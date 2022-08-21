@@ -37,12 +37,16 @@ router.post('/Signup', (req, res) => {
 
     var attributeList = [];
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
-    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "preferred_username", Value: req.body.aadhar }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "phone_number", Value: req.body.phone }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
-    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "aadhar", Value:   req.body.adhar }));
-    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "age", Value: req.body.age }));
-    
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:aadhar", Value:req.body.aadhar }));
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:age", Value: req.body.age }));
+    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:address", Value: req.body.address }));
+    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:city", Value: req.body.city }));
+    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:state", Value: req.body.state }));
+    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:country", Value: req.body.country }));
+    //attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:pincode", Value: req.body.pincode }));\
+
 
     userPool.signUp(req.body.email, req.body.password, attributeList, null, function (err, result) {
         if (err) {
@@ -51,20 +55,8 @@ router.post('/Signup', (req, res) => {
         }
         else {
             cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
-
-            // userdata = {
-            //     Name:req.body.name,
-            //     Gender:req.body.gender,
-            //     Email:req.body.email,
-            //     Age:req.body.age,
-            //     Aadhar:req.body.adhar,
-            //     Phone:req.body.phone
-            // }
-            
+            console.log('user name is ' + cognitoUser.getUsername()); 
             console.log(JSON.stringify(cognitoUser));
-
-            // crud.insertItem()
             res.redirect('/ConfirmOTP?email=' + req.body.email);
         }
 
@@ -91,8 +83,15 @@ router.post('/Login', (req, res) => {
 
             userData = {
                 Email: result.idToken.payload.email,
-                Aadhar: result.idToken.payload.preferred_username,
+                Aadhar: result.idToken.payload["custom:aadhar"],
+                Aadhar: result.idToken.payload.name,
+                Aadhar: result.idToken.payload["custom:age"],
                 Phone: result.idToken.payload.phone_number
+                //Address: result.idToken.payload.address
+                //State: result.idToken.payload.state
+                //City: result.idToken.payload.city
+                //Pincode: result.idToken.payload.pincode
+                //Country: result.idToken.payload.country
             }
 
             crud.checkFirstTimeLogin(userData, result.idToken.payload.sub)
@@ -133,7 +132,11 @@ router.post('/ConfirmUser', (req, res) => {
             res.json(err);
             return;
         }
-        res.json(result);
+        else
+        {
+            console.log("User Confirmed");
+            res.json(result);
+        }
     }
     );
 })
