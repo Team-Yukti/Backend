@@ -42,16 +42,21 @@ router.post('/LodgeComplaint', (req, res) => {
           ComplaintBody: req.body.ComplaintBody,
           UID: req.session.user.idToken.payload.sub,
           type: "Salary",
-          ComplaintSummary: complaint_summary
+          comments:[],
+          ComplaintSummary: complaint_summary,
+          DocName:req.body.docs,
+          Idproof:req.body.Idproof
       }
       console.log(complaintData);
 
       crud.insertComplaint(req.session.user.idToken.payload.sub,complaintData);
       try {
           const file = req.files.docs
+          const Idproofs = req.files.Idproof
           console.log(req.files.docs);
-          console.log(file)
           upload.uploadFilestoS3(file)
+          upload.uploadFilestoS3(Idproofs)
+
           const fileName = new Date().getTime().toString() + path.extname(file.name)
           if (file.truncated) {
             throw new Error('File size is too big...')
