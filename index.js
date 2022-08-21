@@ -7,7 +7,9 @@ var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
 
-//crud.addComment("pS3VJ2vsKr24f5BBCIbP","ndjkafgklfd","fkdnbkl")
+
+
+
 
 
 
@@ -22,6 +24,7 @@ app.set('view engine', 'ejs');
 app.use('/', require('./routes/auth/auth'));
 app.use('/', require('./routes/user/user'));
 app.use('/', require('./routes/user/userComplaints'));
+app.use('/', require('./routes/desk1/complaints'));
 app.use('/', require('./routes/crud.js').router);
 
 
@@ -56,4 +59,3 @@ app.get('/ForgotPassword', (req, res) => {
     res.render('auth/forgotPassword');
 })
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
-
