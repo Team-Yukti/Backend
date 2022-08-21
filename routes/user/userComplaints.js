@@ -22,7 +22,7 @@ router.post('/LodgeComplaint', (req, res) => {
         text: req.body.ComplaintBody
     };
     request.post({
-        url: "http://127.0.0.1:8000/text-summarizer/",
+        url: "http://13.233.148.244:8000/text-summarizer/",
         json: runRequestBody
     },
     function(error, response, body){
