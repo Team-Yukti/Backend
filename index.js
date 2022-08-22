@@ -1,6 +1,3 @@
-// create simple express server
-// AWS conginto Authentication declaration starts here
-
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 const AWS = require('aws-sdk');
@@ -11,6 +8,7 @@ const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
+const checkRole = require('./isUser');
 
 
 const poolData = {
@@ -42,7 +40,7 @@ app.get('/', (req, res) => {
     res.json({"hello": "world"});
 })
 
-app.get('/Home', (req, res) => {
+app.get('/Home',checkRole.isUser, (req, res) => {
     res.render('auth/home');
 })
 app.get('/Login', (req, res) => {
