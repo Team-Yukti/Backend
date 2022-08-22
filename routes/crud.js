@@ -117,8 +117,9 @@ router.get('/getComplaintTypes', (req,res) => {
 })
 
 
-router.get('/GetFullComplaint', async (req, res) => {
+router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
     var jsonData = {}
+        var user = req.session.user;
     await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
         jsonData = querySnapshot.data();
     });
@@ -127,30 +128,41 @@ router.get('/GetFullComplaint', async (req, res) => {
             jsonData.comments[i]["uid"] = userdata.data().Name;
         })
     }
+    // console.log(jsonData);
     res.render('user/complaintpage', {
         complaint: jsonData,
-        cid: req.query.cid
+        cid: req.query.cid,
+        UserData:user
     });
 
 })
 
-router.get('/GetUserComplaints', isLoggedIn, async (req,res)=>{
+router.get('/Dashboard', isLoggedIn, async (req,res)=>{
   const email = req.session.user.idToken.payload.email;
   var complaint_ids;
+  var userinfo;
   await db.collection("users").where("Email", "==", email).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         complaint_ids=doc.data().complaints;
+        userinfo = doc.data();
     });
   });
-  console.log(complaint_ids);
+
+//   console.log(complaint_ids);
+
   var complaints = [];
   for(var i=0;i<complaint_ids.length;i++){
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
-        complaints.push(querySnapshot.data());
+        var tpjson = querySnapshot.data();
+        tpjson["cid"]=complaint_ids[i];
+        complaints.push(tpjson);
+
     });
+    
   }
-  return res.status(200).send({"complaints": complaints});
+//   console.log(complaints);
+  res.render('user/dashboard',{userData:userinfo,complaints:complaints});
 })
 
 router.get('/GetDesk1Complaints', isLoggedIn, async (req,res)=>{
