@@ -37,7 +37,8 @@ router.post('/LodgeComplaint', (req, res) => {
           comments:[],
           ComplaintSummary: complaint_summary,
           DocName:req.body.docs,
-          Idproof:req.body.Idproof
+          Idproof:req.body.Idproof,
+          current_desk: 1
       }
       console.log(complaintData);
 

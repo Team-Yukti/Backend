@@ -85,25 +85,42 @@ function getAllComplaints(cid) {
     });
 }
 
-function getComplaintTypes(ministry){
-  db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
+async function getComplaintTypes(ministry){
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     var complaints_types = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         const data = doc.data().complaint_types;
         for(var i=0;i<data.length;i++)
           complaints_types.push(data[i]);
     });
+    console.log(complaints_types);
     return complaints_types;
   })
 }
+
+router.get('/getComplaintTypes', (req,res) => {
+  const ministry = req.body.ministry;
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
+    var complaints_types = [];
+    querySnapshot.forEach((doc) => {
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaints_types.push(data[i]);
+    });
+    console.log(complaints_types);
+    res.render('user/complaintRegistration', {
+      
+    });
+    return complaints_types;
+  })
+})
 
 
 router.get('/GetFullComplaint', async (req, res) => {
     var jsonData = {}
     await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
         jsonData = querySnapshot.data();
-
     });
     for (var i = 0; i < jsonData.comments.length; i++) {
         await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
@@ -139,28 +156,50 @@ router.get('/GetUserComplaints', isLoggedIn, async (req,res)=>{
 router.get('/GetDesk1Complaints', isLoggedIn, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
   console.log(ministry);
-  complaint_types = await getComplaintTypes(ministry);
-  console.log(complaint_types);
-  db.collection("complaints").where("type", "in", complaint_types).where("current_desk", "==", 1).get().then((querySnapshot) => {
-    var complaints = [];
+  var complaint_types = []
+
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        complaints.push(doc.data());
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaint_types.push(data[i]);
     });
-    return res.status(200).send({"complaints": complaints});
-  });
+  })
+
+  console.log(complaint_types);
+  var complaints = [];
+  for(var i=0;i<complaint_types.length;i++){
+    console.log(complaint_types[i]);
+    await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 1).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        complaints.push(doc.data());
+      })
+    })
+  }
+  return res.status(200).send({"complaints": complaints});
 })
 
-router.get('/GetDesk2Complaints', (req,res)=>{
-  const type = req.body.type;
-  console.log(type);
-  db.collection("complaints").where("type", "==", type).where("current_desk", "==", 2).get().then((querySnapshot) => {
-    var complaints = [];
+router.get('/GetDesk2Complaints', async (req,res)=>{
+  const ministry = req.session.user.idToken.payload['custom:ministry'];
+  var complaint_types = []
+
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        complaints.push(doc.data());
-        console.log(doc.id, " => ", doc.data());
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaint_types.push(data[i]);
     });
-    return res.status(200).send({"complaints": complaints});
-  });
+  })
+
+  var complaints = [];
+  for(var i=0;i<complaint_types.length;i++){
+    await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 2).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        complaints.push(doc.data());
+      })
+    })
+  }
+  return res.status(200).send({"complaints": complaints});
 })
 
 function updateComplaint(cid, data)
