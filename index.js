@@ -1,6 +1,3 @@
-// create simple express server
-// AWS conginto Authentication declaration starts here
-
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 const AWS = require('aws-sdk');
