@@ -312,7 +312,8 @@ router.post('/ConfirmForgotPassword', (req, res) => {
     var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.confirmPassword(req.body.code, req.body.password, {
         onSuccess: function (result) {
-            res.json(result);
+            console.log('Confirm Password Success => \n', result);
+            res.redirect('/Login');
         }
     });
 })
