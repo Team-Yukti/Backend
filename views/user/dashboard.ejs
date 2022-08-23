@@ -15,7 +15,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,12 +46,12 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    
+
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        
+
 
         <li class="nav-item dropdown">
 
@@ -196,13 +198,17 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"> <%=userData.Name%></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">
+              <%=userData.Name%>
+            </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><%=userData.Name%></h6>
-             
+              <h6>
+                <%=userData.Name%>
+              </h6>
+
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -243,7 +249,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/Dashboard">
+        <a class="nav-link" href="/Dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -255,44 +261,41 @@
           <span>Lodge Complaint</span>
         </a>
       </li><!-- End Login Page Nav -->
-
-      
-
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-pencil-square"></i>
-          <span>Edit Profile</span>
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>My Account</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li><!-- End Blank Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/ChangePassword">
-          <i class="bi bi-file-earmark-lock"></i>
-          <span>Change Password</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
+        <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/ViewProfile">
+              <i class="bi bi-circle"></i><span>View Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="/EditUserProfile">
+              <i class="bi bi-circle"></i><span>Edit Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="/ChangePassword">
+              <i class="bi bi-circle"></i><span>Change Password</span>
+            </a>
+          </li>
+          
+        </ul>
+      </li><!-- End Components Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <main id="main" class="main">
 
     <section class="section dashboard">
       <div class="row">
 
         <!-- Left side columns -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
           <div class="row">
 
             <!-- Sales Card -->
@@ -322,15 +325,15 @@
                       <h6>145</h6>
                     </div>
                   </div>
-                </div>  
+                </div>
               </div>
-          </div><!-- End Revenue Card -->
+            </div><!-- End Revenue Card -->
 
             <!-- Customers Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
                 <div class="card-body">
-                  <h5 class="card-title">Rejected</h5>  
+                  <h5 class="card-title">Rejected</h5>
                   <div class="d-flex align-items-center">
                     <div class="ps-3">
                       <h6>145</h6>
@@ -339,89 +342,9 @@
                 </div>
 
               </div>
-          </div><!-- End Customers Card -->
-
+            </div><!-- End Customers Card -->
             <!-- Reports -->
-            <div class="col-12">
-              <div class="card">
 
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
-
-                  Line Chart -->
-                  <div id="reportsChart"></div>
-
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Approved',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Pending',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Rejected',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script>
-                  <!-- End Line Chart -->
-
-                </div>
-
-              </div>
-            </div>
 
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
@@ -445,7 +368,7 @@
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>
-                        
+
                         <th scope="col">id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Complaint Type</th>
@@ -455,185 +378,41 @@
                       </tr>
                     </thead>
                     <tbody>
-                        <%for(var i =0;i < complaints.length;i++){%>
-                      <tr>
-                        <th scope="row"><a href="#"><%=complaints[i].cid.slice(0,4)%>...</a></th>
-                        <td><%=userData.Name%></td>
-                        <td><%=complaints[i].type%></td>
+                      <%for(var i=0;i < complaints.length;i++){%>
+                        <tr>
+                          <th scope="row"><a href="#">
+                              <%=complaints[i].cid.slice(0,4)%>...
+                            </a></th>
+                          <td>
+                            <%=userData.Name%>
+                          </td>
+                          <td>
+                            <%=complaints[i].type%>
+                          </td>
 
-                        <%const dateObject = new Date(complaints[i].Time["_seconds"]*1000)%>
-                        <%const date = dateObject.getDate();%>
-                        <%const month = dateObject.getMonth() + 1;%>
-                        <%const year = dateObject.getFullYear();%>
-                        <td><%=`${date}-${month}-${year}`%></td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                        <td><a href="/GetFullComplaint?cid=<%=complaints[i].cid%>" class="btn btn-primary btn-sm" >View Complaint   </a></td>
-                      </tr>
-                      <%}%>
-                     </tbody>
+                          <%const dateObject=new Date(complaints[i].Time["_seconds"]*1000)%>
+                            <%const date=dateObject.getDate();%>
+                              <%const month=dateObject.getMonth() + 1;%>
+                                <%const year=dateObject.getFullYear();%>
+                                  <td>
+                                    <%=`${date}-${month}-${year}`%>
+                                  </td>
+                                  <td><span class="badge bg-danger">Rejected</span></td>
+                                  <td><a href="/GetFullComplaint?cid=<%=complaints[i].cid%>"
+                                      class="btn btn-primary btn-sm">View Complaint </a></td>
+                        </tr>
+                        <%}%>
+                    </tbody>
                   </table>
 
                 </div>
 
               </div>
-            </div><!-- End Recent Sales -->         </div>
+            </div><!-- End Recent Sales -->
+          </div>
         </div><!-- End Left side columns -->
 
-        <!-- Right side columns -->
-        <div class="col-lg-4">
-          <!-- Budget Report -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                    legend: {
-                      data: ['Allocated Budget', 'Actual Spending']
-                    },
-                    radar: {
-                      // shape: 'circle',
-                      indicator: [{
-                          name: 'Sales',
-                          max: 6500
-                        },
-                        {
-                          name: 'Administration',
-                          max: 16000
-                        },
-                        {
-                          name: 'Information Technology',
-                          max: 30000
-                        },
-                        {
-                          name: 'Customer Support',
-                          max: 38000
-                        },
-                        {
-                          name: 'Development',
-                          max: 52000
-                        },
-                        {
-                          name: 'Marketing',
-                          max: 25000
-                        }
-                      ]
-                    },
-                    series: [{
-                      name: 'Budget vs spending',
-                      type: 'radar',
-                      data: [{
-                          value: [4200, 3000, 20000, 35000, 50000, 18000],
-                          name: 'Allocated Budget'
-                        },
-                        {
-                          value: [5000, 14000, 28000, 26000, 42000, 21000],
-                          name: 'Actual Spending'
-                        }
-                      ]
-                    }]
-                  });
-                });
-              </script>
-
-            </div>
-          </div><!-- End Budget Report -->
-
-          <!-- Website Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">User Traffic</h5>
-
-              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  echarts.init(document.querySelector("#trafficChart")).setOption({
-                    tooltip: {
-                      trigger: 'item'
-                    },
-                    legend: {
-                      top: '5%',
-                      left: 'center'
-                    },
-                    series: [{
-                      name: 'Access From',
-                      type: 'pie',
-                      radius: ['40%', '70%'],
-                      avoidLabelOverlap: false,
-                      label: {
-                        show: false,
-                        position: 'center'
-                      },
-                      emphasis: {
-                        label: {
-                          show: true,
-                          fontSize: '18',
-                          fontWeight: 'bold'
-                        }
-                      },
-                      labelLine: {
-                        show: false
-                      },
-                      data: [{
-                          value: 145,
-                          name: 'Approved'
-                        },
-                        {
-                          value: 145,
-                          name: 'Pending'
-                        },
-                        {
-                          value: 145,
-                          name: 'Rejected'
-                        },
-                        // {
-                        //   value: 484,
-                        //   name: 'Union Ads'
-                        // },
-                        // {
-                        //   value: 300,
-                        //   name: 'Video Ads'
-                        // }
-                      ]
-                    }]
-                  });
-                });
-              </script>
-
-            </div>
-          </div><!-- End Website Traffic -->
-
-          </div><!-- End Right side columns -->
 
       </div>
     </section>
@@ -646,12 +425,13 @@
       &copy; Copyright <strong><span>Yukti</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-  
+
       Designed by <a href="#">Yukti</a>
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
