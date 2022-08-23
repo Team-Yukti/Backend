@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><%=userData.idToken.payload.name%> Profile</title>
+  <title><%=userData.payload.name%>'s Profile</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -195,14 +195,14 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">
-              <%=userData.idToken.payload.name%>
+              <%=userData.payload.name%>
             </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>
-                <%=userData.idToken.payload.name%>
+                <%=userData.payload.name%>
               </h6>
 
             </li>
@@ -263,12 +263,12 @@
         </a>
         <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/ViewProfile">
+            <a href="/ViewProfile" class="active">
               <i class="bi bi-circle"></i><span>View Profile</span>
             </a>
           </li>
           <li>
-            <a href="/EditUserProfile" class="active">
+            <a href="/EditUserProfile" >
               <i class="bi bi-circle"></i><span>Edit Profile</span>
             </a>
           </li>
@@ -288,11 +288,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit Profile</h1>
+      <h1>My Profile</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
-          <li class="breadcrumb-item active"><%=userData.idToken.payload.name%>'s Profile</li>
+          <li class="breadcrumb-item active"><%=userData.payload.name%>'s Profile</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -310,24 +310,20 @@
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Name" id="" placeholder="Name" class="form-control">
+                  <input type="text" name="Name" id="" value="<%=userData.payload.name%>" placeholder="Name" class="form-control" readonly>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail" class="col-sm-2 col-form-label">Age</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Age" id="" placeholder="Age" class="form-control">
+                  <input type="text" name="Age" id="" value="<%=userData.payload['custom:age']%>" placeholder="Age" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Gender</label>
                 <div class="col-sm-10">
-                  <select name="Gender"  class="form-select" aria-label="Default select example">
-                    <option selected>Select Gender</option>
-                    <option value="1">Male</option>
-                    <option value="2">Female</option>
-                    <option value="3">Other</option>
+                    <input type="text" name="Gender" id="" value="<%=userData.payload.gender%>" placeholder="Age" class="form-control" readonly>
                   </select>
                 </div>
               </div>
@@ -335,56 +331,56 @@
               <div class="row mb-3">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                 <div class="col-sm-10">
-                  <textarea name="Address" id="" placeholder="Address" class="form-control" style="height: 100px"></textarea>
+                  <textarea name="Address" id="" placeholder="Address"  class="form-control" style="height: 100px" readonly><%=userData.payload.address['formatted']%></textarea>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">City/Town</label>
                 <div class="col-sm-10">
-                  <input type="text" name="City" id="" placeholder="" class="form-control">
+                  <input type="text" name="City" value="<%=userData.payload['custom:city']%>" id="" placeholder="" class="form-control" readonly>
                 </div>
               </div>
             
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">State</label>
                 <div class="col-sm-10">
-                  <input type="text" name="State" id=""placeholder="State" class="form-control">
+                  <input type="text" name="State" value="<%=userData.payload['custom:state']%>" id=""placeholder="State" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Country</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Country" id=""placeholder="Country" class="form-control">
+                  <input type="text" name="Country" value="<%=userData.payload['custom:country']%>" id=""placeholder="Country" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Pin Code</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Pincode" id=""placeholder="Pincode" class="form-control">
+                  <input type="text" name="Pincode" id="" value="<%=userData.payload['custom:pincode']%>" placeholder="Pincode" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Aadhar Number</label>
                 <div class="col-sm-10">
-                  <input type="number" name="Aadhar" id=""placeholder="Aadhar" class="form-control">
+                  <input type="number" name="Aadhar" value="<%=userData.payload['custom:pincode']%>" id=""placeholder="Aadhar" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Mobile Number</label>
                 <div class="col-sm-10">
-                  <input type="tel" name="Mobile" id=""placeholder="Mobile" class="form-control">
+                  <input type="tel" name="Mobile" value="<%=userData.payload.phone_number%>" id=""placeholder="Mobile" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Email" id="" placeholder="Email" class="form-control">
+                  <input type="text" name="Email" id="" value="<%=userData.payload.email%>" placeholder="Email" class="form-control" readonly>
                 </div>
               </div>
  
