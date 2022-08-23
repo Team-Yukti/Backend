@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><%=userData.idToken.payload.name%> Profile</title>
+  <title><%=userData.payload.name%>'s Profile</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,7 +38,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="/UserDashbord" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-block">Yukti</span>
+        <span class="d-none d-lg-block">Yukti</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -109,7 +109,7 @@
               <div>
                 <h4>Dicta reprehenderit</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
+                 <p>4 hrs. ago</p>
               </div>
             </li>
 
@@ -195,14 +195,14 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">
-              <%=userData.idToken.payload.name%>
+              <%=userData.payload.name%>
             </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>
-                <%=userData.idToken.payload.name%>
+                <%=userData.payload.name%>
               </h6>
 
             </li>
@@ -263,12 +263,12 @@
         </a>
         <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/ViewProfile">
+            <a href="/ViewProfile" class="active">
               <i class="bi bi-circle"></i><span>View Profile</span>
             </a>
           </li>
           <li>
-            <a href="/EditUserProfile" class="active">
+            <a href="/EditUserProfile" >
               <i class="bi bi-circle"></i><span>Edit Profile</span>
             </a>
           </li>
@@ -288,11 +288,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit Profile</h1>
+      <h1>My Profile</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
-          <li class="breadcrumb-item active"><%=userData.idToken.payload.name%>'s Profile</li>
+          <li class="breadcrumb-item active"><%=userData.payload.name%>'s Profile</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -306,97 +306,81 @@
             <h5 class="card-title">Edit Profile</h5>
 
             <!-- General Form Elements -->
-            <form class="row g-3 needs-validation" action="/EditUser" method="post" novalidate>
+            <form action="/EditUser" method="post">
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label"> Full Name</label>
+                <label for="inputText" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Name" id="" placeholder="Name" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Name!</div>
+                  <input type="text" name="Name" id="" value="<%=userData.payload.name%>" placeholder="Name" class="form-control" readonly>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail" class="col-sm-2 col-form-label">Age</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Age" id="" placeholder="Age" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Age!</div>
+                  <input type="text" name="Age" id="" value="<%=userData.payload['custom:age']%>" placeholder="Age" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Gender</label>
                 <div class="col-sm-10">
-                  <select name="Gender"  class="form-select" aria-label="Default select example" required>
-                    <option selected value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                    <input type="text" name="Gender" id="" value="<%=userData.payload.gender%>" placeholder="Age" class="form-control" readonly>
                   </select>
-                  <div class="invalid-feedback">Please enter your Gender!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                 <div class="col-sm-10">
-                  <textarea name="Address" id="" placeholder="Address" class="form-control" style="height: 100px" required></textarea>
-                  <div class="invalid-feedback">Please enter your Address!</div>
+                  <textarea name="Address" id="" placeholder="Address"  class="form-control" style="height: 100px" readonly><%=userData.payload.address['formatted']%></textarea>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">City/Town</label>
                 <div class="col-sm-10">
-                  <input type="text" name="City" id="" placeholder="" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your City/Town!</div>
+                  <input type="text" name="City" value="<%=userData.payload['custom:city']%>" id="" placeholder="" class="form-control" readonly>
                 </div>
               </div>
             
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">State</label>
                 <div class="col-sm-10">
-                  <input type="text" name="State" id=""placeholder="State" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your State!</div>
+                  <input type="text" name="State" value="<%=userData.payload['custom:state']%>" id=""placeholder="State" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Country</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Country" id=""placeholder="Country" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Country!</div>
+                  <input type="text" name="Country" value="<%=userData.payload['custom:country']%>" id=""placeholder="Country" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Pin Code</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Pincode" id=""placeholder="Pincode" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your valid Mobile Number!</div>
+                  <input type="text" name="Pincode" id="" value="<%=userData.payload['custom:pincode']%>" placeholder="Pincode" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Aadhar Number</label>
                 <div class="col-sm-10">
-                  <input type="number" name="Aadhar" id=""placeholder="Aadhar" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Aadhar Number!</div>
+                  <input type="number" name="Aadhar" value="<%=userData.payload['custom:pincode']%>" id=""placeholder="Aadhar" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Mobile Number</label>
                 <div class="col-sm-10">
-                  <input type="tel" name="Mobile" id="mob" placeholder="+910000000000" class="form-control" required>
-                  <label id="moblabel" for="yourMobile" class="form-label" style="color: red;">Invalid Mobile Number. (Include country code)</label>
-                  <div class="invalid-feedback">Please enter your Mobile Number!</div>
+                  <input type="tel" name="Mobile" value="<%=userData.payload.phone_number%>" id=""placeholder="Mobile" class="form-control" readonly>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Email" id="" placeholder="Email" class="form-control"required>
-                  <div class="invalid-feedback">Please enter your Email id!</div>
+                  <input type="text" name="Email" id="" value="<%=userData.payload.email%>" placeholder="Email" class="form-control" readonly>
                 </div>
               </div>
  
@@ -405,6 +389,9 @@
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
               </div>
+
+              
+
             </form><!-- End General Form Elements -->
 
           </div>
@@ -423,21 +410,6 @@
     
 
   </section>
-  <script>
-    var myInput3 = document.getElementById("mob");
-    var label2 = document.getElementById("moblabel");
-    myInput3.onkeyup = function () {
-
-        // Validate length
-        if (myInput3.value.length == 13 && myInput3.value.charAt(0) == '+') {
-            label2.style.display = "none";
-            document.getElementById("submitBtn").disabled = false;
-        } else {
-            label2.style.display = "block";
-            document.getElementById("submitBtn").disabled = true;
-        }
-    }
-</script>
     
 
   </main><!-- End #main -->
