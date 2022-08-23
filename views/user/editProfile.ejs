@@ -306,85 +306,97 @@
             <h5 class="card-title">Edit Profile</h5>
 
             <!-- General Form Elements -->
-            <form action="/EditUser" method="post">
+            <form class="row g-3 needs-validation" action="/EditUser" method="post" novalidate>
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                <label for="inputText" class="col-sm-2 col-form-label"> Full Name</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Name" id="" placeholder="Name" class="form-control">
+                  <input type="text" name="Name" id="" placeholder="Name" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your Name!</div>
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputEmail" class="col-sm-2 col-form-label">Age</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Age" id="" placeholder="Age" class="form-control">
+                  <input type="text" name="Age" id="" placeholder="Age" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your Age!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Gender</label>
                 <div class="col-sm-10">
-                  <select name="Gender"  class="form-select" aria-label="Default select example">
-                    <option selected>Select Gender</option>
-                    <option value="1">Male</option>
-                    <option value="2">Female</option>
-                    <option value="3">Other</option>
+                  <select name="Gender"  class="form-select" aria-label="Default select example" required>
+                    <option selected value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </select>
+                  <div class="invalid-feedback">Please enter your Gender!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                 <div class="col-sm-10">
-                  <textarea name="Address" id="" placeholder="Address" class="form-control" style="height: 100px"></textarea>
+                  <textarea name="Address" id="" placeholder="Address" class="form-control" style="height: 100px" required></textarea>
+                  <div class="invalid-feedback">Please enter your Address!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">City/Town</label>
                 <div class="col-sm-10">
-                  <input type="text" name="City" id="" placeholder="" class="form-control">
+                  <input type="text" name="City" id="" placeholder="" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your City/Town!</div>
                 </div>
               </div>
             
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">State</label>
                 <div class="col-sm-10">
-                  <input type="text" name="State" id=""placeholder="State" class="form-control">
+                  <input type="text" name="State" id=""placeholder="State" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your State!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Country</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Country" id=""placeholder="Country" class="form-control">
+                  <input type="text" name="Country" id=""placeholder="Country" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your Country!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Pin Code</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Pincode" id=""placeholder="Pincode" class="form-control">
+                  <input type="text" name="Pincode" id=""placeholder="Pincode" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your valid Mobile Number!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Aadhar Number</label>
                 <div class="col-sm-10">
-                  <input type="number" name="Aadhar" id=""placeholder="Aadhar" class="form-control">
+                  <input type="number" name="Aadhar" id=""placeholder="Aadhar" class="form-control" required>
+                  <div class="invalid-feedback">Please enter your Aadhar Number!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Mobile Number</label>
                 <div class="col-sm-10">
-                  <input type="tel" name="Mobile" id=""placeholder="Mobile" class="form-control">
+                  <input type="tel" name="Mobile" id="mob" placeholder="+910000000000" class="form-control" required>
+                  <label id="moblabel" for="yourMobile" class="form-label" style="color: red;">Invalid Mobile Number. (Include country code)</label>
+                  <div class="invalid-feedback">Please enter your Mobile Number!</div>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                  <input type="text" name="Email" id="" placeholder="Email" class="form-control">
+                  <input type="text" name="Email" id="" placeholder="Email" class="form-control"required>
+                  <div class="invalid-feedback">Please enter your Email id!</div>
                 </div>
               </div>
  
@@ -393,9 +405,6 @@
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
               </div>
-
-              
-
             </form><!-- End General Form Elements -->
 
           </div>
@@ -414,6 +423,21 @@
     
 
   </section>
+  <script>
+    var myInput3 = document.getElementById("mob");
+    var label2 = document.getElementById("moblabel");
+    myInput3.onkeyup = function () {
+
+        // Validate length
+        if (myInput3.value.length == 13 && myInput3.value.charAt(0) == '+') {
+            label2.style.display = "none";
+            document.getElementById("submitBtn").disabled = false;
+        } else {
+            label2.style.display = "block";
+            document.getElementById("submitBtn").disabled = true;
+        }
+    }
+</script>
     
 
   </main><!-- End #main -->

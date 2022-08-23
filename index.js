@@ -87,4 +87,8 @@ app.get('/Logout',(req,res)=>{
 app.get('/EditUserProfile',isLoggedIn, (req, res) => {
     res.render('user/editProfile',{userData:req.session.user});
 })
+app.get('/EditUserProfile-Error',isLoggedIn, (req, res) => {
+    res.render('user/editProfile_error',{userData:req.session.user});
+})
+
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
