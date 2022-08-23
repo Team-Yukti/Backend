@@ -249,7 +249,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/Dashboard">
+        <a class="nav-link" href="/Dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -261,38 +261,35 @@
           <span>Lodge Complaint</span>
         </a>
       </li><!-- End Login Page Nav -->
-
-
-
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-pencil-square"></i>
-          <span>Edit Profile</span>
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>My Account</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li><!-- End Blank Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/ChangePassword">
-          <i class="bi bi-file-earmark-lock"></i>
-          <span>Change Password</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
+        <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/ViewProfile">
+              <i class="bi bi-circle"></i><span>View Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="/EditUserProfile">
+              <i class="bi bi-circle"></i><span>Edit Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="/ChangePassword">
+              <i class="bi bi-circle"></i><span>Change Password</span>
+            </a>
+          </li>
+          
+        </ul>
+      </li><!-- End Components Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <main id="main" class="main">
 
     <section class="section dashboard">
       <div class="row">
