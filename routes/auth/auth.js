@@ -21,6 +21,7 @@ router.use(session({
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
 const AWS = require('aws-sdk');
+AWS.config.update({region: 'ap-south-1'});
 const request = require('request');
 const e = require('express');
 const { json } = require('body-parser');
@@ -353,5 +354,66 @@ router.get('/ChangePassword', isLoggedIn, (req, res) => {
     });
 })
 
+
+router.post('/EditUser', (req, res) => {
+    
+    const params = {
+        UserPoolId: "ap-south-1_9ErMvHoXm",
+        Username: req.session.user.idToken.payload.email,
+        UserAttributes: [
+          {
+            Name: "email",
+            Value: "niranjangirhecanada@gmail.com"
+          },
+          {
+            Name: "email_verified",
+            Value: "false"
+          },
+          {
+            Name: "name",
+            Value: "false"
+          },
+          {
+            Name: "phone_number",
+            Value: "+917768989937"
+          },
+          {
+            Name: "gender",
+            Value: "req.body.Gender"
+          },
+          {
+            Name: "custom:aadhar",
+            Value: "req.body.Aadhar"
+          },
+          {
+            Name: "address",
+            Value: "req.body.Address"
+          },
+          {
+            Name: "custom:city",
+            Value: "req.body.City"
+          },
+          {
+            Name: "custom:state",
+            Value: "req.body.State"
+          },
+          {
+            Name: "custom:country",
+            Value: "req.body.Country"
+          },
+          {
+            Name: "custom:pincode",
+            Value: "req"
+          },
+          {
+            Name: "name",
+            Value: "req.body.Name"
+          }
+        ],
+      };
+      const cognitoClient = new AWS.CognitoIdentityServiceProvider();
+      cognitoClient.adminUpdateUserAttributes(params).promise();
+      //res.redirect("/Login");
+});
 
 module.exports = router;

@@ -121,15 +121,15 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
 })
 
 router.get('/Dashboard', isLoggedIn, async (req,res)=>{
-  const email = req.session.user.idToken.payload.email;
   var complaint_ids;
   var userinfo;
-  await db.collection("users").where("Email", "==", email).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        // console.log(doc.data());
+  await db.collection("users").doc(req.session.user.idToken.payload.sub).get().then((doc) => {
+    
+
+        console.log(doc.data());
         complaint_ids=doc.data().complaints;
         userinfo = doc.data();
-    });
+
   });
 
 //   console.log(complaint_ids);
@@ -140,7 +140,6 @@ router.get('/Dashboard', isLoggedIn, async (req,res)=>{
         var tpjson = querySnapshot.data();
         tpjson["cid"]=complaint_ids[i];
         complaints.push(tpjson);
-
     });
     
   }
