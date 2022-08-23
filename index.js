@@ -37,7 +37,11 @@ app.use('/', require('./routes/superadmin/handleusers'));
 
 
 app.get('/', (req, res) => {
-    res.json({"hello": "world"});
+    if(req.session.user!=null){
+        res.redirect('/Dashboard')
+    }else{
+        res.render('index')
+    }
 })
 
 app.get('/Home',checkRole.isUser, (req, res) => {
