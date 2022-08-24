@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>Dashboard</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -250,22 +250,6 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/UserComplaints">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Lodge Complaint</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-pencil-square"></i>
-          <span>Edit Profile</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" href="/ChangePassword">
           <i class="bi bi-file-earmark-lock"></i>
           <span>Change Password</span>
@@ -282,11 +266,11 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+          <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div>
 
     <section class="section dashboard">
       <div class="row">
@@ -303,7 +287,7 @@
 
                   <div class="d-flex align-items-center">
                     <div class="ps-3">
-                      <h6>145</h6>
+                      <h6><%=approved%></h6>
                     </div>
                   </div>
                 </div>
@@ -319,7 +303,7 @@
 
                   <div class="d-flex align-items-center">
                     <div class="ps-3">
-                      <h6>145</h6>
+                      <h6><%=pending%></h6>
                     </div>
                   </div>
                 </div>
@@ -333,7 +317,7 @@
                   <h5 class="card-title">Rejected</h5>
                   <div class="d-flex align-items-center">
                     <div class="ps-3">
-                      <h6>145</h6>
+                      <h6><%=rejected%></h6>
                     </div>
                   </div>
                 </div>

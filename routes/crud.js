@@ -173,27 +173,35 @@ router.get('/Dashboard', isLoggedIn, async (req,res)=>{
   var complaint_ids;
   var userinfo;
   await db.collection("users").doc(req.session.user.idToken.payload.sub).get().then((doc) => {
-    
-
         console.log(doc.data());
         complaint_ids=doc.data().complaints;
         userinfo = doc.data();
 
   });
 
-//   console.log(complaint_ids);
+  var approved=0, rejected=0, pending=0;
 
   var complaints = [];
   for(var i=0;i<complaint_ids.length;i++){
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
         var tpjson = querySnapshot.data();
         tpjson["cid"]=complaint_ids[i];
+        if(tpjson.status == "Approved"){
+          approved++;
+        }
+        else if(tpjson.status == "Rejected"){
+          rejected++;
+        }
+        else {
+          pending++;
+        }
         complaints.push(tpjson);
     });
 
   }
-//   console.log(complaints);
-  res.render('user/dashboard',{userData:userinfo,complaints:complaints});
+  res.render('user/dashboard',{userData:userinfo,complaints:complaints,
+                               approved:approved,pending:pending,
+                               rejected: rejected});
 })
 
 router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
@@ -207,7 +215,7 @@ router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
     });
   })
   var complaints = [];
-  var userinfo = []
+  var userinfo = [];
   for(var i=0;i<complaint_types.length;i++){
     await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 1).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -215,13 +223,32 @@ router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
       })
     })
   }
+  var approved=0,pending=0,rejected=0;
   for(var i=0;i<complaints.length;i++){
     await db.collection("users").doc(complaints[i].UID).get().then((userData) => {
       userinfo.push(userData.data());
     })
+    pending++;
   }
-  signedin_user_info = req.session.user
-  res.render('desk1/desk1dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints});
+  console.log(complaints);
+  var signedin_user_info = req.session.user;
+  var user_email = req.session.user.idToken.payload.email;
+  var complaints_resolved = [];
+  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      complaints_resolved = doc.data().complaints_resolved;
+    });
+  })
+  console.log(complaints_resolved);
+  for(var i=0;i<complaints_resolved.length;i++){
+    if(complaints_resolved[i].status == "Approved"){
+      approved++;
+    }
+    else{
+      rejected++;
+    }
+  }
+  res.render('desk1/desk1dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
 })
 
 router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
@@ -235,7 +262,7 @@ router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
     });
   })
   var complaints = [];
-  var userinfo = []
+  var userinfo = [];
   for(var i=0;i<complaint_types.length;i++){
     await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 2).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -243,13 +270,30 @@ router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
       })
     })
   }
+  var approved=0,pending=0,rejected=0;
   for(var i=0;i<complaints.length;i++){
     await db.collection("users").doc(complaints[i].UID).get().then((userData) => {
       userinfo.push(userData.data());
     })
+    pending++;
   }
-  signedin_user_info = req.session.user
-  res.render('desk2/desk2dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints});
+  var signedin_user_info = req.session.user;
+  var user_email = req.session.user.idToken.payload.email;
+  var complaints_resolved = [];
+  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      complaints_resolved = doc.data().complaints_resolved;
+    });
+  })
+  for(var i=0;i<complaints_resolved.length;i++){
+    if(complaints_resolved[i].status == "Approved"){
+      approved++;
+    }
+    else{
+      rejected++;
+    }
+  }
+  res.render('desk2/desk2dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
 })
 
 router.get('/approveComplaintDesk1/', async (req,res)=>{
@@ -265,6 +309,19 @@ router.get('/approveComplaintDesk1/', async (req,res)=>{
   })
   console.log(user_id);
   addComment(complaint_id,user_id,"Initial processing of complaint done.");
+  await db.collection('users').doc(user_id).update({
+      complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id,
+          time: admin.firestore.Timestamp.fromDate(new Date()),
+          status: "Approved"
+      })
+  }).then(ref => {
+      console.log('Added comaplaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+
+  });
+  console.log("Hello");
   return res.redirect('/Desk1Dashboard');
 });
 
@@ -279,6 +336,19 @@ router.get('/approveComplaintDesk2/', async (req,res)=>{
     })
   })
   addComment(complaint_id,user_id,"Complaint has been processed and resolved.");
+  console.log(complaint_id);
+  console.log(user_id);
+  await db.collection('users').doc(user_id).update({
+      complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id,
+          time: admin.firestore.Timestamp.fromDate(new Date()),
+          status: "Approved"
+      })
+  }).then(ref => {
+      console.log('Added comaplaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
   return res.redirect('/Desk2Dashboard');
 });
 
@@ -308,7 +378,7 @@ function approveComplaintDesk1(cid)
 
 function approveComplaintDesk2(cid)
 {
-  db.collection("complaints").doc(cid).update({status: "Approved"});
+  db.collection("complaints").doc(cid).update({current_desk: 3, status: "Approved"});
 }
 
 function rejectComplaint(cid)
@@ -316,9 +386,9 @@ function rejectComplaint(cid)
   db.collection("complaints").doc(cid).update({status: "Rejected"});
 }
 
-function addComment(cid,uid,comment)
+async function addComment(cid,uid,comment)
 {
-    db.collection('complaints').doc(cid).update({
+    await db.collection('complaints').doc(cid).update({
         comments: admin.firestore.FieldValue.arrayUnion({
             uid: uid,
             time: admin.firestore.Timestamp.fromDate(new Date()),
