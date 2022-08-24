@@ -20,4 +20,13 @@ function isDesk2(req, res, next) {
     res.redirect('/Login');
 }
 
-module.exports ={isUser,isDesk1,isDesk2};
+function isStaff(req, res, next) {
+    if (req.session.user.idToken.payload['custom:role']=='desk2' || req.session.user.idToken.payload['custom:role']=='desk1') {
+        return next();
+    }
+    res.redirect('/Login');
+}
+
+
+
+module.exports ={isUser,isDesk1,isDesk2, isStaff};
