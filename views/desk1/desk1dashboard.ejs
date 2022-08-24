@@ -196,12 +196,12 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"> <%=userData.Name%></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"> <%=signedin_user_info.idToken.payload.name%></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><%=userData.Name%></h6>
+              <h6><%=signedin_user_info.idToken.payload.name%></h6>
 
             </li>
             <li>
@@ -457,8 +457,8 @@
                     <tbody>
                         <%for(var i =0;i < complaints.length;i++){%>
                       <tr>
-                        <th scope="row"><a href="#"><%=complaints[i].cid.slice(0,4)%>...</a></th>
-                        <td><%=userData.Name%></td>
+                        <th scope="row"><a href="#"></a></th>
+                        <td><%=userinfo[i].Name%></td>
                         <td><%=complaints[i].type%></td>
 
                         <%const dateObject = new Date(complaints[i].Time["_seconds"]*1000)%>
@@ -467,7 +467,7 @@
                         <%const year = dateObject.getFullYear();%>
                         <td><%=`${date}-${month}-${year}`%></td>
                         <td><span class="badge bg-danger"><%=complaints[i].status%></span></td>
-                        <td><a href="/GetFullComplaint?cid=<%=complaints[i].cid%>" class="btn btn-primary btn-sm" >View Complaint   </a></td>
+                        <td><a href="/GetFullComplaintAdmin1?cid=<%=complaints[i].id%>" class="btn btn-primary btn-sm" >View Complaint   </a></td>
                       </tr>
                       <%}%>
                      </tbody>

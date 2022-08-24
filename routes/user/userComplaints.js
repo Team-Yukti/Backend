@@ -38,7 +38,8 @@ router.post('/LodgeComplaint', (req, res) => {
           ComplaintSummary: complaint_summary,
           DocName:req.body.docs,
           Idproof:req.body.Idproof,
-          current_desk: 1
+          current_desk: 1,
+          status: "Pending"
       }
       console.log(complaintData);
 

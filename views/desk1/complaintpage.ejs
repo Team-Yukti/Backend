@@ -767,43 +767,43 @@
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-3 col-form-label">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=UserData.idToken.payload.name%>" class="form-control" readonly>
+                    <input type="text" value="<%=EndUserData.Name%>" class="form-control" readonly>
                   </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.gender%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Gender%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:age']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Age%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.address['formatted']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Address%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                       <label for="inputText" class="col-sm-3 col-form-label">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=UserData.idToken.payload['custom:city']%>" class="form-control" readonly>
+                        <input type="text" value="<%=EndUserData.City%>" class="form-control" readonly>
                       </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:state']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.State%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.phone_number%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Phone%>" class="form-control" readonly>
                     </div>
                   </div>
                   <%const dateObject = new Date(complaint.Time["_seconds"]*1000)%>
@@ -824,11 +824,25 @@
                     </textarea>
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Summary</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control"  style="height: 100px" readonly>
+                        <%=complaint.ComplaintSummary%>
+                    </textarea>
+                  </div>
+                </div>
 
                 <div class="row mb-3">
                   <label class="col-sm-5 col-form-label"></label>
                   <div class="col-sm-7">
-                    <button type="submit" class="btn btn-primary">Next</button>
+                    <a href="/approveComplaintDesk1?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Approve</button></a>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-5 col-form-label"></label>
+                  <div class="col-sm-7">
+                    <a href="/rejectComplaint?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Reject</button></a>
                   </div>
                 </div>
 
