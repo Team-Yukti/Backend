@@ -33,27 +33,13 @@
 
 <body>
 
-  <!--Start of Tawk.to Script-->
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6305f3ee54f06e12d8907185/1gb7k1oaj';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-  <!--End of Tawk.to Script-->
-
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="/UserDashbord" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-block">Yukti</span>
+        <span class="d-none d-lg-block">Yukti</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -728,22 +714,6 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/UserComplaints">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Lodge Complaint</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/EditUserProfile">
-          <i class="bi bi-pencil-square"></i>
-          <span>Edit Profile</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" href="/ChangePassword">
           <i class="bi bi-file-earmark-lock"></i>
           <span>Change Password</span>
@@ -758,10 +728,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Form Elements</h1>
+      <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Dashboard/Complaint Page</a></li>
+          <li class="breadcrumb-item"><a href="/Desk1Dashboard">Dashboard</a></li>
+          <li class="breadcrumb-item active">View Complaint</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -779,43 +750,43 @@
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-3 col-form-label">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=UserData.idToken.payload.name%>" class="form-control" readonly>
+                    <input type="text" value="<%=EndUserData.Name%>" class="form-control" readonly>
                   </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.gender%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Gender%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:age']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Age%>" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.address['formatted']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Address%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                       <label for="inputText" class="col-sm-3 col-form-label">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=UserData.idToken.payload['custom:city']%>" class="form-control" readonly>
+                        <input type="text" value="<%=EndUserData.City%>" class="form-control" readonly>
                       </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:state']%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.State%>" class="form-control" readonly>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.phone_number%>" class="form-control" readonly>
+                      <input type="text" value="<%=EndUserData.Phone%>" class="form-control" readonly>
                     </div>
                   </div>
                   <%const dateObject = new Date(complaint.Time["_seconds"]*1000)%>
@@ -836,13 +807,27 @@
                     </textarea>
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Summary</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control"  style="height: 100px" readonly>
+                        <%=complaint.ComplaintSummary%>
+                    </textarea>
+                  </div>
+                </div>
 
-                <!-- <div class="row mb-3">
+                <div class="row mb-3">
                   <label class="col-sm-5 col-form-label"></label>
                   <div class="col-sm-7">
-                    <button type="submit" class="btn btn-primary">Next</button>
+                    <a href="/approveComplaintDesk1?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Approve</button></a>
                   </div>
-                </div> -->
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-5 col-form-label"></label>
+                  <div class="col-sm-7">
+                    <a href="/rejectComplaint?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Reject</button></a>
+                  </div>
+                </div>
 
               </form><!-- End General Form Elements -->
 

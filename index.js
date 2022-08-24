@@ -46,9 +46,9 @@ app.get('/', (req, res) => {
     }
 })
 
-app.get('/Home',checkRole.isUser, (req, res) => {
-    res.render('auth/home');
-})
+// app.get('/Home',checkRole.isUser, (req, res) => {
+//     res.render('auth/home');
+// })
 app.get('/Login', (req, res) => {
     res.render('auth/login');
 })
@@ -78,7 +78,7 @@ app.get('/ConfirmPassword', (req, res) => {
     res.render('auth/confirmPassword', {email: req.query.email});
 })
 app.get('/ForgotPassword', (req, res) => {
-    res.render('auth/forgotPassword', {email: req.query.email});
+    res.render('auth/forgotPassword', {userData:req.session.user});
 })
 
 app.get('/Logout',(req,res)=>{
@@ -92,5 +92,9 @@ app.get('/EditUserProfile',isLoggedIn, (req, res) => {
 app.get('/EditUserProfile-Error',isLoggedIn, (req, res) => {
     res.render('user/editProfile_error',{userData:req.session.user});
 })
+app.get('/ChangeUserPassword',isLoggedIn, (req, res) => {
+    res.render('user/changePassword',{userData:req.session.user});
+}),
+
 
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});

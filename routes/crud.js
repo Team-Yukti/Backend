@@ -45,8 +45,8 @@ function insertItem(json, collection, doc) {
 
 
 //check is first time login
-function checkFirstTimeLogin(json, uid) {
-    db.collection('users').doc(uid).get()
+async function checkFirstTimeLogin(json, uid) {
+    await db.collection('users').doc(uid).get()
         .then(doc => {
             if (!doc.exists) {
                 console.log("first time login");
@@ -85,33 +85,32 @@ function getAllComplaints(cid) {
     });
 }
 
-function getComplaintTypes(ministry){
-  db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
+async function getComplaintTypes(ministry){
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     var complaints_types = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         const data = doc.data().complaint_types;
         for(var i=0;i<data.length;i++)
           complaints_types.push(data[i]);
     });
+    console.log(complaints_types);
     return complaints_types;
   })
 }
 
-
 router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
     var jsonData = {}
-        var user = req.session.user;
     await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
         jsonData = querySnapshot.data();
-
     });
+    var uid = jsonData.UID;
+    var user = req.session.user;
     for (var i = 0; i < jsonData.comments.length; i++) {
         await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
             jsonData.comments[i]["uid"] = userdata.data().Name;
         })
     }
-    // console.log(jsonData);
     res.render('user/complaintpage', {
         complaint: jsonData,
         cid: req.query.cid,
@@ -120,58 +119,251 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
 
 })
 
+router.get('/GetFullComplaintAdmin1', isLoggedIn, async(req,res) => {
+  var jsonData = {}
+  await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
+    console.log(querySnapshot.id);
+    jsonData = {...querySnapshot.data(), id: querySnapshot.id};
+  })
+  var user = req.session.user;
+  var enduser;
+  for (var i = 0; i < jsonData.comments.length; i++) {
+      await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
+          jsonData.comments[i]["uid"] = userdata.data().Name;
+      })
+  }
+  await db.collection("users").doc(jsonData.UID).get().then((userData) => {
+    enduser = userData.data();
+  })
+  console.log(jsonData);
+  res.render('desk1/complaintpage', {
+      complaint: jsonData,
+      cid: req.query.cid,
+      UserData: user,
+      EndUserData: enduser
+  });
+})
+
+router.get('/GetFullComplaintAdmin2', isLoggedIn, async(req,res) => {
+  var jsonData = {}
+  await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
+    console.log(querySnapshot.id);
+    jsonData = {...querySnapshot.data(), id: querySnapshot.id};
+  })
+  var user = req.session.user;
+  var enduser;
+  for (var i = 0; i < jsonData.comments.length; i++) {
+      await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
+          jsonData.comments[i]["uid"] = userdata.data().Name;
+      })
+  }
+  await db.collection("users").doc(jsonData.UID).get().then((userData) => {
+    enduser = userData.data();
+  })
+  console.log(jsonData);
+  res.render('desk2/complaintpage', {
+      complaint: jsonData,
+      cid: req.query.cid,
+      UserData: user,
+      EndUserData: enduser
+  });
+})
+
 router.get('/Dashboard', isLoggedIn, async (req,res)=>{
   var complaint_ids;
   var userinfo;
   await db.collection("users").doc(req.session.user.idToken.payload.sub).get().then((doc) => {
-    
-
         console.log(doc.data());
         complaint_ids=doc.data().complaints;
         userinfo = doc.data();
 
   });
 
-//   console.log(complaint_ids);
+  var approved=0, rejected=0, pending=0;
 
   var complaints = [];
   for(var i=0;i<complaint_ids.length;i++){
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
         var tpjson = querySnapshot.data();
         tpjson["cid"]=complaint_ids[i];
+        if(tpjson.status == "Approved"){
+          approved++;
+        }
+        else if(tpjson.status == "Rejected"){
+          rejected++;
+        }
+        else {
+          pending++;
+        }
         complaints.push(tpjson);
     });
-    
+
   }
-//   console.log(complaints);
-  res.render('user/dashboard',{userData:userinfo,complaints:complaints});
+  res.render('user/dashboard',{userData:userinfo,complaints:complaints,
+                               approved:approved,pending:pending,
+                               rejected: rejected});
 })
 
-router.get('/GetDesk1Complaints', isLoggedIn, async (req,res)=>{
+router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
-  console.log(ministry);
-  complaint_types = await getComplaintTypes(ministry);
-  console.log(complaint_types);
-  db.collection("complaints").where("type", "in", complaint_types).where("current_desk", "==", 1).get().then((querySnapshot) => {
-    var complaints = [];
+  var complaint_types = []
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        complaints.push(doc.data());
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaint_types.push(data[i]);
     });
-    return res.status(200).send({"complaints": complaints});
-  });
+  })
+  var complaints = [];
+  var userinfo = [];
+  for(var i=0;i<complaint_types.length;i++){
+    await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 1).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        complaints.push({...doc.data(), id: doc.id});
+      })
+    })
+  }
+  var approved=0,pending=0,rejected=0;
+  for(var i=0;i<complaints.length;i++){
+    await db.collection("users").doc(complaints[i].UID).get().then((userData) => {
+      userinfo.push(userData.data());
+    })
+    pending++;
+  }
+  console.log(complaints);
+  var signedin_user_info = req.session.user;
+  var user_email = req.session.user.idToken.payload.email;
+  var complaints_resolved = [];
+  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      complaints_resolved = doc.data().complaints_resolved;
+    });
+  })
+  console.log(complaints_resolved);
+  for(var i=0;i<complaints_resolved.length;i++){
+    if(complaints_resolved[i].status == "Approved"){
+      approved++;
+    }
+    else{
+      rejected++;
+    }
+  }
+  res.render('desk1/desk1dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
 })
 
-router.get('/GetDesk2Complaints', (req,res)=>{
-  const type = req.body.type;
-  console.log(type);
-  db.collection("complaints").where("type", "==", type).where("current_desk", "==", 2).get().then((querySnapshot) => {
-    var complaints = [];
+router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
+  const ministry = req.session.user.idToken.payload['custom:ministry'];
+  var complaint_types = []
+  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        complaints.push(doc.data());
-        console.log(doc.id, " => ", doc.data());
+        const data = doc.data().complaint_types;
+        for(var i=0;i<data.length;i++)
+          complaint_types.push(data[i]);
     });
-    return res.status(200).send({"complaints": complaints});
+  })
+  var complaints = [];
+  var userinfo = [];
+  for(var i=0;i<complaint_types.length;i++){
+    await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", 2).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        complaints.push({...doc.data(), id: doc.id});
+      })
+    })
+  }
+  var approved=0,pending=0,rejected=0;
+  for(var i=0;i<complaints.length;i++){
+    await db.collection("users").doc(complaints[i].UID).get().then((userData) => {
+      userinfo.push(userData.data());
+    })
+    pending++;
+  }
+  var signedin_user_info = req.session.user;
+  var user_email = req.session.user.idToken.payload.email;
+  var complaints_resolved = [];
+  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      complaints_resolved = doc.data().complaints_resolved;
+    });
+  })
+  for(var i=0;i<complaints_resolved.length;i++){
+    if(complaints_resolved[i].status == "Approved"){
+      approved++;
+    }
+    else{
+      rejected++;
+    }
+  }
+  res.render('desk2/desk2dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
+})
+
+router.get('/approveComplaintDesk1/', async (req,res)=>{
+  var complaint_id = req.query.cid;
+  approveComplaintDesk1(complaint_id);
+  var user_id;
+  var email = req.session.user.idToken.payload.email;
+  console.log(email);
+  await db.collection("users").where("Email", "==", email).get().then((userData) => {
+    userData.forEach((doc) => {
+      user_id = doc.id;
+    })
+  })
+  console.log(user_id);
+  addComment(complaint_id,user_id,"Initial processing of complaint done.");
+  await db.collection('users').doc(user_id).update({
+      complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id,
+          time: admin.firestore.Timestamp.fromDate(new Date()),
+          status: "Approved"
+      })
+  }).then(ref => {
+      console.log('Added comaplaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+
   });
+  console.log("Hello");
+  return res.redirect('/Desk1Dashboard');
+});
+
+router.get('/approveComplaintDesk2/', async (req,res)=>{
+  var complaint_id = req.query.cid;
+  approveComplaintDesk2(complaint_id);
+  var user_id;
+  var email = req.session.user.idToken.payload.email;
+  await db.collection("users").where("Email", "==", email).get().then((userData) => {
+    userData.forEach((doc) => {
+      user_id = doc.id;
+    })
+  })
+  addComment(complaint_id,user_id,"Complaint has been processed and resolved.");
+  console.log(complaint_id);
+  console.log(user_id);
+  await db.collection('users').doc(user_id).update({
+      complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id,
+          time: admin.firestore.Timestamp.fromDate(new Date()),
+          status: "Approved"
+      })
+  }).then(ref => {
+      console.log('Added comaplaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
+  return res.redirect('/Desk2Dashboard');
+});
+
+router.get('/rejectComplaint/', async (req,res)=>{
+  var complaint_id = req.query.cid;
+  rejectComplaint(complaint_id);
+  var user_id;
+  var email = req.session.user.idToken.payload.email;
+  await db.collection("users").where("Email", "==", email).get().then((userData) => {
+    userData.forEach((doc) => {
+      user_id = doc.id;
+    })
+  })
+  addComment(complaint_id,user_id,"Complaint has been rejected due to certain reasons.");
+  return res.redirect('/Desk1Dashboard');
 })
 
 function updateComplaint(cid, data)
@@ -179,14 +371,24 @@ function updateComplaint(cid, data)
   db.collection("complaints").doc(cid).update(data);
 }
 
-function approveComplaint(cid)
+function approveComplaintDesk1(cid)
 {
   db.collection("complaints").doc(cid).update({current_desk: 2});
 }
 
-function addComment(cid,uid,comment)
+function approveComplaintDesk2(cid)
 {
-    db.collection('complaints').doc(cid).update({
+  db.collection("complaints").doc(cid).update({current_desk: 3, status: "Approved"});
+}
+
+function rejectComplaint(cid)
+{
+  db.collection("complaints").doc(cid).update({status: "Rejected"});
+}
+
+async function addComment(cid,uid,comment)
+{
+    await db.collection('complaints').doc(cid).update({
         comments: admin.firestore.FieldValue.arrayUnion({
             uid: uid,
             time: admin.firestore.Timestamp.fromDate(new Date()),
@@ -219,5 +421,7 @@ module.exports = {
     getAllComplaints: getAllComplaints,
     addComment: addComment,
     updateComplaint: updateComplaint,
-    approveComplaint: approveComplaint
+    approveComplaintDesk1: approveComplaintDesk1,
+    approveComplaintDesk2: approveComplaintDesk2,
+    rejectComplaint: rejectComplaint
 };
