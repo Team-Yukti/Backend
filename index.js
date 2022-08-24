@@ -33,6 +33,8 @@ app.use('/', require('./routes/desk1/desk1complaints'));
 app.use('/', require('./routes/desk2/desk2complaints'));
 app.use('/', require('./routes/crud.js').router);
 app.use('/', require('./routes/superadmin/handleusers'));
+app.use('/', require('./routes/uploadFiles').router);
+
 
 
 

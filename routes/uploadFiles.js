@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
+const { get } = require('express/lib/response');
 
 
 const s3 = new AWS.S3({
@@ -27,16 +28,31 @@ function uploadFilestoS3(file) {
     });
 }
 function getobject(){
+   }
+
+router.get('/getObject',(req,res)=>{
     var s3 = new AWS.S3();
     var params = {
         Bucket: 'complaint-bucket-sih',
-        Key:'post05.png'
+        Key:'aditya.jpeg'
     };
-    s3.getObject(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
+    s3.getObject(params, (err, rest) => {
+        if (err) throw err;
+    
+        const b64 = Buffer.from(rest.Body).toString('base64');
+       
+        const mimeType = 'image/png'; // e.g., image/png
+        
+        res.send(`<img src="data:${mimeType};base64,${b64}" />`);
       });
-}
+    
+})
 
-// getobject()
-module.exports = {uploadFilestoS3};
+ 
+getobject()
+
+
+module.exports = {
+    router:router,
+    uploadFilestoS3:uploadFilestoS3
+};
