@@ -170,7 +170,7 @@ router.get('/GetFullComplaintAdmin2', userRole.isDesk2, async(req,res) => {
   });
 })
 
-router.get('/Dashboard', isLoggedIn, async (req,res)=>{
+router.get('/Dashboard', userRole.isUser, async (req,res)=>{
   var complaint_ids;
   var userinfo;
   await db.collection("users").doc(req.session.user.idToken.payload.sub).get().then((doc) => {

@@ -94,7 +94,10 @@ app.get('/EditUserProfile-Error',userRole.isUser, (req, res) => {
 })
 app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
     res.render('user/changePassword',{userData:req.session.user});
-}),
+})
 
+app.get('/LodgeComplaint', (req, res) => {
+    res.render('user/lodgeComplaint');
+})
 
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});

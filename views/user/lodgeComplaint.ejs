@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><%=userData.idToken.payload.name%> Profile</title>
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -28,40 +28,43 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body>
-
-  <!--Start of Tawk.to Script-->
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6305f3ee54f06e12d8907185/1gb7k1oaj';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
-  <!--End of Tawk.to Script-->
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/UserDashbord" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-block">Yukti</span>
+        <span class="d-none d-lg-block">NiceAdmin</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
 
         <li class="nav-item dropdown">
 
@@ -208,24 +211,20 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">
-              <%=userData.idToken.payload.name%>
-            </span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>
-                <%=userData.idToken.payload.name%>
-              </h6>
-
+              <h6>Kevin Anderson</h6>
+              <span>Web Designer</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="">
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -235,11 +234,27 @@
             </li>
 
             <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/Logout">
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -259,201 +274,141 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/Dashboard">
+        <a class="nav-link " href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/UserComplaints">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Lodge Complaint</span>
+        <a class="nav-link " href="index.html">
+          <i class="bi bi-grid"></i>
+          <span>Lodge Public Grivences</span>
         </a>
-      </li><!-- End Login Page Nav -->
+      </li>
+
       <li class="nav-item">
-        <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>My Account</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/ViewProfile">
-              <i class="bi bi-circle"></i><span>View Profile</span>
+            <a href="components-alerts.html">
+              <i class="bi bi-circle"></i><span>Account Activity</span>
             </a>
           </li>
           <li>
-            <a href="/EditUserProfile" class="active">
+            <a href="components-accordion.html">
+              <i class="bi bi-circle"></i><span>View All Complaints</span>
+            </a>
+          </li>
+          <li>
+            <a href="components-badges.html">
               <i class="bi bi-circle"></i><span>Edit Profile</span>
             </a>
           </li>
           <li>
-            <a href="/ChangePassword">
+            <a href="components-editprofile.html">
               <i class="bi bi-circle"></i><span>Change Password</span>
             </a>
           </li>
           
         </ul>
       </li><!-- End Components Nav -->
+
+
+      <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.html">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-faq.html">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-contact.html">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+    
+
+
+
+
     </ul>
 
   </aside><!-- End Sidebar-->
 
-
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit Profile</h1>
+      <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="/Dashboard">My Account</a></li>
-          <li class="breadcrumb-item active"><%=userData.idToken.payload.name%>'s Profile</li>
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Lodge Public Grivences</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-<section class="section">
-    <div class="row">
-      <div class="col-lg-12">
-
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Edit Profile</h5>
-
-            <!-- General Form Elements -->
-            <form class="row g-3 needs-validation" action="/EditUser" method="post" novalidate>
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label"> Full Name</label>
-                <div class="col-sm-10">
-                  <input type="text" name="Name" id="" placeholder="Name" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Name!</div>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputEmail" class="col-sm-2 col-form-label">Age</label>
-                <div class="col-sm-10">
-                  <input type="text" name="Age" id="" placeholder="Age" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Age!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Gender</label>
-                <div class="col-sm-10">
-                  <select name="Gender"  class="form-select" aria-label="Default select example" required>
-                    <option selected value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <div class="invalid-feedback">Please enter your Gender!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
-                <div class="col-sm-10">
-                  <textarea name="Address" id="" placeholder="Address" class="form-control" style="height: 100px" required></textarea>
-                  <div class="invalid-feedback">Please enter your Address!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">City/Town</label>
-                <div class="col-sm-10">
-                  <input type="text" name="City" id="" placeholder="" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your City/Town!</div>
-                </div>
-              </div>
-            
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">State</label>
-                <div class="col-sm-10">
-                  <input type="text" name="State" id=""placeholder="State" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your State!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Country</label>
-                <div class="col-sm-10">
-                  <input type="text" name="Country" id=""placeholder="Country" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Country!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Pin Code</label>
-                <div class="col-sm-10">
-                  <input type="text" name="Pincode" id=""placeholder="Pincode" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your valid Mobile Number!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Aadhar Number</label>
-                <div class="col-sm-10">
-                  <input type="number" name="Aadhar" id=""placeholder="Aadhar" class="form-control" required>
-                  <div class="invalid-feedback">Please enter your Aadhar Number!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Mobile Number</label>
-                <div class="col-sm-10">
-                  <input type="tel" name="Mobile" id="mob" placeholder="+910000000000" class="form-control" required>
-                  <label id="moblabel" for="yourMobile" class="form-label" style="color: red;">Invalid Mobile Number. (Include country code)</label>
-                  <div class="invalid-feedback">Please enter your Mobile Number!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                  <input type="text" name="Email" id="" placeholder="Email" class="form-control"required>
-                  <div class="invalid-feedback">Please enter your Email id!</div>
-                </div>
-              </div>
- 
-              <div class="row mb-3">
-                <div class="col-sm-10">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </div>
-            </form><!-- End General Form Elements -->
-
-          </div>
-        </div>
-
+      <section class="section">
         
-      </div>
-      <div class="col-lg-6">
-
-        <!-- <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Advanced Form Elements</h5>
+  
+        <div class="iconslist">
+          <div class="icon">
+            <i> <img src="assets/img/deabd.png" alt=""></i>
+            <div class="card-title">Financial Services (Banking Division)</div>
           </div>
+          <div class="icon">
+            <i> <img src="assets/img/molbr.png" alt=""></i>
+            <div class="card-title">Labour and Employment</div>
           </div>
-        </div> -->
-    
-
-  </section>
-  <script>
-    var myInput3 = document.getElementById("mob");
-    var label2 = document.getElementById("moblabel");
-    myInput3.onkeyup = function () {
-
-        // Validate length
-        if (myInput3.value.length == 13 && myInput3.value.charAt(0) == '+') {
-            label2.style.display = "none";
-            document.getElementById("submitBtn").disabled = false;
-        } else {
-            label2.style.display = "block";
-            document.getElementById("submitBtn").disabled = true;
-        }
-    }
-</script>
-    
+          <div class="icon">
+            <i> <img src="assets/img/cbodt.png" alt=""></i>
+            <div class="card-title">Central Board of Direct Taxes (Income Tax)</div>
+          </div>
+          <div class="icon">
+            <i> <img src="assets/img/dpost.png" alt=""></i>
+            <div class="card-title">Posts</div>
+          </div>
+          <div class="icon">
+            <i> <img src="assets/img/dotel.png" alt=""></i>
+            <div class="card-title">Telecommunications</div>
+          </div>
+          <div class="icon">
+            <i> <img src="assets/img/minha.png" alt=""></i>
+            <div class="card-title">Home Affairs</div>
+          </div>
+          <div class="icon">
+            <i> <img src="assets/img/dourd.png" alt=""></i>
+            <div class="card-title">Personnel and Training</div>
+          </div>
+          <div class="icon">
+            <i> <img src="assets/img/dopat.png" alt=""></i>
+            <div class="card-title">Health & Family Welfare</div>
+          </div>
+          <div class="icon">
+            <i  > <img src="assets/img/dhlth.png" alt=""></i>
+            <div class="card-title">Financial Services (Insurance Division)</div>
+          </div>
+          <div class="icon">
+            <i  > <img src="assets/img/deaid.png" alt=""></i>
+            <div class="card-title">Housing and Urban Affairs</div>
+          </div>
+  
+        </div>
+  
+      </section>
 
   </main><!-- End #main -->
 
