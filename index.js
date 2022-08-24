@@ -37,7 +37,11 @@ app.use('/', require('./routes/superadmin/handleusers'));
 
 
 app.get('/', (req, res) => {
-    res.json({"hello": "world"});
+    if(req.session.user!=null){
+        res.redirect('/Dashboard')
+    }else{
+        res.render('index')
+    }
 })
 
 app.get('/Home',checkRole.isUser, (req, res) => {
@@ -79,4 +83,12 @@ app.get('/Logout',(req,res)=>{
      req.session.destroy();
      res.redirect('/Login');
 })
+
+app.get('/EditUserProfile',isLoggedIn, (req, res) => {
+    res.render('user/editProfile',{userData:req.session.user});
+})
+app.get('/EditUserProfile-Error',isLoggedIn, (req, res) => {
+    res.render('user/editProfile_error',{userData:req.session.user});
+})
+
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});

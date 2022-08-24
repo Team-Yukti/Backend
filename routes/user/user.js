@@ -2,14 +2,9 @@ const express = require('express');
 const isLoggedIn = require('../../middleware');
 const router = express.Router();
 
-router.get('/GetUserProfile',isLoggedIn, (req, res) => {
-    var ProfileAttributes = {
-        "Name":req.session.user.idToken.payload.name,
-        "Email":req.session.user.idToken.payload.email,
-        "Phone":req.session.user.idToken.payload.phone_number,
-        "Addhar":req.session.user.idToken.payload.preferred_username,
-    };
-    res.json(ProfileAttributes);
+router.get('/ViewProfile',isLoggedIn,(req,res)=>{
+    // console.log(req.session.user.idToken);
+    res.render('user/viewprofile',{userData:req.session.user.idToken})
 })
 
 router.post('/UpdateUserProfile',isLoggedIn, (req, res) => {
