@@ -320,7 +320,8 @@
             <h5 class="card-title">General Form Elements</h5>
 
             <!-- General Form Elements -->
-            <form action="/LodgeComplaint" method="post">
+            <form action="/LodgeComplaint" class="needs-validation" method="post" novalidate>
+              <input type="text" name="ministry" value="<%=ministry%>" hidden>
               <div class="row mb-3">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Complaint</label>
                 <div class="col-sm-10">
@@ -341,11 +342,13 @@
                   <label class="form-label">Complaint Type</label>
 
                       <select name="type" class="form-select"
-                          aria-label="Default select example">
-                          <option selected> Select Complaint Type</option>
-                          <option value="1">Salary</option>
-                          <option value="2">Pension</option>
+                          aria-label="Default select example" required>
+                          <option selected value=""> Select Complaint Type</option>
+                          <%for(var i=0;i< subType.length;i++){%>
+                            <option value="<%=subType[i]%>"> <%=subType[i]%> </option>
+                            <%}%>
                       </select>
+                      <div class="invalid-feedback">Please enter complaint type</div>
 
               </div>
 

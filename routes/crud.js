@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var admin = require('firebase-admin');
 const isLoggedIn = require('../middleware');
+const userRole = require('../isUser');
 
 const {
     initializeApp,
@@ -132,7 +133,7 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
 
 })
 
-router.get('/GetFullComplaintAdmin1', isLoggedIn, async(req,res) => {
+router.get('/GetFullComplaintAdmin1', userRole.isDesk1, async(req,res) => {
   var jsonData = {}
   await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
     console.log(querySnapshot.id);
@@ -157,7 +158,7 @@ router.get('/GetFullComplaintAdmin1', isLoggedIn, async(req,res) => {
   });
 })
 
-router.get('/GetFullComplaintAdmin2', isLoggedIn, async(req,res) => {
+router.get('/GetFullComplaintAdmin2', userRole.isDesk2, async(req,res) => {
   var jsonData = {}
   await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
     console.log(querySnapshot.id);
@@ -182,7 +183,7 @@ router.get('/GetFullComplaintAdmin2', isLoggedIn, async(req,res) => {
   });
 })
 
-router.get('/Dashboard', isLoggedIn, async (req,res)=>{
+router.get('/Dashboard', userRole.isUser, async (req,res)=>{
   var complaint_ids;
   var userinfo;
   var notifications = [];
@@ -219,7 +220,7 @@ router.get('/Dashboard', isLoggedIn, async (req,res)=>{
                                rejected: rejected, notifications: notifications});
 })
 
-router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
+router.get('/Desk1Dashboard', userRole.isDesk1, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
   var complaint_types = []
   await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
@@ -247,12 +248,12 @@ router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
   }
   console.log(complaints);
   var signedin_user_info = req.session.user;
-  var user_email = req.session.user.idToken.payload.email;
+  var userId = req.session.user.idToken.payload.sub;
   var complaints_resolved = [];
-  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
+  await db.collection("users").doc(userId).get().then((doc) => {
+
       complaints_resolved = doc.data().complaints_resolved;
-    });
+
   })
   console.log(complaints_resolved);
   for(var i=0;i<complaints_resolved.length;i++){
@@ -266,7 +267,7 @@ router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
   res.render('desk1/desk1dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
 })
 
-router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
+router.get('/Desk2Dashboard', userRole.isDesk2, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
   var complaint_types = []
   await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
@@ -293,9 +294,9 @@ router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
     pending++;
   }
   var signedin_user_info = req.session.user;
-  var user_email = req.session.user.idToken.payload.email;
+  var userId = req.session.user.idToken.payload.sub;
   var complaints_resolved = [];
-  await db.collection("users").where("Email", "==", user_email).get().then((querySnapshot) => {
+  await db.collection("users").doc(userId).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       complaints_resolved = doc.data().complaints_resolved;
     });
@@ -311,7 +312,7 @@ router.get('/Desk2Dashboard', isLoggedIn, async (req,res)=>{
   res.render('desk2/desk2dashboard',{signedin_user_info: signedin_user_info, userinfo: userinfo, complaints: complaints, approved: approved, rejected: rejected, pending: pending});
 })
 
-router.get('/approveComplaintDesk1/', async (req,res)=>{
+router.get('/approveComplaintDesk1/',userRole.isDesk1, async (req,res)=>{
   var complaint_id = req.query.cid;
   approveComplaintDesk1(complaint_id);
   var user_id;
@@ -354,16 +355,15 @@ router.get('/approveComplaintDesk1/', async (req,res)=>{
   return res.redirect('/Desk1Dashboard');
 });
 
-router.get('/approveComplaintDesk2/', async (req,res)=>{
+router.get('/approveComplaintDesk2/',userRole.isDesk1, async (req,res)=>{
   var complaint_id = req.query.cid;
   approveComplaintDesk2(complaint_id);
-  var user_id;
-  var email = req.session.user.idToken.payload.email;
-  await db.collection("users").where("Email", "==", email).get().then((userData) => {
-    userData.forEach((doc) => {
-      user_id = doc.id;
-    })
-  })
+  var user_id = req.session.user.idToken.payload.sub;
+  // await db.collection("users").where("Email", "==", email).get().then((userData) => {
+  //   userData.forEach((doc) => {
+  //     user_id = doc.id;
+  //   })
+  // })
   addComment(complaint_id,user_id,"Complaint has been processed and resolved.");
   console.log(complaint_id);
   console.log(user_id);
@@ -395,16 +395,15 @@ router.get('/approveComplaintDesk2/', async (req,res)=>{
   return res.redirect('/Desk2Dashboard');
 });
 
-router.get('/rejectComplaint/', async (req,res)=>{
+router.get('/rejectComplaint/',userRole.isStaff, async (req,res)=>{
   var complaint_id = req.query.cid;
   rejectComplaint(complaint_id);
-  var user_id;
-  var email = req.session.user.idToken.payload.email;
-  await db.collection("users").where("Email", "==", email).get().then((userData) => {
-    userData.forEach((doc) => {
-      user_id = doc.id;
-    })
-  })
+  var user_id = req.session.user.idToken.payload.sub;
+  // await db.collection("users").where("Email", "==", email).get().then((userData) => {
+  //   userData.forEach((doc) => {
+  //     user_id = doc.id;
+  //   })
+  // })
   addComment(complaint_id,user_id,"Complaint has been rejected due to certain reasons.");
   await db.collection('users').doc(user_id).update({
       complaints_resolved: admin.firestore.FieldValue.arrayUnion({
@@ -486,7 +485,18 @@ function getComments(cid) {
 }
 // getComments('34e0a738-9426-4efb-b721-bb7502fe96c01660976645775')
 
-
+router.get('/ComplaintRegistration', userRole.isUser, async (req, res) => {
+  var subType=[]
+  await db.collection("ministries").where("Name","==",req.query.ministry).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      subType = doc.data().complaint_types;
+    })
+  }).catch(err => {
+    console.log('Error getting document', err);
+  });
+  console.log(subType);
+  res.render('user/complaintRegistration',{ministry:req.query.ministry, userData:req.session.user, subType:subType});
+})
 
 module.exports = {
     router: router,
