@@ -8,7 +8,7 @@ const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
 const crud = require('./routes/crud.js');
-const checkRole = require('./isUser');
+const userRole = require('./isUser');
 
 
 const poolData = {
@@ -61,14 +61,14 @@ app.get('/AdminDashboard', (req, res) => {
 
 // "/UserDashbord" added in frontend
 
-app.get('/UserComplaints',isLoggedIn, (req, res) => {
-    res.render('user/complaintRegistration',{userData:req.session.user});
+app.get('/UserComplaints',userRole.isUser, (req, res) => {
+    res.render('user/lodgeComplaint',{userData:req.session.user});
 })
 
 app.get('/OnboardAdmin',isLoggedIn, (req,res) => {
     res.render('superadmin/onboard_admins');
 })
-app.get('/EditProfile',(req,res)=>{
+app.get('/EditProfile',userRole.isUser, (req,res)=>{
     res.render('user/editProfile')
 })
 app.get('/ConfirmOTP', (req, res) => {
@@ -81,20 +81,23 @@ app.get('/ForgotPassword', (req, res) => {
     res.render('auth/forgotPassword', {userData:req.session.user});
 })
 
-app.get('/Logout',(req,res)=>{
+app.get('/Logout',isLoggedIn, (req,res)=>{
      req.session.destroy();
      res.redirect('/Login');
 })
 
-app.get('/EditUserProfile',isLoggedIn, (req, res) => {
+app.get('/EditUserProfile',userRole.isUser, (req, res) => {
     res.render('user/editProfile',{userData:req.session.user});
 })
-app.get('/EditUserProfile-Error',isLoggedIn, (req, res) => {
+app.get('/EditUserProfile-Error',userRole.isUser, (req, res) => {
     res.render('user/editProfile_error',{userData:req.session.user});
 })
-app.get('/ChangeUserPassword',isLoggedIn, (req, res) => {
+app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
     res.render('user/changePassword',{userData:req.session.user});
-}),
+})
 
+app.get('/LodgeComplaint', (req, res) => {
+    res.render('user/lodgeComplaint');
+})
 
 app.listen(3000, function () { console.log('Example app listening on port 3000!');});
