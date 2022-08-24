@@ -44,9 +44,9 @@ app.get('/', (req, res) => {
     }
 })
 
-app.get('/Home',checkRole.isUser, (req, res) => {
-    res.render('auth/home');
-})
+// app.get('/Home',checkRole.isUser, (req, res) => {
+//     res.render('auth/home');
+// })
 app.get('/Login', (req, res) => {
     res.render('auth/login');
 })
