@@ -317,6 +317,10 @@ router.post('/ConfirmForgotPassword', (req, res) => {
         onSuccess: function (result) {
             console.log('Confirm Password Success => \n', result);
             res.redirect('/Login');
+        },
+        onFailure: function (err) {
+            console.log('Confirm Password Failure => \n', err);
+            res.send(err);
         }
     });
 })
@@ -346,7 +350,7 @@ router.get('/ChangePassword', isLoggedIn, (req, res) => {
     cognitoUser.forgotPassword({
         onSuccess: function (result) {
             console.log('Forgot Password Success => \n');
-            res.redirect('/ConfirmPassword?email=' + req.body.email);
+            res.redirect('/ChangeUserPassword');
         }
         ,
         onFailure: function (err) {
