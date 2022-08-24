@@ -48,6 +48,11 @@ router.post('/LodgeComplaint', (req, res) => {
           const file = req.files.docs
           const Idproofs = req.files.Idproof
           console.log(req.files.docs);
+          var filedata = file.data;
+          const b64 = Buffer.from(filedata).toString('base64');
+          const mimeType = 'image/png'; // e.g., image/png
+          console.log(`data:${mimeType};base64,${b64}`);
+
           upload.uploadFilestoS3(file)
           upload.uploadFilestoS3(Idproofs)
 
