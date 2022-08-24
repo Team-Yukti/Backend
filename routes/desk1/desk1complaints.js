@@ -11,19 +11,5 @@ router.post('/UpdateComplaint', (req,res)=>{
   return res.status(200).send({"message": "Success"});
 });
 
-// router.get('/approveComplaintDesk1/', (req,res)=>{
-//   var complaint_id = req.query.cid;
-//   crud.approveComplaintDesk1(complaint_id);
-//   var user_id;
-//
-//   crud.addComment(complaint_id,req.body.uid,"Initial processing of complaint done.");
-//   return res.redirect('/Desk1Dashboard');
-// });
-//
-// router.get('/rejectComplaint/', (req,res)=>{
-//   var complaint_id = req.query.cid;
-//   crud.rejectComplaint(complaint_id);
-//   return res.redirect('/Desk1Dashboard');
-// })
 
 module.exports = router;

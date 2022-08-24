@@ -104,8 +104,21 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
     await db.collection("complaints").doc(req.query.cid).get().then((querySnapshot) => {
         jsonData = querySnapshot.data();
     });
+    var cid = req.query.cid;
     var uid = jsonData.UID;
-    var user = req.session.user;
+    var user_id = req.session.user.idToken.payload.sub;
+    // userRef.update({
+    //     "userevents": firebase.firestore.FieldValue.arrayRemove({"eventid": ..., "date": ..., "desc":..., "status":...})
+    // });
+
+    await db.collection('users').doc(user_id).update({
+        notifications: admin.firestore.FieldValue.arrayRemove({"cid":cid})
+      }).then(ref => {
+        console.log('Removed complaint id from notification: ', ref.id);
+    }).catch(err => {
+        console.log('Error removing complaint id from notification: ', err);
+    });
+
     for (var i = 0; i < jsonData.comments.length; i++) {
         await db.collection("users").doc(jsonData.comments[i].uid).get().then((userdata) => {
             jsonData.comments[i]["uid"] = userdata.data().Name;
@@ -114,7 +127,7 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
     res.render('user/complaintpage', {
         complaint: jsonData,
         cid: req.query.cid,
-        UserData:user
+        UserData:req.session.user
     });
 
 })
@@ -172,11 +185,12 @@ router.get('/GetFullComplaintAdmin2', isLoggedIn, async(req,res) => {
 router.get('/Dashboard', isLoggedIn, async (req,res)=>{
   var complaint_ids;
   var userinfo;
+  var notifications = [];
   await db.collection("users").doc(req.session.user.idToken.payload.sub).get().then((doc) => {
         console.log(doc.data());
         complaint_ids=doc.data().complaints;
+        notifications=doc.data().notifications;
         userinfo = doc.data();
-
   });
 
   var approved=0, rejected=0, pending=0;
@@ -199,9 +213,10 @@ router.get('/Dashboard', isLoggedIn, async (req,res)=>{
     });
 
   }
+  console.log(notifications);
   res.render('user/dashboard',{userData:userinfo,complaints:complaints,
                                approved:approved,pending:pending,
-                               rejected: rejected});
+                               rejected: rejected, notifications: notifications});
 })
 
 router.get('/Desk1Dashboard', isLoggedIn, async (req,res)=>{
@@ -307,7 +322,7 @@ router.get('/approveComplaintDesk1/', async (req,res)=>{
       user_id = doc.id;
     })
   })
-  console.log(user_id);
+
   addComment(complaint_id,user_id,"Initial processing of complaint done.");
   await db.collection('users').doc(user_id).update({
       complaints_resolved: admin.firestore.FieldValue.arrayUnion({
@@ -321,7 +336,21 @@ router.get('/approveComplaintDesk1/', async (req,res)=>{
       console.log('Error adding complaint id: ', err);
 
   });
-  console.log("Hello");
+
+  var end_user_id;
+  await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
+    end_user_id = complaint.data().UID;
+  })
+  await db.collection('users').doc(end_user_id).update({
+      notifications: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id
+      })
+  }).then(ref => {
+      console.log('Added comaplaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
+
   return res.redirect('/Desk1Dashboard');
 });
 
@@ -345,7 +374,21 @@ router.get('/approveComplaintDesk2/', async (req,res)=>{
           status: "Approved"
       })
   }).then(ref => {
-      console.log('Added comaplaint id: ', ref.id);
+      console.log('Added complaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
+
+  var end_user_id;
+  await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
+    end_user_id = complaint.data().UID;
+  })
+  await db.collection('users').doc(end_user_id).update({
+      notifications: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id
+      })
+  }).then(ref => {
+      console.log('Added complaint id: ', ref.id);
   }).catch(err => {
       console.log('Error adding complaint id: ', err);
   });
@@ -363,7 +406,39 @@ router.get('/rejectComplaint/', async (req,res)=>{
     })
   })
   addComment(complaint_id,user_id,"Complaint has been rejected due to certain reasons.");
-  return res.redirect('/Desk1Dashboard');
+  await db.collection('users').doc(user_id).update({
+      complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id,
+          time: admin.firestore.Timestamp.fromDate(new Date()),
+          status: "Rejected"
+      })
+  }).then(ref => {
+      console.log('Added complaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
+
+  var end_user_id;
+  await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
+    end_user_id = complaint.data().UID;
+  })
+  await db.collection('users').doc(end_user_id).update({
+      notifications: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id
+      })
+  }).then(ref => {
+      console.log('Added complaint id: ', ref.id);
+  }).catch(err => {
+      console.log('Error adding complaint id: ', err);
+  });
+
+  var role = req.session.user.idToken.payload['custom:role'];
+
+  if(role == "desk1"){
+      return res.redirect('/Desk1Dashboard');
+  } else {
+      return res.redirect('/Desk2Dashboard');
+  }
 })
 
 function updateComplaint(cid, data)

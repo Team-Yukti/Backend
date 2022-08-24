@@ -48,9 +48,12 @@ router.post('/LodgeComplaint', (req, res) => {
           const file = req.files.docs
           const Idproofs = req.files.Idproof
           console.log(req.files.docs);
-          upload.uploadFilestoS3(file)
-          upload.uploadFilestoS3(Idproofs)
-
+          if(file){
+              upload.uploadFilestoS3(file)
+          }
+          if(Idproofs){
+              upload.uploadFilestoS3(Idproofs)
+          }
           const fileName = new Date().getTime().toString() + path.extname(file.name)
           if (file.truncated) {
             throw new Error('File size is too big...')
