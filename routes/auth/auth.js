@@ -107,7 +107,8 @@ router.post('/Login', async (req, res) => {
                     Name: result.idToken.payload.name,
                     Gender: result.idToken.payload.gender,
                     Role: result.idToken.payload["custom:role"],
-                    Ministry: result.idToken.payload["custom:ministry"]
+                    Ministry: result.idToken.payload["custom:ministry"],
+                    complaints_resolved: []
                 }
             }
 
