@@ -343,6 +343,10 @@ router.get('/Resendotp', (req, res) => {
 
 //Change password
 router.get('/ChangePassword', isLoggedIn, (req, res) => {
+    res.redirect('/ChangeUserPassword');
+})
+
+router.get('/SendOTP', (req, res) => {
     var userData = {
         Username: req.session.user.idToken.payload.email, // your username here
         Pool: userPool
@@ -351,7 +355,6 @@ router.get('/ChangePassword', isLoggedIn, (req, res) => {
     cognitoUser.forgotPassword({
         onSuccess: function (result) {
             console.log('Forgot Password Success => \n');
-            res.redirect('/ChangeUserPassword');
         }
         ,
         onFailure: function (err) {
@@ -360,7 +363,6 @@ router.get('/ChangePassword', isLoggedIn, (req, res) => {
         }
     });
 })
-
 
 router.post('/EditUser', isLoggedIn, async (req, res) => {
         const params = {
