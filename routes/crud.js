@@ -409,7 +409,18 @@ function getComments(cid) {
 }
 // getComments('34e0a738-9426-4efb-b721-bb7502fe96c01660976645775')
 
-
+router.get('/ComplaintRegistration', userRole.isUser, async (req, res) => {
+  var subType=[]
+  await db.collection("ministries").where("Name","==",req.query.ministry).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      subType = doc.data().complaint_types;
+    })
+  }).catch(err => {
+    console.log('Error getting document', err);
+  });
+  console.log(subType);
+  res.render('user/complaintRegistration',{ministry:req.query.ministry, userData:req.session.user, subType:subType});
+})
 
 module.exports = {
     router: router,

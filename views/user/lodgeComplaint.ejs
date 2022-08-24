@@ -15,7 +15,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,32 +41,38 @@
 
 <body>
 
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6305f3ee54f06e12d8907185/1gb7k1oaj';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
+    })();
+  </script>
+  <!--End of Tawk.to Script-->
+
+  <!-- ======= Header ======= -->
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="/Dashboard" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-block">Yukti</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
+
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
+
 
         <li class="nav-item dropdown">
 
@@ -211,20 +219,24 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">
+              <%=userData.idToken.payload.name%>
+            </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>
+                <%=userData.idToken.payload.name%>
+              </h6>
+
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -234,27 +246,11 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/Logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -274,77 +270,41 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link collapsed" href="/Dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
-          <i class="bi bi-grid"></i>
-          <span>Lodge Public Grivences</span>
+        <a class="nav-link" href="/UserComplaints">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Lodge Complaint</span>
         </a>
-      </li>
-
+      </li><!-- End Login Page Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide"></i><span>My Account</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="components-nav" class="nav-content collapse show " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Account Activity</span>
+            <a href="/ViewProfile">
+              <i class="bi bi-circle"></i><span>View Profile</span>
             </a>
           </li>
           <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>View All Complaints</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-badges.html">
+            <a href="/EditUserProfile">
               <i class="bi bi-circle"></i><span>Edit Profile</span>
             </a>
           </li>
           <li>
-            <a href="components-editprofile.html">
+            <a href="/ChangePassword">
               <i class="bi bi-circle"></i><span>Change Password</span>
             </a>
           </li>
-          
+
         </ul>
       </li><!-- End Components Nav -->
-
-
-      <li class="nav-heading">Pages</li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
-    
-
-
-
-
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -356,65 +316,86 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Lodge Public Grivences</li>
+          <li class="breadcrumb-item active">Lodge Complaint</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-      <section class="section">
-        
-  
-        <div class="iconslist">
-          <div class="icon">
-            <i> <img src="assets/img/deabd.png" alt=""></i>
-            <div class="card-title">Financial Services (Banking Division)</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/molbr.png" alt=""></i>
-            <div class="card-title">Labour and Employment</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/cbodt.png" alt=""></i>
-            <div class="card-title">Central Board of Direct Taxes (Income Tax)</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/dpost.png" alt=""></i>
-            <div class="card-title">Posts</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/dotel.png" alt=""></i>
-            <div class="card-title">Telecommunications</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/minha.png" alt=""></i>
-            <div class="card-title">Home Affairs</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/dourd.png" alt=""></i>
-            <div class="card-title">Personnel and Training</div>
-          </div>
-          <div class="icon">
-            <i> <img src="assets/img/dopat.png" alt=""></i>
-            <div class="card-title">Health & Family Welfare</div>
-          </div>
-          <div class="icon">
-            <i  > <img src="assets/img/dhlth.png" alt=""></i>
-            <div class="card-title">Financial Services (Insurance Division)</div>
-          </div>
-          <div class="icon">
-            <i  > <img src="assets/img/deaid.png" alt=""></i>
-            <div class="card-title">Housing and Urban Affairs</div>
-          </div>
-  
+    <section class="section">
+
+
+      <div class="iconslist">
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Financial Services (Banking Division)">
+          <i> <img src="assets/img/deabd.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Financial Services (Banking Division)</div>
+          </a>
         </div>
-  
-      </section>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Labour and Employment">
+          <i> <img src="assets/img/molbr.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Labour and Employment</div>
+        </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Central Board of Direct Taxes (Income Tax)">
+          <i> <img src="assets/img/cbodt.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Central Board of Direct Taxes (Income Tax)</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Posts">
+          <i> <img src="assets/img/dpost.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Posts</div>
+        </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Telecommunications">
+          <i> <img src="assets/img/dotel.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Telecommunications</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Home Affairs">
+          <i> <img src="assets/img/minha.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Home Affairs</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Personnel and Training">
+          <i> <img src="assets/img/dourd.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Personnel and Training</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Health & Family Welfare">
+          <i> <img src="assets/img/dopat.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Health & Family Welfare</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Financial Services (Insurance Division)">
+          <i> <img src="assets/img/dhlth.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Financial Services (Insurance Division)</div>
+          </a>
+        </div>
+        <div class="icon">
+          <a href="/ComplaintRegistration?ministry=Housing and Urban Affairs">
+          <i> <img src="assets/img/deaid.png" alt=""></i>
+          <div class="card-title" style="margin-left:10px; margin-right:10px;">Housing and Urban Affairs</div>
+          </a> 
+        </div>
+
+      </div>
+
+    </section>
 
   </main><!-- End #main -->
 
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>

@@ -62,7 +62,7 @@ app.get('/AdminDashboard', (req, res) => {
 // "/UserDashbord" added in frontend
 
 app.get('/UserComplaints',userRole.isUser, (req, res) => {
-    res.render('user/complaintRegistration',{userData:req.session.user});
+    res.render('user/lodgeComplaint',{userData:req.session.user});
 })
 
 app.get('/OnboardAdmin',isLoggedIn, (req,res) => {

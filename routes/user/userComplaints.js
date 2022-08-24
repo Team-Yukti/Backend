@@ -6,6 +6,7 @@ const upload  = require('../uploadFiles');
 const fileUpload = require('express-fileupload')
 const path = require('path')
 const request = require('request');
+const userRole = require('../../isUser');
 
 
 router.use(
@@ -15,7 +16,7 @@ router.use(
   )
 
 
-router.post('/LodgeComplaint', (req, res) => {
+router.post('/LodgeComplaint',userRole.isUser, (req, res) => {
     res.json(req.body);
     var complaint_summary = "";
     const runRequestBody = {
@@ -39,7 +40,8 @@ router.post('/LodgeComplaint', (req, res) => {
           DocName:req.body.docs,
           Idproof:req.body.Idproof,
           current_desk: 1,
-          status: "Pending"
+          status: "Pending",
+          ministry: req.body.ministry
       }
       console.log(complaintData);
 
@@ -60,11 +62,13 @@ router.post('/LodgeComplaint', (req, res) => {
     });
 })
 
-router.post('/AddComment',(req,res)=>{
+router.post('/AddComment',isLoggedIn,(req,res)=>{
   console.log(req.body);
   crud.addComment(req.body.cid,req.body.uid,req.body.comment);
   res.redirect('/GetFullComplaint?cid='+req.body.cid);
 })
+
+
 
 
 
