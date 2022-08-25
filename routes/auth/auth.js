@@ -77,7 +77,7 @@ router.post('/Login', async (req, res) => {
             Password: req.body.password, // your password here
         };
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-        // login with mobile number in aws 
+        // login with mobile number in aws
 
         var userData = {
             Username: req.body.email, // your username here
@@ -156,7 +156,7 @@ router.post('/Login', async (req, res) => {
             Password: req.body.password, // your password here
         };
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-        // login with mobile number in aws 
+        // login with mobile number in aws
 
         var userData = {
             Username: 'user1@birangal.com', // your username here
@@ -306,15 +306,15 @@ s0.parentNode.insertBefore(s1,s0);
         <p class="text-center small">Enter your Email & password to login</p>
       </div>
 
-      <!-- changes made M-->   
+      <!-- changes made M-->
       <form action="/Login" method="post" class="row g-3 needs-validation" novalidate >
 
         <div class="col-12">
           <label for="yourUsername" class="form-label">Username</label>
           <div class="input-group has-validation">
-            
-            <!-- changes made M-->                  
-            <input type="text" name="email" class="form-control" id="Email" required placeholder="Email"> 
+
+            <!-- changes made M-->
+            <input type="text" name="email" class="form-control" id="Email" required placeholder="Email">
             <div class="invalid-feedback">Please enter your Email.</div>
           </div>
         </div>
@@ -322,11 +322,11 @@ s0.parentNode.insertBefore(s1,s0);
         <div class="col-12">
           <label for="yourPassword" class="form-label">Password</label>
 
-          <!-- changes made M-->   
+          <!-- changes made M-->
           <input  type="password" name="password" placeholder="Password" class="form-control" id="yourPassword" required >
           <div class="invalid-feedback">Please enter your password!</div>
         </div>
-        
+
         <div class="col-12">
             <label for="yourPassword" class="form-label" style="color: red;">Invalid User</label>
             <button class="btn btn-primary w-100" type="submit" value="Send">Login</button>
@@ -550,4 +550,3 @@ router.post('/EditUser', userRole.isUser, async (req, res) => {
 });
 
 module.exports = router;
-
