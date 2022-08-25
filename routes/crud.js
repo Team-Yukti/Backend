@@ -488,7 +488,7 @@ async function addComment(cid,uid,comment,role="user")
       })
       await db.collection('users').doc(end_user_id).update({
           notifications: admin.firestore.FieldValue.arrayUnion({
-              cid: complaint_id
+              cid: cid
           })
       }).then(ref => {
           console.log('Added comaplaint id: ', ref.id);
