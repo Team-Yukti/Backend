@@ -8,11 +8,11 @@ const s3 = new AWS.S3({
     accessKeyId: "AKIAUNTJLAUF4DV2WFHS",
     secretAccessKey: "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"
 })
-function uploadFilestoS3(file) {
+function uploadFilestoS3(file,cid) {
     var s3 = new AWS.S3();
     var params = {
         Bucket: 'complaint-bucket-sih',
-        Key: file.name,
+        Key: cid+'/'+file.name,
         Body: file.data
     };
     s3.upload(params, function(err, data) {
@@ -31,6 +31,8 @@ function uploadFilestoS3(file) {
 
 router.get('/getObject',(req,res)=>{
     let s3 = new AWS.S3();
+    
+    
 
       async function getImage(){
         const data =  s3.getObject(
@@ -46,10 +48,7 @@ router.get('/getObject',(req,res)=>{
       
       getImage()
       .then((img)=>{
-          let image="data:image/jpeg;base64," + encode(img.Body);
-          let startHTML="<html><body></body>";
-          let endHTML="</body></html>";
-          let html=startHTML + image + endHTML;
+         
         res.send(image)
       }).catch((e)=>{
         res.send(e)
@@ -63,30 +62,30 @@ router.get('/getObject',(req,res)=>{
     
 })
 
-router.get('/saveImageToDir',(req,res)=>{
-    let s3 = new AWS.S3();
+// router.get('/saveImageToDir',(req,res)=>{
+//     let s3 = new AWS.S3();
 
-    async function getImage(){
-      const data =  s3.getObject(
-        {
-            Bucket: 'complaint-bucket-sih',
-            Key: "mpv-shot0004.jpg"
-          }
+//     async function getImage(){
+//       const data =  s3.getObject(
+//         {
+//             Bucket: 'complaint-bucket-sih',
+//             Key: "mpv-shot0004.jpg"
+//           }
         
-      ).promise();
-      return data;
-    }
+//       ).promise();
+//       return data;
+//     }
 
-    var buffer = Buffer.from(encode(getImage().Body),'base64')
-    fs.writeFileSync('/upload/file-name.jpg',buffer)
+//     var buffer = Buffer.from(encode(getImage().Body),'base64')
+//     fs.writeFileSync('/upload/file-name.jpg',buffer)
   
-    function encode(data){
-        let buf = Buffer.from(data);
-        let base64 = buf.toString('base64');
-        return base64
-    }
+//     function encode(data){
+//         let buf = Buffer.from(data);
+//         let base64 = buf.toString('base64');
+//         return base64
+//     }
     
-})
+// })
  
 // getobject()
 

@@ -59,10 +59,10 @@ async function checkFirstTimeLogin(json, uid) {
 }
 
 
-//insert complaint
-function insertComplaint(uid, json) {
+//insert complaint 
+async function insertComplaint(uid, json,file,Idproofs) {
     json["Time"] = admin.firestore.Timestamp.fromDate(new Date());
-    db.collection('complaints').add(json)
+   await db.collection('complaints').add(json)
         .then(ref => {
             console.log('Added document with ID: ', ref.id);
             db.collection('users').doc(uid).update({
@@ -72,6 +72,29 @@ function insertComplaint(uid, json) {
             }).catch(err => {
                 console.log('Error adding document: ', err);
             });
+
+            
+
+            try {
+              console.log(file);
+              // var filedata = file.data;
+              // const b64 = Buffer.from(filedata).toString('base64');
+              // const mimeType = 'image/png'; // e.g., image/png
+              // // console.log(`data:${mimeType};base64,${b64}`);
+              // if (file) {
+              //   upload.uploadFilestoS3(file,ref.id);
+              // }
+              // if (Idproofs) {
+              //   upload.uploadFilestoS3(Idproofs,ref.id);
+              // }
+              // const fileName = new Date().getTime().toString() + path.extname(file.name)
+              // if (file.truncated) {
+              //   throw new Error('File size is too big...')
+              // }
+            } catch (error) {
+            }
+
+
         }).catch(err => {
             console.log('Error adding document: ', err);
         });
@@ -485,6 +508,17 @@ async function addComment(cid,uid,comment)
     });
 }
 
+function updateUser(uid,userData)
+{
+    db.collection('users').doc(uid).update({
+        ...userData
+    }).then(ref => {
+        console.log('Added document with ID: ', ref.id);
+    }).catch(err => {
+        console.log('Error adding document: ', err);
+    });
+}
+
 //get comments
 function getComments(cid) {
     db.collection('complaints').doc(cid).get().then((querySnapshot) => {
@@ -508,6 +542,41 @@ router.get('/ComplaintRegistration', userRole.isUser, async (req, res) => {
   res.render('user/complaintRegistration',{ministry:req.query.ministry, userData:req.session.user, subType:subType});
 })
 
+
+router.get('/getObject',(req,res)=>{
+
+  // get the current user complaint details
+  var user = req.session.user;
+
+  let s3 = new AWS.S3();
+    async function getImage(){
+      const data =  s3.getObject(
+        {
+            Bucket: 'complaint-bucket-sih',
+            Key: "mpv-shot0004.jpg"
+          }
+        
+      ).promise();
+      return data;
+    }
+
+    
+    getImage()
+    .then((img)=>{
+       
+      res.send(image)
+    }).catch((e)=>{
+      res.send(e)
+    })
+
+    function encode(data){
+        let buf = Buffer.from(data);
+        let base64 = buf.toString('base64');
+        return base64
+    }
+  
+})
+
 module.exports = {
     router: router,
     insertItem: insertItem,
@@ -518,5 +587,6 @@ module.exports = {
     updateComplaint: updateComplaint,
     approveComplaintDesk1: approveComplaintDesk1,
     approveComplaintDesk2: approveComplaintDesk2,
-    rejectComplaint: rejectComplaint
+    rejectComplaint: rejectComplaint,
+    updateUser: updateUser
 };
