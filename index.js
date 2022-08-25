@@ -62,6 +62,10 @@ app.get('/AdminDashboard', (req, res) => {
 app.get('/LodgeComplaint',userRole.isUser, (req, res) => {
     res.render('user/lodgeComplaint',{userData:req.session.user});
 })
+
+app.get('/ViewImage', (req, res) => {
+    res.render('imageview',{url:req.query.url});
+})
 app.get('/EditProfile',userRole.isUser, (req,res)=>{
     res.render('user/editProfile')
 })
