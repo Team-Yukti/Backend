@@ -182,7 +182,7 @@ function SendEmail(email,subject,body){
               <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 40px 20px;font-family:'Lato',sans-serif;" align="left">
                 
           <div style="color: #333333; line-height: 150%; text-align: center; word-wrap: break-word;">
-            <p style="font-size: 14px; line-height: 150%;"><span style="font-size: 16px; line-height: 24px;">`+body+`.</span></p>
+            <p style="font-size: 14px; line-height: 150%;"><span style="font-size: 16px; line-height: 24px;">Your verification code is {####}.</span></p>
           </div>
         
               </td>
@@ -195,15 +195,7 @@ function SendEmail(email,subject,body){
             <tr>
               <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px;font-family:'Lato',sans-serif;" align="left">
                 
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <td style="padding-right: 0px;padding-left: 0px;" align="center">
-              
-              <img align="center" border="0" src="https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/image-1.png" alt="border" title="border" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 297px;" width="297"/>
-              
-            </td>
-          </tr>
-        </table>
+        
         
               </td>
             </tr>
@@ -411,4 +403,4 @@ function SendEmail(email,subject,body){
 
     
 }
- console.log(SendEmail('pradyumna@birangal.com','Lavdya','Gandu MC Abhyas kr'));
+
