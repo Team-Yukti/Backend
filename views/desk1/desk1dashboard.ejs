@@ -35,8 +35,6 @@
 
   <%- include('../common_scripts/analytics')%>
   <%- include('../common_scripts/translate')%>
-  <!-- <%- include('../common_scripts/chatbot')%> -->
-  
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -299,7 +297,7 @@
                     <tbody>
                         <%for(var i =0;i < complaints.length;i++){%>
                       <tr>
-                        <th scope="row"><a href="#"></a></th>
+                        <th scope="row"><a href="#"><%=complaints[i].id.slice(0,4)%>...</a></th>
                         <td><%=userinfo[i].Name%></td>
                         <td><%=complaints[i].type%></td>
 
