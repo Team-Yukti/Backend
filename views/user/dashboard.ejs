@@ -36,7 +36,6 @@
 <body>
 
   <%- include('../common_scripts/analytics')%>
-  <%- include('../common_scripts/translate')%>
   <%- include('../common_scripts/chatbot')%>
   
   <!-- ======= Header ======= -->
@@ -175,8 +174,15 @@
               <i class="bi bi-circle"></i><span>Change Password</span>
             </a>
           </li>
+          
 
         </ul>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="/Dashboard">
+            <i class="bi bi-translate"></i>
+            <%- include('../common_scripts/translate')%>
+          </a>
+        </li>
       </li><!-- End Components Nav -->
     </ul>
 

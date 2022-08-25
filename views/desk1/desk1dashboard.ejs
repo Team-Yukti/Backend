@@ -34,7 +34,6 @@
 <body>
 
   <%- include('../common_scripts/analytics')%>
-  <%- include('../common_scripts/translate')%>
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -115,6 +114,12 @@
         </a>
       </li><!-- End Error 404 Page Nav -->
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/Dashboard">
+          <i class="bi bi-translate"></i>
+          <%- include('../common_scripts/translate')%>
+        </a>
+      </li>
     </ul>
 
   </aside><!-- End Sidebar-->
