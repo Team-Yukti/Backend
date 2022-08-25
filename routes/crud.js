@@ -59,7 +59,7 @@ async function checkFirstTimeLogin(json, uid) {
 }
 
 
-//insert complaint 
+//insert complaint
 async function insertComplaint(uid, json,file,Idproofs) {
     json["Time"] = admin.firestore.Timestamp.fromDate(new Date());
    await db.collection('complaints').add(json)
@@ -73,24 +73,10 @@ async function insertComplaint(uid, json,file,Idproofs) {
                 console.log('Error adding document: ', err);
             });
 
-            
+
 
             try {
               console.log(file);
-              // var filedata = file.data;
-              // const b64 = Buffer.from(filedata).toString('base64');
-              // const mimeType = 'image/png'; // e.g., image/png
-              // // console.log(`data:${mimeType};base64,${b64}`);
-              // if (file) {
-              //   upload.uploadFilestoS3(file,ref.id);
-              // }
-              // if (Idproofs) {
-              //   upload.uploadFilestoS3(Idproofs,ref.id);
-              // }
-              // const fileName = new Date().getTime().toString() + path.extname(file.name)
-              // if (file.truncated) {
-              //   throw new Error('File size is too big...')
-              // }
             } catch (error) {
             }
 
@@ -131,9 +117,6 @@ router.get('/GetFullComplaint', isLoggedIn, async (req, res) => {
     var cid = req.query.cid;
     var uid = jsonData.UID;
     var user_id = req.session.user.idToken.payload.sub;
-    // userRef.update({
-    //     "userevents": firebase.firestore.FieldValue.arrayRemove({"eventid": ..., "date": ..., "desc":..., "status":...})
-    // });
 
     await db.collection('users').doc(user_id).update({
         notifications: admin.firestore.FieldValue.arrayRemove({"cid":cid})
@@ -257,6 +240,7 @@ router.get('/OnboardAdmin',isLoggedIn, async (req,res) => {
 
 router.get('/Desk1Dashboard', userRole.isDesk1, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
+  console.log(ministry);
   var complaint_types = []
   await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
@@ -357,7 +341,7 @@ router.get('/approveComplaintDesk1/',userRole.isDesk1, async (req,res)=>{
     })
   })
 
-  addComment(complaint_id,user_id,"Initial processing of complaint done.");
+  addComment(complaint_id,user_id,"Initial processing of complaint done.",req.session.user.idToken.payload["custom:role"]);
   await db.collection('users').doc(user_id).update({
       complaints_resolved: admin.firestore.FieldValue.arrayUnion({
           cid: complaint_id,
@@ -392,12 +376,7 @@ router.get('/approveComplaintDesk2/',userRole.isDesk1, async (req,res)=>{
   var complaint_id = req.query.cid;
   approveComplaintDesk2(complaint_id);
   var user_id = req.session.user.idToken.payload.sub;
-  // await db.collection("users").where("Email", "==", email).get().then((userData) => {
-  //   userData.forEach((doc) => {
-  //     user_id = doc.id;
-  //   })
-  // })
-  addComment(complaint_id,user_id,"Complaint has been processed and resolved.");
+  addComment(complaint_id,user_id,"Complaint has been processed and resolved.",req.session.user.idToken.payload["custom:role"]);
   console.log(complaint_id);
   console.log(user_id);
   await db.collection('users').doc(user_id).update({
@@ -432,12 +411,7 @@ router.get('/rejectComplaint/',userRole.isStaff, async (req,res)=>{
   var complaint_id = req.query.cid;
   rejectComplaint(complaint_id);
   var user_id = req.session.user.idToken.payload.sub;
-  // await db.collection("users").where("Email", "==", email).get().then((userData) => {
-  //   userData.forEach((doc) => {
-  //     user_id = doc.id;
-  //   })
-  // })
-  addComment(complaint_id,user_id,"Complaint has been rejected due to certain reasons.");
+  addComment(complaint_id,user_id,"Complaint has been rejected due to certain reasons.",req.session.user.idToken.payload["custom:role"]);
   await db.collection('users').doc(user_id).update({
       complaints_resolved: admin.firestore.FieldValue.arrayUnion({
           cid: complaint_id,
@@ -493,7 +467,7 @@ function rejectComplaint(cid)
   db.collection("complaints").doc(cid).update({status: "Rejected"});
 }
 
-async function addComment(cid,uid,comment)
+async function addComment(cid,uid,comment,role="user")
 {
     await db.collection('complaints').doc(cid).update({
         comments: admin.firestore.FieldValue.arrayUnion({
@@ -506,6 +480,22 @@ async function addComment(cid,uid,comment)
     }).catch(err => {
         console.log('Error adding document: ', err);
     });
+    console.log(role);
+    if(role != "user"){
+      var end_user_id;
+      await db.collection('complaints').doc(cid).get().then((complaint) => {
+        end_user_id = complaint.data().UID;
+      })
+      await db.collection('users').doc(end_user_id).update({
+          notifications: admin.firestore.FieldValue.arrayUnion({
+              cid: complaint_id
+          })
+      }).then(ref => {
+          console.log('Added comaplaint id: ', ref.id);
+      }).catch(err => {
+          console.log('Error adding complaint id: ', err);
+      });
+    }
 }
 
 function updateUser(uid,userData)
@@ -555,15 +545,15 @@ router.get('/getObject',(req,res)=>{
             Bucket: 'complaint-bucket-sih',
             Key: "mpv-shot0004.jpg"
           }
-        
+
       ).promise();
       return data;
     }
 
-    
+
     getImage()
     .then((img)=>{
-       
+
       res.send(image)
     }).catch((e)=>{
       res.send(e)
@@ -574,7 +564,7 @@ router.get('/getObject',(req,res)=>{
         let base64 = buf.toString('base64');
         return base64
     }
-  
+
 })
 
 module.exports = {
