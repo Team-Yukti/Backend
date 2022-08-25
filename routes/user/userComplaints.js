@@ -53,10 +53,10 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       console.log(file);
       try {
         if(file != null){
-          upload.uploadFilestoS3(file,req.session.user.idToken.payload.sub,1);
+          upload.uploadFilestoS3(file,req.session.user.idToken.payload.sub);
         }
         if(file1 != null){
-          upload.uploadFilestoS3(file1,req.session.user.idToken.payload.sub,2);
+          upload.uploadFilestoS3(file1,req.session.user.idToken.payload.sub);
         }
         console.log(file);
       } catch (error) {
@@ -66,8 +66,6 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       res.redirect('/Dashboard');
     });
 })
-
-
 
 
 router.post('/AddComment', isLoggedIn, (req, res) => {
