@@ -98,7 +98,8 @@ router.post('/Login', async (req, res) => {
                     Pincode: result.idToken.payload["custom:pincode"],
                     Country: result.idToken.payload["custom:country"],
                     Role: result.idToken.payload["custom:role"],
-                    complaints: []
+                    complaints: [],
+                    notifications: []
                 }
             }
             else {
