@@ -39,11 +39,7 @@ app.use('/', require('./routes/uploadFiles').router);
 
 
 app.get('/', (req, res) => {
-    if(req.session.user!=null){
-        res.redirect('/Dashboard')
-    }else{
         res.render('index')
-    }
 })
 
 // app.get('/Home',checkRole.isUser, (req, res) => {
