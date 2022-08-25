@@ -563,6 +563,26 @@ router.get('/getObject',(req,res)=>{
 
 })
 
+
+async function LoginwithPhone(phone)
+{
+  await db.collection('users').where('Phone', '==', phone).get().then(docs => {
+    if(docs.empty)
+    {
+      return "";
+    }
+    else
+    {
+      docs.forEach(doc => {
+        console.log(doc.data().Email)
+        return doc.data().Email;
+      })
+    }
+  })
+
+}
+
+
 module.exports = {
     router: router,
     insertItem: insertItem,
@@ -574,5 +594,6 @@ module.exports = {
     approveComplaintDesk1: approveComplaintDesk1,
     approveComplaintDesk2: approveComplaintDesk2,
     rejectComplaint: rejectComplaint,
-    updateUser: updateUser
+    updateUser: updateUser,
+    LoginwithPhone: LoginwithPhone
 };

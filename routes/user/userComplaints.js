@@ -21,10 +21,13 @@ router.use(
 router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
   console.log("Lodge Complaint");
   var complaint_summary = "";
+  if(req.body.ComplaintBody == ""){
+    complaint_body = "We celebrate Independence Day as the national festival of India. The Day marks\nthe anniversary of national independence from the British Empire on 15th august\n1947. Furthermore, it is the most auspicious day for the people of India because\nIndia becomes independent after lots of hardships and sacrifices of the brave\nIndian freedom fighters. The entire nation celebrates this day with the full spirit of\n\npatriotism.\n"
+  }
   const runRequestBody = {
     text: req.body.ComplaintBody
   };
-  
+
   request.post({
     url: "http://13.233.148.244:8000/text-summarizer/",
     json: runRequestBody
@@ -41,13 +44,13 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
         type: req.body.type,
         comments: [],
         ComplaintSummary: complaint_summary,
-        complaint_file: req.files.complaint_file.name,
+        // complaint_file: req.files.complaint_file.name,
         additional_file: req.files.additional_file.name,
         current_desk: 1,
         status: "Pending",
         ministry: req.body.ministry
       }
-       
+
       const file = req.files.complaint_file;
       const file1 = req.files.additional_file;
       console.log(file);
@@ -62,7 +65,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       } catch (error) {
       }
 
-      crud.insertComplaint(req.session.user.idToken.payload.sub, complaintData);
+      // crud.insertComplaint(req.session.user.idToken.payload.sub, complaintData, req.files.complaint_file,  req.files.additional_file);
       res.redirect('/Dashboard');
     });
 })
