@@ -7,7 +7,6 @@ const path = require('path');
 const { sendfile } = require('express/lib/response');
 var app = express();
 const isLoggedIn = require('./middleware');
-const crud = require('./routes/crud.js');
 const userRole = require('./isUser');
 
 
@@ -39,11 +38,7 @@ app.use('/', require('./routes/uploadFiles').router);
 
 
 app.get('/', (req, res) => {
-    if(req.session.user!=null){
-        res.redirect('/Dashboard')
-    }else{
         res.render('index')
-    }
 })
 
 // app.get('/Home',checkRole.isUser, (req, res) => {
