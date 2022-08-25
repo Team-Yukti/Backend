@@ -6,6 +6,7 @@ const userRole = require('../isUser');
 const AWS = require('aws-sdk');
 const request = require('request');
 const sms = require('./sendSms');
+const sendemailto = require('./sendemail');
 
 // const upload = require('../uploadFiles');
 
@@ -386,6 +387,11 @@ function checkNsendSMS(end_user_id, message) {
       db.collection('users').doc(end_user_id).get().then((user) => {
         console.log("SMS Sent");
         sms.sendsms(user.data().Phone, message);
+      })
+    else if(doc.data().email)
+      db.collection('users').doc(end_user_id).get().then((user) => {
+        console.log("Email Sent");
+        sendemailto.SendEmail(user.data().Email,"[Important] Updates from Shikayat portal",message);
       })
   })
 }
