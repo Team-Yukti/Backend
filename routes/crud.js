@@ -205,12 +205,7 @@ router.get('/Dashboard', userRole.isUser, async (req, res) => {
   var approved = 0, rejected = 0, pending = 0;
 
   var complaints = [];
-<<<<<<< HEAD
-  for(var i=0;i<complaint_ids.length;i++){
-    console.log(complaint_ids[i]);
-=======
   for (var i = 0; i < complaint_ids.length; i++) {
->>>>>>> 59bf72cebb81451539e3893e2296e288cf7f475c
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
       var tpjson = querySnapshot.data();
       tpjson["cid"] = complaint_ids[i];
@@ -345,7 +340,7 @@ router.post('/Escalate', userRole.isDesk1, async (req, res) => {
   console.log(req.body.type);
   escalteComplaintDesk1(complaint_id, req.body.type);
   var user_id = req.session.user.idToken.payload.sub;
-  
+
   addComment(complaint_id, user_id, "Complaint escalated to "+req.body.type, req.session.user.idToken.payload["custom:role"]);
   await db.collection('users').doc(user_id).update({
     complaints_resolved: admin.firestore.FieldValue.arrayUnion({
@@ -632,7 +627,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
           comments: [],
           ComplaintSummary: complaint_summary,
           additional_file: req.files.additional_file.name,
-          current_desk: 1,
+          current_desk: "Desk 1",
           status: "Pending",
           ministry: req.body.ministry,
           percentage: similarity
