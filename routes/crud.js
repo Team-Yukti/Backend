@@ -346,7 +346,7 @@ router.post('/Escalate', userRole.isDesk1, async (req, res) => {
   var user_id = req.session.user.idToken.payload.sub;
 
   addComment(complaint_id, user_id, "Complaint escalated to " + req.body.type, req.session.user.idToken.payload["custom:role"]);
-  await db.collection('users').doc(user_id).update({
+  db.collection('users').doc(user_id).update({
     complaints_resolved: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id,
       time: admin.firestore.Timestamp.fromDate(new Date()),
@@ -354,34 +354,42 @@ router.post('/Escalate', userRole.isDesk1, async (req, res) => {
     })
   }).then(ref => {
     console.log('Added comaplaint id: ', ref.id);
+    db.collection('complaints').doc(complaint_id).get().then((complaint) => {
+      var end_user_id = complaint.data().UID;
+      checkNsendSMS(end_user_id, "Your complaint has been escalated to " + req.body.type)
+      db.collection('users').doc(end_user_id).update({
+        notifications: admin.firestore.FieldValue.arrayUnion({
+          cid: complaint_id
+        })
+      }).then(ref => {
+        console.log('Added comaplaint id: ', ref.id);
+      }).catch(err => {
+        console.log('Error adding complaint id: ', err);
+      });
+      return res.redirect('/Desk1Dashboard');
+    })
   }).catch(err => {
     console.log('Error adding complaint id: ', err);
   });
-  var end_user_id;
-  await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
-    end_user_id = complaint.data().UID;
-  })
+})
 
+
+function checkNsendSMS(end_user_id, message) {  
+  console.log("in Messaging");
+  console.log(end_user_id);
+  console.log(message);
+  
   db.collection('var').doc('mics').get().then((doc) => {
+    console.log(doc.data().sms);
+    console.log("in sent sms")
     if (doc.data().sms)
       db.collection('users').doc(end_user_id).get().then((user) => {
         console.log("SMS Sent");
-        sms.sendsms(user.data().Phone, "Your complaint has been escalated to " + req.body.type);
+        sms.sendsms(user.data().Phone, message);
       })
   })
+}
 
-
-  await db.collection('users').doc(end_user_id).update({
-    notifications: admin.firestore.FieldValue.arrayUnion({
-      cid: complaint_id
-    })
-  }).then(ref => {
-    console.log('Added comaplaint id: ', ref.id);
-  }).catch(err => {
-    console.log('Error adding complaint id: ', err);
-  });
-  return res.redirect('/Desk1Dashboard');
-})
 
 router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
   var complaint_id = req.query.cid;
@@ -395,7 +403,8 @@ router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
     })
   })
 
-  addComment(complaint_id, user_id, "Initial processing of complaint done.", req.session.user.idToken.payload["custom:role"]);
+  addComment(complaint_id, user_id, "Your Complaint has been approved", req.session.user.idToken.payload["custom:role"]);
+  
   await db.collection('users').doc(user_id).update({
     complaints_resolved: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id,
@@ -412,7 +421,9 @@ router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
   var end_user_id;
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
+    checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"]+" level.")
   })
+  
   await db.collection('users').doc(end_user_id).update({
     notifications: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id
@@ -428,7 +439,7 @@ router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
 
 router.get('/approveComplaint', userRole.isDesk1, async (req, res) => {
   var complaint_id = req.query.cid;
-  approveComplaintDesk2(complaint_id);
+  approveComplaintDesk2(complaint_id,req.session.user.idToken.payload["custom:role"]);
   var user_id = req.session.user.idToken.payload.sub;
   addComment(complaint_id, user_id, "Complaint has been processed and resolved.", req.session.user.idToken.payload["custom:role"]);
   console.log(complaint_id);
@@ -449,6 +460,7 @@ router.get('/approveComplaint', userRole.isDesk1, async (req, res) => {
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
   })
+  checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"]+" level.")
   await db.collection('users').doc(end_user_id).update({
     notifications: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id
@@ -466,6 +478,7 @@ router.get('/rejectComplaint/', userRole.isStaff, async (req, res) => {
   rejectComplaint(complaint_id);
   var user_id = req.session.user.idToken.payload.sub;
   addComment(complaint_id, user_id, "Complaint has been rejected due to certain reasons.", req.session.user.idToken.payload["custom:role"]);
+
   await db.collection('users').doc(user_id).update({
     complaints_resolved: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id,
@@ -482,6 +495,7 @@ router.get('/rejectComplaint/', userRole.isStaff, async (req, res) => {
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
   })
+  checkNsendSMS(end_user_id, "Complaint has been rejected due to certain reasons at " + req.session.user.idToken.payload["custom:role"]+" level.")
   await db.collection('users').doc(end_user_id).update({
     notifications: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id
@@ -512,8 +526,8 @@ function escalteComplaintDesk1(cid, office) {
   console.log("Cid" + cid)
   db.collection("complaints").doc(cid).update({ current_desk: office });
 }
-function approveComplaintDesk2(cid) {
-  db.collection("complaints").doc(cid).update({ current_desk: 3, status: "Approved" });
+function approveComplaintDesk2(cid, office) {
+  db.collection("complaints").doc(cid).update({ current_desk: office, status: "Approved" });
 }
 
 function rejectComplaint(cid) {
@@ -628,24 +642,24 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
         url: "http://127.0.0.1:8000/document_similarity/",
         json: similarityRequestBody
       },
-      function(error, response, body){
-        console.log("Error", error);
-        JSON.stringify(body);
-        console.log("Body", body);
-        var similarity = body.percentage;
-        complaintData = {
-          ComplaintBody: req.body.ComplaintBody,
-          UID: req.session.user.idToken.payload.sub,
-          Employer: req.body.Employer,
-          type: req.body.type,
-          comments: [],
-          ComplaintSummary: complaint_summary,
-          additional_file: req.files.additional_file.name,
-          current_desk: "Desk 1",
-          status: "Pending",
-          ministry: req.body.ministry,
-          percentage: similarity
-        }
+        function (error, response, body) {
+          console.log("Error", error);
+          JSON.stringify(body);
+          console.log("Body", body);
+          var similarity = body.percentage;
+          complaintData = {
+            ComplaintBody: req.body.ComplaintBody,
+            UID: req.session.user.idToken.payload.sub,
+            Employer: req.body.Employer,
+            type: req.body.type,
+            comments: [],
+            ComplaintSummary: complaint_summary,
+            additional_file: req.files.additional_file.name,
+            current_desk: "Desk 1",
+            status: "Pending",
+            ministry: req.body.ministry,
+            percentage: similarity
+          }
 
           insertComplaint(req.session.user.idToken.payload.sub, complaintData);
           res.redirect('/Dashboard');
