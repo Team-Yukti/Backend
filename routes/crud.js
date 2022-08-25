@@ -205,12 +205,10 @@ router.get('/Dashboard', userRole.isUser, async (req, res) => {
   var approved = 0, rejected = 0, pending = 0;
 
   var complaints = [];
-<<<<<<< HEAD
+
   for(var i=0;i<complaint_ids.length;i++){
     console.log(complaint_ids[i]);
-=======
-  for (var i = 0; i < complaint_ids.length; i++) {
->>>>>>> 59bf72cebb81451539e3893e2296e288cf7f475c
+
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
       var tpjson = querySnapshot.data();
       tpjson["cid"] = complaint_ids[i];
