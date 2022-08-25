@@ -4,6 +4,8 @@ const crud = require('../crud');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const isLoggedIn = require('../../middleware');
+const userRole = require('../../isUser');
+
 // Express Session has started
 
 router.use(cookieParser());
@@ -381,6 +383,78 @@ router.get('/SendOTP', (req, res) => {
     });
 })
 
+router.post('/EditUser', userRole.isUser, async (req, res) => {
+    const params = {
+        UserPoolId: "ap-south-1_9ErMvHoXm",
+        Username: req.session.user.idToken.payload.email,
+        UserAttributes: [
+            {
+                Name: "email",
+                Value: req.body.Email
+            },
+            {
+                Name: "email_verified",
+                Value: "false"
+            },
+            {
+                Name: "name",
+                Value: req.body.Name
+            },
+            {
+                Name: "phone_number",
+                Value: req.body.Mobile
+            },
+            {
+                Name: "gender",
+                Value: req.body.Gender
+            },
+            {
+                Name: "custom:aadhar",
+                Value: req.body.Aadhar
+            },
+            {
+                Name: "address",
+                Value: req.body.Address
+            },
+            {
+                Name: "custom:city",
+                Value: req.body.City
+            },
+            {
+                Name: "custom:state",
+                Value: req.body.State
+            },
+            {
+                Name: "custom:country",
+                Value: req.body.Country
+            },
+            {
+                Name: "custom:pincode",
+                Value: req.body.Pincode
+            }
+        ],
+    };
 
+    userData = {Email: req.body.Email,
+        Name: req.body.Name,
+        Phone: req.body.Mobile,
+       Gender: req.body.Gender,
+       Aadhar: req.body.Aadhar,
+        Address:req.body.Address,
+        City: req.body.City,
+        State: req.body.State,
+        Country: req.body.Country,
+        Pincode: req.body.Pincode,
+        Age: req.body.Age
+     }
+    
+    const cognitoClient = new AWS.CognitoIdentityServiceProvider();
+    crud.updateUser(req.session.user.idToken.payload.sub,userData);
+    await cognitoClient.adminUpdateUserAttributes(params).promise().then(data => {
+        res.redirect("/Login");
+    }).catch(err => {
+        res.send(err);
+    });
+});
 
 module.exports = router;

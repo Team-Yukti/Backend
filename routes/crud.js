@@ -475,6 +475,17 @@ async function addComment(cid,uid,comment)
     });
 }
 
+function updateUser(uid,userData)
+{
+    db.collection('users').doc(uid).update({
+        ...userData
+    }).then(ref => {
+        console.log('Added document with ID: ', ref.id);
+    }).catch(err => {
+        console.log('Error adding document: ', err);
+    });
+}
+
 //get comments
 function getComments(cid) {
     db.collection('complaints').doc(cid).get().then((querySnapshot) => {
@@ -508,5 +519,6 @@ module.exports = {
     updateComplaint: updateComplaint,
     approveComplaintDesk1: approveComplaintDesk1,
     approveComplaintDesk2: approveComplaintDesk2,
-    rejectComplaint: rejectComplaint
+    rejectComplaint: rejectComplaint,
+    updateUser: updateUser
 };
