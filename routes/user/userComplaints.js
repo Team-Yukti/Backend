@@ -53,8 +53,16 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
 
 router.post('/AddComment', isLoggedIn, (req, res) => {
   console.log(req.body);
-  crud.addComment(req.body.cid, req.body.uid, req.body.comment);
+  crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment);
+  if(req.session.user.idToken.payload["custom:role"]=="user"){
   res.redirect('/GetFullComplaint?cid=' + req.body.cid);
+  }
+  else if(req.session.user.idToken.payload["custom:role"]=="desk1"){
+    res.redirect('/GetFullComplaintAdmin1?cid=' + req.body.cid);
+  }
+  else if(req.session.user.idToken.payload["custom:role"]=="desk2"){
+    res.redirect('/GetFullComplaintAdmin2?cid=' + req.body.cid);
+  }
 })
 
 
