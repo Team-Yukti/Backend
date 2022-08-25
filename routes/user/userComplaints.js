@@ -34,6 +34,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       complaintData = {
         ComplaintBody: req.body.ComplaintBody,
         UID: req.session.user.idToken.payload.sub,
+        Employer: req.body.Employer,
         type: "Salary",
         comments: [],
         ComplaintSummary: complaint_summary,
