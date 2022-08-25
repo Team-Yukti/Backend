@@ -23,7 +23,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
     text: req.body.ComplaintBody
   };
   request.post({
-    url: "http://13.233.148.244:8000/text-summarizer/",
+    url: "http://127.0.0.1:8000/text-summarizer/",
     json: runRequestBody
   },
     function (error, response, body) {
@@ -34,11 +34,12 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       complaintData = {
         ComplaintBody: req.body.ComplaintBody,
         UID: req.session.user.idToken.payload.sub,
+        Employer: req.body.Employer,
         type: "Salary",
         comments: [],
         ComplaintSummary: complaint_summary,
         // DocName:req.body.docs,
-        Idproof: req.body.Idproof,
+        // Idproof: req.body.Idproof,
         current_desk: 1,
         status: "Pending",
         ministry: req.body.ministry
@@ -52,8 +53,16 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
 
 router.post('/AddComment', isLoggedIn, (req, res) => {
   console.log(req.body);
-  crud.addComment(req.body.cid, req.body.uid, req.body.comment);
+  crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment);
+  if(req.session.user.idToken.payload["custom:role"]=="user"){
   res.redirect('/GetFullComplaint?cid=' + req.body.cid);
+  }
+  else if(req.session.user.idToken.payload["custom:role"]=="desk1"){
+    res.redirect('/GetFullComplaintAdmin1?cid=' + req.body.cid);
+  }
+  else if(req.session.user.idToken.payload["custom:role"]=="desk2"){
+    res.redirect('/GetFullComplaintAdmin2?cid=' + req.body.cid);
+  }
 })
 
 

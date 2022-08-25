@@ -118,7 +118,9 @@
                                                 <select name="ministry" class="form-select"
                                                     aria-label="Default select example">
                                                     <option selected> Select Ministry</option>
-                                                    <option value="Ministry of Employment">Ministry of Employment</option>
+                                                    <% for(var i = 0 ; i < ministries.length ; i++) { %>
+                                                      <option value="<%=ministries[i]%>"><%=ministries[i]%></option>
+                                                    <% } %>
                                                 </select>
 
                                         </div>
