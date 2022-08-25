@@ -46,11 +46,8 @@ router.post('/createAdminAccount', (req, res) => {
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "name", Value: req.body.name }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "gender", Value: req.body.gender }));
     attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:ministry", Value: req.body.ministry }));
-    if(req.body.desk == 1){
-      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk1" }));
-    } else {
-      attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: "desk2" }));
-    }
+    attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "custom:role", Value: req.body.desk }));
+
 
     userPool.signUp(req.body.email, "Admin@2022", attributeList, null, function (err, result) {
         if (err) {
