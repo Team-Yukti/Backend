@@ -76,8 +76,6 @@ router.use(
 // })
 
 
-
-
 router.post('/AddComment', isLoggedIn, (req, res) => {
   if(req.session.user.idToken.payload["custom:role"]=="user"){
     crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment);

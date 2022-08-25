@@ -41,9 +41,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/Dashboard" class="logo d-flex align-items-center">
+      <a href="/Desk1Dashboard" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-block">Yukti</span>
+        <!-- <span class="d-block">Yukti</span> -->
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -104,7 +104,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/Dashboard">
+        <a class="nav-link " href="/Desk1Dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -121,13 +121,13 @@
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-translate"></i>
           <%- include('../common_scripts/translate')%>
-          <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
-          <script>
-            function clearCookie() {
-              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              location.reload();
-            }
-          </script>
+            <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
+            <script>
+              function clearCookie() {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                location.reload();
+              }
+            </script>
         </a>
       </li>
     </ul>
@@ -140,7 +140,7 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="/Desk1Dashboard">Dashboard</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
