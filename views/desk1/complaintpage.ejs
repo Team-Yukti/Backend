@@ -40,13 +40,13 @@
 
     <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="/Dashboard" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <!-- <span class="d-none d-lg-block">Yukti</span> -->
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="/Dashboard" class="logo d-flex align-items-center">
+          <img src="assets/img/logo.png" alt="">
+          <!-- <span class="d-none d-lg-block">Yukti</span> -->
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+      </div><!-- End Logo -->
 
 
 
@@ -158,80 +158,13 @@
               <div class="card-body">
                 <h5 class="card-title">Complaint Form</h5>
 
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link" href="/Dashboard">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/ChangePassword">
-          <i class="bi bi-file-earmark-lock"></i>
-          <span>Change Password</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-translate"></i>
-          <%- include('../common_scripts/translate')%>
-          <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
-          <script>
-            function clearCookie() {
-              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              location.reload();
-            }
-          </script>
-        </a>
-      </li>
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
-
-
-  <main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Desk1Dashboard">Dashboard</a></li>
-          <li class="breadcrumb-item active">View Complaint</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Complaint Form</h5>
-
-              <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 ">Complaint Similarity</label>
-                  <div class="col-sm-9">
-                    <%=complaint.percentage%>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 ">Name</label>
-                  <div class="col-sm-9">
-                    <%=EndUserData.Name%>
+                <!-- General Form Elements -->
+                <form>
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-3 ">Name</label>
+                    <div class="col-sm-9">
+                      <%=EndUserData.Name%>
+                    </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 ">Gender</label>
@@ -316,7 +249,7 @@
                     <!-- <label class="col-sm-5 "></label> -->
 
                     <div class="col-sm-3">
-                     <button type="submit" value="Send" class="btn btn-primary">Escalate</button>
+                      <button type="submit" value="Send" class="btn btn-primary">Escalate</button>
                     </div>
                     <div class="col-sm-3">
                       <a href="/approveComplaint?cid=<%=`${complaint.id}`%>"><button type="button"
