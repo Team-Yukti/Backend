@@ -15,7 +15,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -35,17 +37,42 @@
 
   <!--Start of Tawk.to Script-->
   <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6305f3ee54f06e12d8907185/1gb7k1oaj';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6305f3ee54f06e12d8907185/1gb7k1oaj';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
     })();
-    </script>
+  </script>
   <!--End of Tawk.to Script-->
+
+  <!--Analytics-->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBJdqvlabfIrwGFYcTpebuMTlasnTXsHgo",
+      authDomain: "sihcomplaintredressal.firebaseapp.com",
+      projectId: "sihcomplaintredressal",
+      storageBucket: "sihcomplaintredressal.appspot.com",
+      messagingSenderId: "1022317520311",
+      appId: "1:1022317520311:web:688cf1e61da2aa8dd17432",
+      measurementId: "G-JPJ1Z83SQX"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 
   <!-- ======= Header ======= -->
   <!-- ======= Header ======= -->
@@ -211,12 +238,16 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"> <%=userData.idToken.payload.name%></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">
+              <%=userData.idToken.payload.name%>
+            </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><%=userData.idToken.payload.name%></h6>
+              <h6>
+                <%=userData.idToken.payload.name%>
+              </h6>
 
             </li>
             <li>
@@ -310,81 +341,92 @@
       </nav>
     </div><!-- End Page Title -->
 
-<!--     end ------------------------------     -->
-<section class="section">
-    <div class="row">
-      <div class="col-lg-12">
+    <!--     end ------------------------------     -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
 
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">General Form Elements</h5>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">General Form Elements</h5>
 
-            <!-- General Form Elements -->
-            <form action="/LodgeComplaint" class="needs-validation" method="post" novalidate>
-              <input type="text" name="ministry" value="<%=ministry%>" hidden>
-              <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Complaint</label>
-                <div class="col-sm-10">
-                  <textarea name="ComplaintBody" id="" placeholder="Complaint" class="form-control" style="height: 200px"></textarea>
+              <!-- General Form Elements -->
+              <form action="/LodgeComplaint" class="needs-validation" method="post" novalidate>
+                <input type="text" name="ministry" value="<%=ministry%>" hidden>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">Institute/Organization name</label>
+                  <div class="col-sm-10">
+                    <input name="Employer" id="" placeholder="Employer institute name" class="form-control" required>
+                  </div>
+                  <div class="invalid-feedback">Please enter employer institute name</div>
                 </div>
-              </div>
-
-              Or
-
-              <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Upload Complaint (.png, .jpeg)</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" name="docs" id="formFile" multiple>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">Complaint</label>
+                  <div class="col-sm-10">
+                    <textarea name="ComplaintBody" id="" placeholder="Complaint" class="form-control"
+                      style="height: 200px"></textarea>
+                  </div>
                 </div>
-              </div>
 
-              <div class="row mb-3">
-                  <label class="form-label">Complaint Type</label>
+                Or
 
-                      <select name="type" class="form-select"
-                          aria-label="Default select example" required>
-                          <option selected value=""> Select Complaint Type</option>
-                          <%for(var i=0;i< subType.length;i++){%>
-                            <option value="<%=subType[i]%>"> <%=subType[i]%> </option>
-                            <%}%>
-                      </select>
-                      <div class="invalid-feedback">Please enter complaint type</div>
-
-              </div>
-
-              <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">ID Proof Upload</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" name="Idproof" id="formFile" >
+                <div class="row mb-3">
+                  <label for="inputNumber" class="col-sm-2 col-form-label">Upload Complaint (.png, .jpeg)</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="file" name="docs" id="formFile" multiple>
+                  </div>
                 </div>
-              </div>
 
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Complaint Type</label>
+                  <div class="col-sm-10">
+                    <select name="type" class="form-select" aria-label="Default select example" required>
+                      <option selected value=""> Select Complaint Type</option>
+                      <%for(var i=0;i< subType.length;i++){%>
+                        <option value="<%=subType[i]%>">
+                          <%=subType[i]%>
+                        </option>
+                        <%}%>
+                    </select>
+                  </div>
+                  <div class="invalid-feedback">Please enter complaint type</div>
 
-
-
-
-
-              <div class="row mb-3">
-                <div class="col-sm-10">
-                  <button type="submit" class="btn btn-primary">Submit Form</button>
                 </div>
-              </div>
 
-            </form><!-- End General Form Elements -->
+                <div class="row mb-3">
+                  <label for="inputNumber" class="col-sm-2 col-form-label">Document to support your application</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Idproof" id="formFile">
+                  </div>
+                </div>
 
+
+
+
+
+
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit Form</button>
+                  </div>
+                </div>
+
+              </form><!-- End General Form Elements -->
+
+            </div>
           </div>
+
         </div>
 
-      </div>
-
-  </section>
+    </section>
 
 
   </main><!-- End #main -->
 
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
