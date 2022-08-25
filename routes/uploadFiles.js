@@ -3,6 +3,7 @@ const router = express.Router();
 const AWS = require('aws-sdk');
 const { get } = require('express/lib/response');
 const fs = require('fs')
+const isLoggedIn = require('../middleware');
 
 const s3 = new AWS.S3({
     accessKeyId: "AKIAUNTJLAUF4DV2WFHS",
@@ -62,32 +63,25 @@ router.get('/getObject',(req,res)=>{
     
 })
 
-// router.get('/saveImageToDir',(req,res)=>{
-//     let s3 = new AWS.S3();
-
-//     async function getImage(){
-//       const data =  s3.getObject(
-//         {
-//             Bucket: 'complaint-bucket-sih',
-//             Key: "mpv-shot0004.jpg"
-//           }
-        
-//       ).promise();
-//       return data;
-//     }
-
-//     var buffer = Buffer.from(encode(getImage().Body),'base64')
-//     fs.writeFileSync('/upload/file-name.jpg',buffer)
-  
-//     function encode(data){
-//         let buf = Buffer.from(data);
-//         let base64 = buf.toString('base64');
-//         return base64
-//     }
+router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
+    //get the image from s3
+    let s3 = new AWS.S3();
+    let params = {
+        Bucket: 'complaint-bucket-sih',
+        Key: '101471763.jpg'
+    };
+    await s3.getObject(params, function(err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            // callback(null, data);
+        }
+    }).on('httpUploadProgress', function(progress) {
+        console.log(progress);
+    }).createReadStream().pipe(fs.createWriteStream('OCR_Images/'+req.session.user.idToken.payload.sub+'.jpg')); 
     
-// })
+})
  
-// getobject()
 
 
 module.exports = {
