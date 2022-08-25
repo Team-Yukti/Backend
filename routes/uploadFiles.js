@@ -9,12 +9,13 @@ const s3 = new AWS.S3({
     accessKeyId: "AKIAUNTJLAUF4DV2WFHS",
     secretAccessKey: "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"
 })
-function uploadFilestoS3(file,cid) {
+function uploadFilestoS3(file,cid,n) {
     var s3 = new AWS.S3();
     var params = {
         Bucket: 'complaint-bucket-sih',
-        Key: cid+'/'+file.name,
-        Body: file.data
+        Key: cid+'/'+n+'.jpg',
+        Body: file.data,
+        ACL: 'public-read'
     };
     s3.upload(params, function(err, data) {
         if (err) {
@@ -29,39 +30,7 @@ function uploadFilestoS3(file,cid) {
     });
 }
 
-
-router.get('/getObject',(req,res)=>{
-    let s3 = new AWS.S3();
-    
-    
-
-      async function getImage(){
-        const data =  s3.getObject(
-          {
-              Bucket: 'complaint-bucket-sih',
-              Key: "mpv-shot0004.jpg"
-            }
-          
-        ).promise();
-        return data;
-      }
-
-      
-      getImage()
-      .then((img)=>{
-         
-        res.send(image)
-      }).catch((e)=>{
-        res.send(e)
-      })
-
-      function encode(data){
-          let buf = Buffer.from(data);
-          let base64 = buf.toString('base64');
-          return base64
-      }
-    
-})
+// get object from the bucket
 
 router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
     //get the image from s3
