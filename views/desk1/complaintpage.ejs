@@ -845,7 +845,7 @@
                 <section style="background-color: #ffffff;">
                     <div class="container py-5">
 
-                      <div class="row" style="overflow:scroll; height:400px">
+                      <div class="row" style="overflow-y:scroll; height:400px">
                         <div class="col-md-6 col-lg-7 col-xl-8">
 
                           <ul class="centerlist-unstyled">
@@ -855,8 +855,6 @@
                                     <div class="card w-100">
                                       <div class="card-header d-flex justify-content-between p-3">
                                         <p class="fw-bold mb-0"><%=complaint.comments[i].uid%></p>
-
-
                                         <%const dateObject = new Date(complaint.comments[i].time._seconds*1000)%>
                                         <%const date = dateObject.getDate();%>
                                         <%const month = dateObject.getMonth() + 1;%>
