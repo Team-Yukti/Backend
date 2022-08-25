@@ -64,10 +64,6 @@ app.get('/AdminDashboard', (req, res) => {
 app.get('/UserComplaints',userRole.isUser, (req, res) => {
     res.render('user/lodgeComplaint',{userData:req.session.user});
 })
-
-app.get('/OnboardAdmin',isLoggedIn, (req,res) => {
-    res.render('superadmin/onboard_admins');
-})
 app.get('/EditProfile',userRole.isUser, (req,res)=>{
     res.render('user/editProfile')
 })

@@ -220,6 +220,18 @@ router.get('/Dashboard', userRole.isUser, async (req,res)=>{
                                rejected: rejected, notifications: notifications});
 })
 
+router.get('/OnboardAdmin',isLoggedIn, async (req,res) => {
+    var ministries = [];
+    await db.collection("ministries").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+          ministries.push(doc.data().Name);
+      });
+    })
+    console.log(ministries);
+    res.render('superadmin/onboard_admins', {ministries: ministries});
+})
+
 router.get('/Desk1Dashboard', userRole.isDesk1, async (req,res)=>{
   const ministry = req.session.user.idToken.payload['custom:ministry'];
   var complaint_types = []
@@ -297,9 +309,7 @@ router.get('/Desk2Dashboard', userRole.isDesk2, async (req,res)=>{
   var userId = req.session.user.idToken.payload.sub;
   var complaints_resolved = [];
   await db.collection("users").doc(userId).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      complaints_resolved = doc.data().complaints_resolved;
-    });
+    complaints_resolved = querySnapshot.data().complaints_resolved;
   })
   for(var i=0;i<complaints_resolved.length;i++){
     if(complaints_resolved[i].status == "Approved"){

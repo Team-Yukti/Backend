@@ -19,11 +19,32 @@ router.use(
 router.post('/LodgeComplaint',userRole.isUser, (req, res) => {
     res.json(req.body);
     var complaint_summary = "";
+    // if(req.body.ComplaintBody == ""){
+    //   try {
+    //         const file = req.files.docs;
+    //         console.log(file);
+    //         var filedata = file.data;
+    //         const b64 = Buffer.from(filedata).toString('base64');
+    //         const mimeType = 'image/png'; // e.g., image/png
+    //         console.log(`data:${mimeType};base64,${b64}`);
+    //         if(file){
+    //             upload.uploadFilestoS3(file)
+    //         }
+    //         const fileName = new Date().getTime().toString() + path.extname(file.name)
+    //         if (file.truncated) {
+    //           throw new Error('File size is too big...')
+    //         }
+    //       }
+    //     catch (error) {
+    //         console.log(error);
+    //       }
+    // }
+    // console.log(req.body.ComplaintBody);
     const runRequestBody = {
         text: req.body.ComplaintBody
     };
     request.post({
-        url: "http://13.233.148.244:8000/text-summarizer/",
+        url: "http://127.0.0.1:8000/text-summarizer/",
         json: runRequestBody
     },
     function(error, response, body){
