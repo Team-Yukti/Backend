@@ -3,7 +3,10 @@
 	<script type="text/javascript">
 		function googleTranslateElementInit() {
 			new google.translate.TranslateElement(
-				{pageLanguage: 'hi'},
+				{pageLanguage: 'hi',
+				includedLanguages: 'en,hi,mr,bn,bh,gu,ks,ml,ne,te,ur,kn,sd,sa,pa,as', 
+				layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+			},
 				'google_translate_element'
 			);
 		}
