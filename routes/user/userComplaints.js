@@ -46,7 +46,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
         ComplaintSummary: complaint_summary,
         // complaint_file: req.files.complaint_file.name,
         additional_file: req.files.additional_file.name,
-        current_desk: 1,
+        current_desk: "Desk 1",
         status: "Pending",
         ministry: req.body.ministry
       }
