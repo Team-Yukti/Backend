@@ -152,9 +152,16 @@
 
         </ul>
         <li class="nav-item">
-          <a class="nav-link collapsed" href="/Dashboard">
+          <a class="nav-link collapsed" href="#">
             <i class="bi bi-translate"></i>
             <%- include('../common_scripts/translate')%>
+            <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
+            <script>
+              function clearCookie() {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                location.reload();
+              }
+            </script>
           </a>
         </li>
       </li><!-- End Components Nav -->

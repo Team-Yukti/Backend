@@ -114,9 +114,16 @@
         </a>
       </li><!-- End Error 404 Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/Dashboard">
+        <a class="nav-link collapsed" href="#">
           <i class="bi bi-translate"></i>
           <%- include('../common_scripts/translate')%>
+          <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
+          <script>
+            function clearCookie() {
+              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              location.reload();
+            }
+          </script>
         </a>
       </li>
 
@@ -148,45 +155,45 @@
               <!-- General Form Elements -->
               <form>
                 <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 col-form-label">Name</label>
+                  <label for="inputText" class="col-sm-3 ">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=EndUserData.Name%>" class="form-control" readonly>
+                    <%=EndUserData.Name%>
                   </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
+                    <label for="inputText" class="col-sm-3 ">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=EndUserData.Gender%>" class="form-control" readonly>
+                      <%=EndUserData.Gender%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Age</label>
+                    <label for="inputText" class="col-sm-3 ">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=EndUserData.Age%>" class="form-control" readonly>
+                      <%=EndUserData.Age%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Address</label>
+                    <label for="inputText" class="col-sm-3 ">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=EndUserData.Address%>" class="form-control" readonly>
+                      <%=EndUserData.Address%>
                     </div>
                   </div>
                   <div class="row mb-3">
-                      <label for="inputText" class="col-sm-3 col-form-label">City</label>
+                      <label for="inputText" class="col-sm-3 ">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=EndUserData.City%>" class="form-control" readonly>
+                        <%=EndUserData.City%>
                       </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">State</label>
+                    <label for="inputText" class="col-sm-3 ">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=EndUserData.State%>" class="form-control" readonly>
+                      <%=EndUserData.State%>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
+                    <label for="inputText" class="col-sm-3 ">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=EndUserData.Phone%>" class="form-control" readonly>
+                      <%=EndUserData.Phone%>
                     </div>
                   </div>
                   <%const dateObject = new Date(complaint.Time["_seconds"]*1000)%>
@@ -194,37 +201,33 @@
                   <%const month = dateObject.getMonth() + 1;%>
                   <%const year = dateObject.getFullYear();%>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Date</label>
+                    <label for="inputText" class="col-sm-3 ">Date</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=`${date}-${month}-${year}`%>" class="form-control" readonly>
+                      <%=`${date}-${month}-${year}`%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Body</label>
+                  <label for="inputPassword" class="col-sm-3 ">Complaint Body</label>
                   <div class="col-sm-9">
-                    <textarea class="form-control"  style="height: 100px" readonly>
-                        <%=complaint.ComplaintBody%>
-                    </textarea>
+                    <%=complaint.ComplaintBody%>
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Summary</label>
+                  <label for="inputPassword" class="col-sm-3 ">Complaint Summary</label>
                   <div class="col-sm-9">
-                    <textarea class="form-control"  style="height: 100px">
-                        <%=complaint.ComplaintSummary%>
-                    </textarea>
+                    <%=complaint.ComplaintSummary%>
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <!-- <label class="col-sm-5 col-form-label"></label> -->
+                  <!-- <label class="col-sm-5 "></label> -->
                   <div class="col-sm-3"></div>
                   <div class="col-sm-4">
                     <a href="/approveComplaintDesk1?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Approve</button></a>
                   </div>
                 <!-- </div>
                 <div class="row mb-3"> -->
-                  <!-- <label class="col-sm-5 col-form-label"></label> -->
+                  <!-- <label class="col-sm-5 "></label> -->
                   <div class="col-sm-5">
                     <a href="/rejectComplaint?cid=<%=`${complaint.id}`%>"><button type="button" class="btn btn-primary">Reject</button></a>
                   </div>
