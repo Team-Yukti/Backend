@@ -18,6 +18,7 @@ var smtpProtocol = mailer.createTransport({
 
 
 function SendEmail(email,subject,body){
+  console.log("email",email);
     var mailoption = {
         from: process.env.EMAIL,
         cc:process.env.EMAIL,
@@ -403,4 +404,5 @@ function SendEmail(email,subject,body){
 
     
 }
+module.exports = {SendEmail:SendEmail};
 
