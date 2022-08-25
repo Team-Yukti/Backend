@@ -28,19 +28,12 @@
 
   <!-- Template Main CSS File -->
   <link href="assets1/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
 
   <%- include('common_scripts/analytics')%>
-  <%- include('common_scripts/translate')%>
+
   <%- include('common_scripts/chatbot')%>
 
   <!-- ======= Header ======= -->
@@ -79,6 +72,7 @@
           <!-- <li><a class="nav-link scrollto" href="#">Mobile App</a></li> -->
           <li><a class="nav-link scrollto" href="/Signup">Signup</a></li>
           <li><a class="nav-link scrollto" href="/Login">Login</a></li>
+          <li style="margin-left: 50px;"><%- include('common_scripts/translate')%></li>
           
          
         </ul>
@@ -88,10 +82,12 @@
     </div>
   </header><!-- End Header -->
 
+
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="hero d-flex align-items-center">
 
     <div class="container">
+      
       <div class="row">
         <div class="col-lg-6 d-flex flex-column justify-content-center">
           <h1 data-aos="fade-up">We offer modern solutions for every labour complaint and make the whole process user-friendly.</h1>
