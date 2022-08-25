@@ -281,9 +281,16 @@
 
         </ul>
         <li class="nav-item">
-          <a class="nav-link collapsed" href="/Dashboard">
+          <a class="nav-link collapsed" href="#">
             <i class="bi bi-translate"></i>
             <%- include('../common_scripts/translate')%>
+            <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
+            <script>
+              function clearCookie() {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                location.reload();
+              }
+            </script>
           </a>
         </li>
       </li><!-- End Components Nav -->
@@ -314,45 +321,45 @@
               <!-- General Form Elements -->
               <form>
                 <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 col-form-label">Name</label>
+                  <label for="inputText" class="col-sm-3 ">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" value="<%=UserData.idToken.payload.name%>" class="form-control" readonly>
+                    <%=UserData.idToken.payload.name%>
                   </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Gender</label>
+                    <label for="inputText" class="col-sm-3 ">Gender</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.gender%>" class="form-control" readonly>
+                      <%=UserData.idToken.payload.gender%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Age</label>
+                    <label for="inputText" class="col-sm-3 ">Age</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:age']%>" class="form-control" readonly>
+                      <%=UserData.idToken.payload['custom:age']%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Address</label>
+                    <label for="inputText" class="col-sm-3 ">Address</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.address['formatted']%>" class="form-control" readonly>
+                      <%=UserData.idToken.payload.address['formatted']%>
                     </div>
                   </div>
                   <div class="row mb-3">
-                      <label for="inputText" class="col-sm-3 col-form-label">City</label>
+                      <label for="inputText" class="col-sm-3 ">City</label>
                       <div class="col-sm-9">
-                        <input type="text" value="<%=UserData.idToken.payload['custom:city']%>" class="form-control" readonly>
+                        <%=UserData.idToken.payload['custom:city']%>
                       </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">State</label>
+                    <label for="inputText" class="col-sm-3 ">State</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload['custom:state']%>" class="form-control" readonly>
+                      <%=UserData.idToken.payload['custom:state']%>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Mobile</label>
+                    <label for="inputText" class="col-sm-3 ">Mobile</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=UserData.idToken.payload.phone_number%>" class="form-control" readonly>
+                      <%=UserData.idToken.payload.phone_number%>
                     </div>
                   </div>
                   <%const dateObject = new Date(complaint.Time["_seconds"]*1000)%>
@@ -360,22 +367,22 @@
                   <%const month = dateObject.getMonth() + 1;%>
                   <%const year = dateObject.getFullYear();%>
                   <div class="row mb-3">
-                    <label for="inputText" class="col-sm-3 col-form-label">Date</label>
+                    <label for="inputText" class="col-sm-3 ">Date</label>
                     <div class="col-sm-9">
-                      <input type="text" value="<%=`${date}-${month}-${year}`%>" class="form-control" readonly>
+                      <%=`${date}-${month}-${year}`%>
                     </div>
                 </div>
                 <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-3 col-form-label">Complaint Body</label>
+                  <label for="inputPassword" class="col-sm-3 ">Complaint Body</label>
                   <div class="col-sm-9">
-                    <textarea class="form-control"  style="height: 100px" readonly>
+                    
                         <%=complaint.ComplaintBody%>
-                    </textarea>
+                    
                   </div>
                 </div>
 
                 <!-- <div class="row mb-3">
-                  <label class="col-sm-5 col-form-label"></label>
+                  <label class="col-sm-5 "></label>
                   <div class="col-sm-7">
                     <button type="submit" class="btn btn-primary">Next</button>
                   </div>

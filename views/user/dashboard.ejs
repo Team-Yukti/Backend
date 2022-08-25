@@ -44,7 +44,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="/Dashboard" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-block">Yukti</span>
+        <span class="d-block">Shikayat</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -178,11 +178,20 @@
 
         </ul>
         <li class="nav-item">
-          <a class="nav-link collapsed" href="/Dashboard">
+          <a class="nav-link collapsed" href="#">
             <i class="bi bi-translate"></i>
             <%- include('../common_scripts/translate')%>
+            <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
+            <script>
+              function clearCookie() {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                location.reload();
+              }
+            </script>
           </a>
         </li>
+
+        
       </li><!-- End Components Nav -->
     </ul>
 
