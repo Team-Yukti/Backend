@@ -35,19 +35,19 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
         ComplaintBody: req.body.ComplaintBody,
         UID: req.session.user.idToken.payload.sub,
         Employer: req.body.Employer,
-        type: "Salary",
+        type: req.body.type,
         comments: [],
         ComplaintSummary: complaint_summary,
-        // DocName:req.body.docs,
-        // Idproof: req.body.Idproof,
+        complaint_file: req.files.complaint_file.name,
+        additional_file: req.files.additional_file.name,
         current_desk: 1,
         status: "Pending",
         ministry: req.body.ministry
       }
       console.log(complaintData);
 
-      crud.insertComplaint(req.session.user.idToken.payload.sub, complaintData, req.files.docs,  req.files.Idproof);
-      res.json(req.body )
+      crud.insertComplaint(req.session.user.idToken.payload.sub, complaintData, req.files.complaint_file,  req.files.additional_file);
+      res.redirect('/Dashboard');
     });
 })
 

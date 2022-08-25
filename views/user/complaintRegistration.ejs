@@ -351,7 +351,7 @@
               <h5 class="card-title">General Form Elements</h5>
 
               <!-- General Form Elements -->
-              <form action="/LodgeComplaint" class="needs-validation" method="post" novalidate>
+              <form action="/LodgeComplaint" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
                 <input type="text" name="ministry" value="<%=ministry%>" hidden>
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">Institute/Organization name</label>
@@ -373,7 +373,7 @@
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Upload Complaint (.png, .jpeg)</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" name="docs" id="formFile" multiple>
+                    <input class="form-control" type="file" name="complaint_file" id="formFile" multiple>
                   </div>
                 </div>
 
@@ -396,7 +396,7 @@
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Document to support your application</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" name="Idproof" id="formFile">
+                    <input class="form-control" type="file" name="additional_file" id="formFile">
                   </div>
                 </div>
 
