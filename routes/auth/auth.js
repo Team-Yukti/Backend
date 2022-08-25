@@ -76,6 +76,8 @@ router.post('/Login', async (req, res) => {
         Password: req.body.password, // your password here
     };
     var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+    // login with mobile number in aws 
+
     var userData = {
         Username: req.body.email, // your username here
         Pool: userPool
