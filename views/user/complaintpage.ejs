@@ -322,7 +322,7 @@
             <div class="col-lg-6">
 
               <div class="card">
-                <div class="card-body">
+                <div class="card-body" id="makepdf">
                   <h5 class="card-title">Complaint Form</h5>
 
                   <!-- General Form Elements -->
@@ -393,7 +393,7 @@
                                   <a href="/ViewImage?url=https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/<%=cid%>.jpg" class="btn-btn-primary">View Document</a>
                             </div>
                           </div>
-                            
+
 
 
                             <!-- <div class="row mb-3">
@@ -407,6 +407,8 @@
 
                 </div>
               </div>
+
+              <button type="button" id="button" class="btn btn-primary btn-rounded float-end" name="button">Download PDF</button>
 
             </div>
             <!-- <section class="section">
@@ -505,6 +507,7 @@
       <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
       <script src="assets/vendor/tinymce/tinymce.min.js"></script>
       <script src="assets/vendor/php-email-form/validate.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
       <!-- Template Main JS File -->
       <script src="assets/js/main.js"></script>
@@ -513,20 +516,45 @@
 
 </html>
 <script>
+
+  $(document).ready(function(){
+    $("button").click(function(){
+      $("make_pdf").printThis();
+    })
+  })
   // open image in box on click
-  $(document).ready(function() {
-    $('img').click(function(src) {
-     
-      var img = '<img src="' + src + '" class="img-responsive"/>';
-      $('#myModal').modal({
-        show: true
-      });
-      $('#myModal').on('shown.bs.modal', function() {
-        $('#myModal .modal-body').html(img);
-      });
-      $('#myModal').on('hidden.bs.modal', function() {
-        $('#myModal .modal-body').html('');
-      });
+  // $(document).ready(function() {
+  //   $('img').click(function(src) {
+  //
+  //     var img = '<img src="' + src + '" class="img-responsive"/>';
+  //     $('#myModal').modal({
+  //       show: true
+  //     });
+  //     $('#myModal').on('shown.bs.modal', function() {
+  //       $('#myModal .modal-body').html(img);
+  //     });
+  //     $('#myModal').on('hidden.bs.modal', function() {
+  //       $('#myModal .modal-body').html('');
+  //     });
+  //   });
+  // });
+
+    var button = document.getElementById("button");
+    var makepdf = document.getElementById("makepdf");
+
+    button.addEventListener("click", function () {
+        $("makepdf").printThis();
+        // var mywindow = window.open("", "PRINT",
+        //         "height=400,width=600");
+        //
+        // mywindow.document.write(makepdf.innerHTML);
+        //
+        // mywindow.document.close();
+        // mywindow.focus();
+        //
+        // mywindow.print();
+        // mywindow.close();
+        //
+        // return true;
     });
-  });
 </script>
