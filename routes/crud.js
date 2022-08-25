@@ -4,6 +4,7 @@ var admin = require('firebase-admin');
 const isLoggedIn = require('../middleware');
 const userRole = require('../isUser');
 const AWS = require('aws-sdk');
+const request = require('request');
 
 // const upload = require('../uploadFiles');
 
@@ -204,7 +205,12 @@ router.get('/Dashboard', userRole.isUser, async (req, res) => {
   var approved = 0, rejected = 0, pending = 0;
 
   var complaints = [];
+<<<<<<< HEAD
+  for(var i=0;i<complaint_ids.length;i++){
+    console.log(complaint_ids[i]);
+=======
   for (var i = 0; i < complaint_ids.length; i++) {
+>>>>>>> 59bf72cebb81451539e3893e2296e288cf7f475c
     await db.collection("complaints").doc(complaint_ids[i]).get().then((querySnapshot) => {
       var tpjson = querySnapshot.data();
       tpjson["cid"] = complaint_ids[i];
@@ -566,6 +572,76 @@ router.get('/ComplaintRegistration', userRole.isUser, async (req, res) => {
   });
   console.log(subType);
   res.render('user/complaintRegistration', { ministry: req.query.ministry, userData: req.session.user, subType: subType });
+})
+
+router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
+  console.log("Lodge Complaint");
+  var complaint_summary = "";
+  if(req.body.ComplaintBody == ""){
+    complaint_body = "We celebrate Independence Day as the national festival of India. The Day marks\nthe anniversary of national independence from the British Empire on 15th august\n1947. Furthermore, it is the most auspicious day for the people of India because\nIndia becomes independent after lots of hardships and sacrifices of the brave\nIndian freedom fighters. The entire nation celebrates this day with the full spirit of\n\npatriotism.\n"
+  }
+  const runRequestBody = {
+    text: req.body.ComplaintBody
+  };
+
+  var user_id = req.session.user.idToken.payload.sub;
+  var complaint_ids = []
+  await db.collection("users").doc(user_id).get().then((result) => {
+    complaint_ids = result.data().complaints;
+  })
+
+  var complaint_summaries = []
+  for(var i=0;i<complaint_ids.length;i++){
+    await db.collection("complaints").doc(complaint_ids[i]).get().then((result) => {
+      console.log(result);
+      complaint_summaries.push(result.data().ComplaintBody);
+    })
+  }
+  request.post({
+    // url: "http://13.233.148.244:8000/text-summarizer/",
+    url: "http://127.0.0.1:8000/text-summarizer/",
+    json: runRequestBody
+  },
+    function (error, response, body) {
+      console.log("Error", error);
+      JSON.stringify(body);
+      console.log("Body", body);
+      complaint_summary = body.extracted_text;
+
+      console.log(req.body.ComplaintBody);
+      console.log(complaint_summaries);
+      const similarityRequestBody = {
+        document1: req.body.ComplaintBody,
+        documents: complaint_summaries
+      }
+
+      request.post({
+        url: "http://127.0.0.1:8000/document_similarity/",
+        json: similarityRequestBody
+      },
+      function(error, response, body){
+        console.log("Error", error);
+        JSON.stringify(body);
+        console.log("Body", body);
+        var similarity = body.percentage;
+        complaintData = {
+          ComplaintBody: req.body.ComplaintBody,
+          UID: req.session.user.idToken.payload.sub,
+          Employer: req.body.Employer,
+          type: req.body.type,
+          comments: [],
+          ComplaintSummary: complaint_summary,
+          additional_file: req.files.additional_file.name,
+          current_desk: 1,
+          status: "Pending",
+          ministry: req.body.ministry,
+          percentage: similarity
+        }
+
+        insertComplaint(req.session.user.idToken.payload.sub, complaintData);
+        res.redirect('/Dashboard');
+      });
+    });
 })
 
 

@@ -9,11 +9,11 @@ const s3 = new AWS.S3({
     accessKeyId: "AKIAUNTJLAUF4DV2WFHS",
     secretAccessKey: "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"
 })
-function uploadFilestoS3(file,cid,n) {
+function uploadFilestoS3(file,cid) {
     var s3 = new AWS.S3();
     var params = {
         Bucket: 'complaint-bucket-sih',
-        Key: cid+'/'+n+'.jpg',
+        Key: cid+'.jpg',
         Body: file.data,
         ACL: 'public-read'
     };
@@ -38,6 +38,7 @@ router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
     let params = {
         Bucket: 'complaint-bucket-sih',
         Key: '101471763.jpg'
+
     };
     await s3.getObject(params, function(err, data) {
         if (err) {
