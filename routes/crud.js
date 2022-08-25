@@ -628,24 +628,24 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
         url: "http://127.0.0.1:8000/document_similarity/",
         json: similarityRequestBody
       },
-        function (error, response, body) {
-          console.log("Error", error);
-          JSON.stringify(body);
-          console.log("Body", body);
-          var similarity = body.percentage;
-          complaintData = {
-            ComplaintBody: req.body.ComplaintBody,
-            UID: req.session.user.idToken.payload.sub,
-            Employer: req.body.Employer,
-            type: req.body.type,
-            comments: [],
-            ComplaintSummary: complaint_summary,
-            additional_file: req.files.additional_file.name,
-            current_desk: 1,
-            status: "Pending",
-            ministry: req.body.ministry,
-            percentage: similarity
-          }
+      function(error, response, body){
+        console.log("Error", error);
+        JSON.stringify(body);
+        console.log("Body", body);
+        var similarity = body.percentage;
+        complaintData = {
+          ComplaintBody: req.body.ComplaintBody,
+          UID: req.session.user.idToken.payload.sub,
+          Employer: req.body.Employer,
+          type: req.body.type,
+          comments: [],
+          ComplaintSummary: complaint_summary,
+          additional_file: req.files.additional_file.name,
+          current_desk: "Desk 1",
+          status: "Pending",
+          ministry: req.body.ministry,
+          percentage: similarity
+        }
 
           insertComplaint(req.session.user.idToken.payload.sub, complaintData);
           res.redirect('/Dashboard');
