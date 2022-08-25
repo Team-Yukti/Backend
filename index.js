@@ -52,6 +52,9 @@ app.get('/', (req, res) => {
 app.get('/Login', (req, res) => {
     res.render('auth/login');
 })
+app.get('/Mobileapp', (req, res) => {
+    res.render('auth/mobileapp');
+})
 app.get('/Signup', (req, res) => {
     res.render('auth/signup');
 })

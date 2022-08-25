@@ -3,6 +3,9 @@ const router = express.Router();
 var admin = require('firebase-admin');
 const isLoggedIn = require('../middleware');
 const userRole = require('../isUser');
+const AWS = require('aws-sdk');
+
+// const upload = require('../uploadFiles');
 
 const {
     initializeApp,
@@ -59,8 +62,8 @@ async function checkFirstTimeLogin(json, uid) {
 }
 
 
-//insert complaint
-async function insertComplaint(uid, json,file,Idproofs) {
+
+async function insertComplaint(uid, json) {
     json["Time"] = admin.firestore.Timestamp.fromDate(new Date());
    await db.collection('complaints').add(json)
         .then(ref => {
@@ -72,19 +75,12 @@ async function insertComplaint(uid, json,file,Idproofs) {
             }).catch(err => {
                 console.log('Error adding document: ', err);
             });
-
-
-
-            try {
-              console.log(file);
-            } catch (error) {
-            }
-
-
         }).catch(err => {
             console.log('Error adding document: ', err);
         });
 }
+
+
 
 
 function getAllComplaints(cid) {
@@ -567,6 +563,26 @@ router.get('/getObject',(req,res)=>{
 
 })
 
+
+async function LoginwithPhone(phone)
+{
+  await db.collection('users').where('Phone', '==', phone).get().then(docs => {
+    if(docs.empty)
+    {
+      return "";
+    }
+    else
+    {
+      docs.forEach(doc => {
+        console.log(doc.data().Email)
+        return doc.data().Email;
+      })
+    }
+  })
+
+}
+
+
 module.exports = {
     router: router,
     insertItem: insertItem,
@@ -578,5 +594,6 @@ module.exports = {
     approveComplaintDesk1: approveComplaintDesk1,
     approveComplaintDesk2: approveComplaintDesk2,
     rejectComplaint: rejectComplaint,
-    updateUser: updateUser
+    updateUser: updateUser,
+    LoginwithPhone: LoginwithPhone
 };

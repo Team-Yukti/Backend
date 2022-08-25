@@ -7,6 +7,8 @@ const fileUpload = require('express-fileupload')
 const path = require('path')
 const request = require('request');
 const userRole = require('../../isUser');
+const AWS = require('aws-sdk');
+
 
 
 router.use(
@@ -25,6 +27,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
   const runRequestBody = {
     text: req.body.ComplaintBody
   };
+
   request.post({
     url: "http://13.233.148.244:8000/text-summarizer/",
     json: runRequestBody
@@ -47,12 +50,28 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
         status: "Pending",
         ministry: req.body.ministry
       }
-      console.log(complaintData);
+
+      const file = req.files.complaint_file;
+      const file1 = req.files.additional_file;
+      console.log(file);
+      try {
+        if(file != null){
+          upload.uploadFilestoS3(file,req.session.user.idToken.payload.sub,1);
+        }
+        if(file1 != null){
+          upload.uploadFilestoS3(file1,req.session.user.idToken.payload.sub,2);
+        }
+        console.log(file);
+      } catch (error) {
+      }
 
       // crud.insertComplaint(req.session.user.idToken.payload.sub, complaintData, req.files.complaint_file,  req.files.additional_file);
       res.redirect('/Dashboard');
     });
 })
+
+
+
 
 router.post('/AddComment', isLoggedIn, (req, res) => {
   if(req.session.user.idToken.payload["custom:role"]=="user"){
