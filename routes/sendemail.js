@@ -18,6 +18,7 @@ var smtpProtocol = mailer.createTransport({
 
 
 function SendEmail(email,subject,body){
+  console.log("email",email);
     var mailoption = {
         from: process.env.EMAIL,
         cc:process.env.EMAIL,
@@ -182,7 +183,7 @@ function SendEmail(email,subject,body){
               <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 40px 20px;font-family:'Lato',sans-serif;" align="left">
 
           <div style="color: #333333; line-height: 150%; text-align: center; word-wrap: break-word;">
-            <p style="font-size: 14px; line-height: 150%;"><span style="font-size: 16px; line-height: 24px;">`+body+`.</span></p>
+            <p style="font-size: 14px; line-height: 150%;"><span style="font-size: 16px; line-height: 24px;">Your verification code is {####}.</span></p>
           </div>
 
               </td>
@@ -194,6 +195,7 @@ function SendEmail(email,subject,body){
           <tbody>
             <tr>
               <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px;font-family:'Lato',sans-serif;" align="left">
+<<<<<<< HEAD
 
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
@@ -205,6 +207,11 @@ function SendEmail(email,subject,body){
           </tr>
         </table>
 
+=======
+                
+        
+        
+>>>>>>> 621053b94863b90bda5712a8c0c5972fd7acbbef
               </td>
             </tr>
           </tbody>
@@ -411,3 +418,8 @@ function SendEmail(email,subject,body){
 
 
 }
+<<<<<<< HEAD
+=======
+module.exports = {SendEmail:SendEmail};
+
+>>>>>>> 621053b94863b90bda5712a8c0c5972fd7acbbef
