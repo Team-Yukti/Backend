@@ -38,6 +38,7 @@ function UploadCamera(file,cid) {
         Body: file,
         ACL: 'public-read'
     };
+    console.log(cid+"in upload cam");
     s3.upload(params, function(err, data) {
         if (err) {
             console.log(err);
@@ -69,10 +70,10 @@ router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
         }
     }).on('httpUploadProgress', function(progress) {
         console.log(progress);
-    }).createReadStream().pipe(fs.createWriteStream('OCR_Images/'+req.session.user.idToken.payload.sub+'.jpg')); 
-    
+    }).createReadStream().pipe(fs.createWriteStream('OCR_Images/'+req.session.user.idToken.payload.sub+'.jpg'));
+
 })
- 
+
 
 
 module.exports = {
