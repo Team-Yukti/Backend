@@ -81,13 +81,9 @@ router.post('/AddComment', isLoggedIn, (req, res) => {
     crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment);
     res.redirect('/GetFullComplaint?cid=' + req.body.cid);
   }
-  else if(req.session.user.idToken.payload["custom:role"]=="desk1"){
+  else{
     crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment, "desk1");
     res.redirect('/GetFullComplaintAdmin1?cid=' + req.body.cid);
-  }
-  else if(req.session.user.idToken.payload["custom:role"]=="desk2"){
-    crud.addComment(req.body.cid, req.session.user.idToken.payload.sub, req.body.comment, "desk2");
-    res.redirect('/GetFullComplaintAdmin2?cid=' + req.body.cid);
   }
 })
 

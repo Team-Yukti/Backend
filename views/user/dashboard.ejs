@@ -331,7 +331,7 @@
                                       <td>
                                         <%=`${date}-${month}-${year}`%>
                                       </td>
-                                      <td><span class="badge bg-danger">
+                                      <td><span class="badge <%=complaints[i].status=='Pending'?'bg-warning':complaints[i].status=='Approved'?'bg-success':'bg-danger'%>">
                                           <%=complaints[i].status%>
                                         </span></td>
                                       <td><a href="/GetFullComplaint?cid=<%=complaints[i].cid%>"
