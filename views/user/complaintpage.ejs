@@ -28,6 +28,8 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -322,7 +324,7 @@
             <div class="col-lg-6">
 
               <div class="card">
-                <div class="card-body" id="makepdf">
+                <div class="card-body" id="whatToPrint">
                   <h5 class="card-title">Complaint Form</h5>
 
                   <!-- General Form Elements -->
@@ -393,7 +395,8 @@
                                   <a href="/ViewImage?url=https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/<%=cid%>.jpg" class="btn-btn-primary">View Document</a>
                             </div>
                           </div>
-
+                          <!-- <button type="button" class="btn btn-primary btn-rounded float-end" name="button">Download PDF</button> -->
+                          <a href="javascript:generatePDF()" id="downloadButton" type="button" class="btn btn-primary btn-rounded float-end" name="button">Download PDF</a>
 
 
                             <!-- <div class="row mb-3">
@@ -407,8 +410,6 @@
 
                 </div>
               </div>
-
-              <button type="button" id="button" class="btn btn-primary btn-rounded float-end" name="button">Download PDF</button>
 
             </div>
             <!-- <section class="section">
@@ -516,45 +517,27 @@
 
 </html>
 <script>
+  async function generatePDF() {
+      document.getElementById("downloadButton").innerHTML = "Currently downloading, please wait";
 
-  $(document).ready(function(){
-    $("button").click(function(){
-      $("make_pdf").printThis();
-    })
-  })
-  // open image in box on click
-  // $(document).ready(function() {
-  //   $('img').click(function(src) {
-  //
-  //     var img = '<img src="' + src + '" class="img-responsive"/>';
-  //     $('#myModal').modal({
-  //       show: true
-  //     });
-  //     $('#myModal').on('shown.bs.modal', function() {
-  //       $('#myModal .modal-body').html(img);
-  //     });
-  //     $('#myModal').on('hidden.bs.modal', function() {
-  //       $('#myModal .modal-body').html('');
-  //     });
-  //   });
-  // });
+      //Downloading
+      var downloading = document.getElementById("whatToPrint");
+      var doc = new jsPDF('l', 'pt');
 
-    var button = document.getElementById("button");
-    var makepdf = document.getElementById("makepdf");
+      await html2canvas(downloading, {
+          //allowTaint: true,
+          //useCORS: true,
+          width: 530
+      }).then((canvas) => {
+          //Canvas (convert to PNG)
 
-    button.addEventListener("click", function () {
-        $("makepdf").printThis();
-        // var mywindow = window.open("", "PRINT",
-        //         "height=400,width=600");
-        //
-        // mywindow.document.write(makepdf.innerHTML);
-        //
-        // mywindow.document.close();
-        // mywindow.focus();
-        //
-        // mywindow.print();
-        // mywindow.close();
-        //
-        // return true;
-    });
+          doc.addImage(canvas.toDataURL('image/png'), 'PNG', 75, 0,0,0);
+      })
+
+      doc.save("Document.pdf");
+
+      //End of downloading
+
+      document.getElementById("downloadButton").innerHTML = "Click to download";
+  }
 </script>

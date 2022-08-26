@@ -40,13 +40,13 @@
 
     <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="/Dashboard" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <!-- <span class="d-none d-lg-block">Yukti</span> -->
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="/Dashboard" class="logo d-flex align-items-center">
+          <img src="assets/img/logo.png" alt="">
+          <!-- <span class="d-none d-lg-block">Yukti</span> -->
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+      </div><!-- End Logo -->
 
 
 
@@ -158,80 +158,13 @@
               <div class="card-body">
                 <h5 class="card-title">Complaint Form</h5>
 
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link" href="/Dashboard">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/ChangePassword">
-          <i class="bi bi-file-earmark-lock"></i>
-          <span>Change Password</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-translate"></i>
-          <%- include('../common_scripts/translate')%>
-          <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
-          <script>
-            function clearCookie() {
-              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              location.reload();
-            }
-          </script>
-        </a>
-      </li>
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
-
-
-  <main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/Desk1Dashboard">Dashboard</a></li>
-          <li class="breadcrumb-item active">View Complaint</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Complaint Form</h5>
-
-              <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 ">Complaint Similarity</label>
-                  <div class="col-sm-9">
-                    <%=complaint.percentage%>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-3 ">Name</label>
-                  <div class="col-sm-9">
-                    <%=EndUserData.Name%>
+                <!-- General Form Elements -->
+                <form>
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-3 ">Name</label>
+                    <div class="col-sm-9">
+                      <%=EndUserData.Name%>
+                    </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 ">Gender</label>
@@ -288,10 +221,9 @@
                           <div class="row mb-3">
                             <label for="inputPassword" class="col-sm-3 ">Complaint Summary</label>
                             <div class="col-sm-9">
-                              <textarea type="text" name="complaint_summary" class="form-control"
+                              <textarea type="text" id="summary" name="complaint_summary" class="form-control"
                                 rows="4"><%=complaint.ComplaintSummary%></textarea>
-                              <a href="/UpdateSummary" class="btn btn-primary mt-2" type="submit" value="Send">Update
-                                Summary</a>
+                              <a href="/UpdateSummary" class="btn btn-primary mt-2" id="update-summary">Update Summary</a>
                             </div>
                           </div>
                 </form><!-- End General Form Elements -->
@@ -316,7 +248,7 @@
                     <!-- <label class="col-sm-5 "></label> -->
 
                     <div class="col-sm-3">
-                     <button type="submit" value="Send" class="btn btn-primary">Escalate</button>
+                      <button type="submit" value="Send" class="btn btn-primary">Escalate</button>
                     </div>
                     <div class="col-sm-3">
                       <a href="/approveComplaint?cid=<%=`${complaint.id}`%>"><button type="button"
@@ -326,7 +258,7 @@
                       <a href="/rejectComplaint?cid=<%=`${complaint.id}`%>"><button type="button"
                           class="btn btn-primary">Reject</button></a>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row sm-3">
                       <label for="inputPassword" class="col-sm-3 "></label>
                       <div class="col-sm-9">
                           <a type="button" class="btn btn-default" href="/ViewImage?url=https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/<%=cid%>.jpg">View Document</a>
@@ -437,6 +369,21 @@
     <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script type="text/javascript">
+    $('#update-summary').on('click', function(e){
+      e.preventDefault();
+      var urlString = $(this).attr('href');
+      var complaint_id = "<%=complaint.id%>"
+      var summary = $("#summary").html()
+      console.log(complaint_id);
+      console.log(summary);
+      console.log(urlString);
+      var newURL = urlString + "?cid=" + complaint_id + "&summary="+summary;
+      window.open(newURL);
+    });
+    </script>
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
