@@ -61,15 +61,14 @@
 
               <li class="nav-item dropdown">
 
-              <a class="nav-link nav-icon" style="cursor:pointer" onclick="zoom()">
-                A+
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link nav-icon" style="cursor:pointer" onclick="zoomout()">
-                A-
-              </a>
-
+                <a class="nav-link nav-icon" style="cursor:pointer" onclick="zoom()">
+                  A+
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon" style="cursor:pointer" onclick="zoomout()">
+                  A-
+                </a>
 
 
               </li>
@@ -202,51 +201,13 @@
                   <div class="card-body" id="whatToPrint">
                     <h5 class="card-title">Complaint Form</h5>
 
-            </ul>
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
-              <i class="bi bi-translate"></i>
-              <%- include('../common_scripts/translate')%>
-                <button class="btn btn-primary btn-sm" onclick="clearCookie()">original</button>
-                <script>
-                  function clearCookie() {
-                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    location.reload();
-                  }
-                </script>
-            </a>
-          </li>
-          </li><!-- End Components Nav -->
-        </ul>
-
-      </aside><!-- End Sidebar-->
-
-
-      <main id="main" class="main">
-
-        <div class="pagetitle">
-          <h1>Complaint Page</h1>
-          <nav>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/Dashboard">Dashboard/Complaint Page</a></li>
-            </ol>
-          </nav>
-        </div><!-- End Page Title -->
-
-        <section class="section">
-          <div class="row">
-            <div class="col-lg-6">
-
-              <div class="card">
-                <div class="card-body" id="whatToPrint">
-                  <h5 class="card-title">Complaint Form</h5>
-
-                  <!-- General Form Elements -->
-                  <form>
-                    <div class="row mb-3">
-                      <label for="inputText" class="col-sm-3 ">Name</label>
-                      <div class="col-sm-9">
-                        <%=UserData.idToken.payload.name%>
+                    <!-- General Form Elements -->
+                    <form>
+                      <div class="row mb-3">
+                        <label for="inputText" class="col-sm-3 ">Name</label>
+                        <div class="col-sm-9">
+                          <%=UserData.idToken.payload.name%>
+                        </div>
                       </div>
                       <div class="row mb-3">
                         <label for="inputText" class="col-sm-3 ">Gender</label>

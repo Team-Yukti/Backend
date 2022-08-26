@@ -412,8 +412,4 @@ function SendEmail(email,subject,body){
 
 
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 899620971f4caa79603edecbaf08c32e0be0d634
 module.exports = {SendEmail:SendEmail};
