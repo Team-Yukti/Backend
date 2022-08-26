@@ -353,7 +353,7 @@
                         </div>
                         <input type="text" name="uid" value="<%=complaint.UID%>" hidden>
                         <input type="text" name="cid" value="<%=cid%>" hidden>
-
+                        
 
 
                         <div class="col-12">
@@ -361,6 +361,7 @@
                         </div>
 
                       </form>
+                      
                     </div>
 
 
@@ -423,7 +424,8 @@
     await html2canvas(downloading, {
       //allowTaint: true,
       //useCORS: true,
-      width: 530
+      width: 1080,
+      height: 1920
     }).then((canvas) => {
       //Canvas (convert to PNG)
 
