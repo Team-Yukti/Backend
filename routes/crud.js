@@ -193,11 +193,11 @@ router.get('/GetFullComplaintAdmin2', userRole.isDesk2, async (req, res) => {
   });
 })
 
-router.get('/UpdateSummary', (req,res) => {
+router.get('/UpdateSummary', (req, res) => {
   var complaint_id = req.query.cid;
   var summary = req.query.summary;
   db.collection('complaints').doc(complaint_id).update({
-      ComplaintSummary: summary
+    ComplaintSummary: summary
   }).then(ref => {
     console.log('Updated complaint summary: ', ref.id);
   }).catch(err => {
@@ -263,24 +263,16 @@ router.get('/OnboardAdmin', isLoggedIn, async (req, res) => {
 
 router.get('/Desk1Dashboard', userRole.isDesk1, async (req, res) => {
   const ministry = req.session.user.idToken.payload['custom:ministry'];
+  const role = req.session.user.idToken.payload['custom:role']
   console.log(ministry);
-  var complaint_types = []
-  await db.collection("ministries").where("Name", "==", ministry).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const data = doc.data().complaint_types;
-      for (var i = 0; i < data.length; i++)
-        complaint_types.push(data[i]);
-    });
-  })
   var complaints = [];
-  var userinfo = [];
-  for (var i = 0; i < complaint_types.length; i++) {
-    await db.collection("complaints").where("type", "==", complaint_types[i]).where("current_desk", "==", req.session.user.idToken.payload["custom:role"]).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
+  await db.collection("complaints").where("ministry", "==", ministry).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      if(doc.data().current_desk==role && doc.data().status=="Pending")
         complaints.push({ ...doc.data(), id: doc.id });
-      })
     })
-  }
+  })
+  var userinfo = [];
   var approved = 0, pending = 0, rejected = 0;
   for (var i = 0; i < complaints.length; i++) {
     await db.collection("users").doc(complaints[i].UID).get().then((userData) => {
@@ -402,10 +394,10 @@ function checkNsendSMS(end_user_id, message) {
         console.log("SMS Sent");
         sms.sendsms(user.data().Phone, message);
       })
-    else if(doc.data().email)
+    else if (doc.data().email)
       db.collection('users').doc(end_user_id).get().then((user) => {
         console.log("Email Sent");
-        sendemailto.SendEmail(user.data().Email,"[Important] Updates from Shikayat portal",message);
+        sendemailto.SendEmail(user.data().Email, "[Important] Updates from Shikayat portal", message);
       })
   })
 }
@@ -441,7 +433,7 @@ router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
   var end_user_id;
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
-    checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"]+" level.")
+    checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"] + " level.")
   })
 
   await db.collection('users').doc(end_user_id).update({
@@ -459,7 +451,7 @@ router.get('/approveComplaintDesk1/', userRole.isDesk1, async (req, res) => {
 
 router.get('/approveComplaint', userRole.isDesk1, async (req, res) => {
   var complaint_id = req.query.cid;
-  approveComplaintDesk2(complaint_id,req.session.user.idToken.payload["custom:role"]);
+  approveComplaintDesk2(complaint_id, req.session.user.idToken.payload["custom:role"]);
   var user_id = req.session.user.idToken.payload.sub;
   addComment(complaint_id, user_id, "Complaint has been processed and resolved.", req.session.user.idToken.payload["custom:role"]);
   console.log(complaint_id);
@@ -480,7 +472,7 @@ router.get('/approveComplaint', userRole.isDesk1, async (req, res) => {
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
   })
-  checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"]+" level.")
+  checkNsendSMS(end_user_id, "Your Complaint has been approved at " + req.session.user.idToken.payload["custom:role"] + " level.")
   await db.collection('users').doc(end_user_id).update({
     notifications: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id
@@ -515,7 +507,7 @@ router.get('/rejectComplaint/', userRole.isStaff, async (req, res) => {
   await db.collection('complaints').doc(complaint_id).get().then((complaint) => {
     end_user_id = complaint.data().UID;
   })
-  checkNsendSMS(end_user_id, "Complaint has been rejected due to certain reasons at " + req.session.user.idToken.payload["custom:role"]+" level.")
+  checkNsendSMS(end_user_id, "Complaint has been rejected due to certain reasons at " + req.session.user.idToken.payload["custom:role"] + " level.")
   await db.collection('users').doc(end_user_id).update({
     notifications: admin.firestore.FieldValue.arrayUnion({
       cid: complaint_id
@@ -645,7 +637,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
     url: "http://127.0.0.1:8000/text-summarizer/",
     json: runRequestBody
   },
-    function (error, response, body) {
+    async function (error, response, body) {
       console.log("Error", error);
       JSON.stringify(body);
       console.log("Body", body);
@@ -662,7 +654,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
         url: "http://127.0.0.1:8000/document_similarity/",
         json: similarityRequestBody
       },
-        function (error, response, body) {
+        async function (error, response, body) {
           console.log("Error", error);
           JSON.stringify(body);
           console.log("Body", body);
@@ -681,7 +673,55 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
             percentage: similarity
           }
 
-          insertComplaint(req.session.user.idToken.payload.sub, complaintData);
+          var complaint_id ;
+          complaintData["Time"] = admin.firestore.Timestamp.fromDate(new Date());
+          await db.collection('complaints').add(complaintData)
+            .then(ref => {
+              console.log('Added document with ID: ', ref.id);
+              complaint_id = ref.id;
+            }).catch(err => {
+              console.log('Error adding document: ', err);
+            });
+
+          await db.collection('users').doc(req.session.user.idToken.payload.sub).update({
+            complaints: admin.firestore.FieldValue.arrayUnion(complaint_id)
+          }).then(ref => {
+            console.log('Added document with ID: ', ref.id);
+          }).catch(err => {
+            console.log('Error adding document: ', err);
+          });
+
+
+          if(similarity >= 70){
+            rejectComplaint(complaint_id);
+            var user_id = "1fa7a076-fd83-4f47-8073-326cf059e454";
+            addComment(complaint_id, user_id, "Complaint has been rejected as similar complaint was registered earlier.", "Desk 1");
+            await db.collection('users').doc(user_id).update({
+              complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+                cid: complaint_id,
+                time: admin.firestore.Timestamp.fromDate(new Date()),
+                status: "Rejected"
+              })
+            }).then(ref => {
+              console.log('Added complaint id: ', ref.id);
+            }).catch(err => {
+              console.log('Error adding complaint id: ', err);
+            });
+
+            var end_user_id=req.session.user.idToken.payload.sub;
+            checkNsendSMS(end_user_id, "Complaint has been rejected as similar complaint was registered earlier.")
+            await db.collection('users').doc(end_user_id).update({
+              notifications: admin.firestore.FieldValue.arrayUnion({
+                cid: complaint_id
+              })
+            }).then(ref => {
+              console.log('Added complaint id: ', ref.id);
+            }).catch(err => {
+              console.log('Error adding complaint id: ', err);
+            });
+
+            var role = req.session.user.idToken.payload['custom:role'];
+          }
           res.redirect('/Dashboard');
         });
     });

@@ -198,11 +198,8 @@ router.post('/Login', async (req, res) => {
                 if (result.idToken.payload["custom:role"] == "user") {
                     res.redirect('/Dashboard');
                 }
-                else if (result.idToken.payload["custom:role"] == "desk1") {
+                else {
                     res.redirect('/Desk1Dashboard');
-                }
-                else if (result.idToken.payload["custom:role"] == "desk2") {
-                    res.redirect('/Desk2Dashboard');
                 }
 
 
