@@ -645,7 +645,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
     url: "http://127.0.0.1:8000/text-summarizer/",
     json: runRequestBody
   },
-    function (error, response, body) {
+    async function (error, response, body) {
       console.log("Error", error);
       JSON.stringify(body);
       console.log("Body", body);
@@ -662,7 +662,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
         url: "http://127.0.0.1:8000/document_similarity/",
         json: similarityRequestBody
       },
-        function (error, response, body) {
+        async function (error, response, body) {
           console.log("Error", error);
           JSON.stringify(body);
           console.log("Body", body);
@@ -681,7 +681,55 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
             percentage: similarity
           }
 
-          insertComplaint(req.session.user.idToken.payload.sub, complaintData);
+          var complaint_id ;
+          complaintData["Time"] = admin.firestore.Timestamp.fromDate(new Date());
+          await db.collection('complaints').add(complaintData)
+            .then(ref => {
+              console.log('Added document with ID: ', ref.id);
+              complaint_id = ref.id;
+            }).catch(err => {
+              console.log('Error adding document: ', err);
+            });
+
+          await db.collection('users').doc(req.session.user.idToken.payload.sub).update({
+            complaints: admin.firestore.FieldValue.arrayUnion(complaint_id)
+          }).then(ref => {
+            console.log('Added document with ID: ', ref.id);
+          }).catch(err => {
+            console.log('Error adding document: ', err);
+          });
+
+
+          if(similarity >= 70){
+            rejectComplaint(complaint_id);
+            var user_id = "1fa7a076-fd83-4f47-8073-326cf059e454";
+            addComment(complaint_id, user_id, "Complaint has been rejected as similar complaint was registered earlier.", "Desk 1");
+            await db.collection('users').doc(user_id).update({
+              complaints_resolved: admin.firestore.FieldValue.arrayUnion({
+                cid: complaint_id,
+                time: admin.firestore.Timestamp.fromDate(new Date()),
+                status: "Rejected"
+              })
+            }).then(ref => {
+              console.log('Added complaint id: ', ref.id);
+            }).catch(err => {
+              console.log('Error adding complaint id: ', err);
+            });
+
+            var end_user_id=req.session.user.idToken.payload.sub;
+            checkNsendSMS(end_user_id, "Complaint has been rejected as similar complaint was registered earlier.")
+            await db.collection('users').doc(end_user_id).update({
+              notifications: admin.firestore.FieldValue.arrayUnion({
+                cid: complaint_id
+              })
+            }).then(ref => {
+              console.log('Added complaint id: ', ref.id);
+            }).catch(err => {
+              console.log('Error adding complaint id: ', err);
+            });
+
+            var role = req.session.user.idToken.payload['custom:role'];
+          }
           res.redirect('/Dashboard');
         });
     });
