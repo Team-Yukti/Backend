@@ -265,6 +265,45 @@
                       </div>
                     </div>
 
+                    <video id="video" width="640" height="480" autoplay></video>
+                <button id="snap">Snap Photo</button>
+                <canvas name="image" id="canvas" width="640" height="480"></canvas>
+                <input type="text" value="" name="CamImage" id="cameraImg" hidden>
+
+                <script>
+                  var video = document.getElementById('video');
+
+                  // Get access to the camera!
+                  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Not adding `{ audio: true }` since we only want video now
+                    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                      //video.src = window.URL.createObjectURL(stream);
+                      video.srcObject = stream;
+                      video.play();
+                    });
+                  }
+
+                  // Elements for taking the snapshot
+                  var canvas = document.getElementById('canvas');
+                  var context = canvas.getContext('2d');
+                  var video = document.getElementById('video');
+
+                  // Trigger photo take
+                  document.getElementById("snap").addEventListener("click", function () {
+                    var dataUrl = canvas.toDataURL();
+                    // var data = context.drawImage(video, 0, 0, 640, 480);
+                    // get the image base64 data from the canvas
+                    var base64ImageData = dataUrl.replace(/^data:image\/(png|jpg);base64,/, "");
+                    console.log(base64ImageData);
+                    // add the base64 data to the input field with id cameraImg
+                    document.getElementById("cameraImg").value = base64ImageData;
+
+
+                    
+
+                  });
+                </script>
+
                     <div class="row mb-3">
                       <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary">Submit Form</button>

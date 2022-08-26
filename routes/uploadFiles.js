@@ -30,6 +30,27 @@ function uploadFilestoS3(file,cid) {
     });
 }
 
+function UploadCamera(file,cid) {
+    var s3 = new AWS.S3();
+    var params = {
+        Bucket: 'complaint-bucket-sih',
+        Key: cid+'.jpg',
+        Body: file,
+        ACL: 'public-read'
+    };
+    s3.upload(params, function(err, data) {
+        if (err) {
+            console.log(err);
+            // callback(err);
+        } else {
+            console.log("Successfully uploaded data to S3");
+            // callback(null, data);
+        }
+    }).on('httpUploadProgress', function(progress) {
+        console.log(progress);
+    });
+}
+
 // get object from the bucket
 
 router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
@@ -56,5 +77,6 @@ router.get('/saveImageToDir',isLoggedIn,async (req,res)=>{
 
 module.exports = {
     router:router,
-    uploadFilestoS3:uploadFilestoS3
+    uploadFilestoS3:uploadFilestoS3,
+    UploadCamera:UploadCamera
 };
