@@ -30,7 +30,7 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
   };
 
   request.post({
-    url: "http://13.233.148.244:8000/text-summarizer/",
+    url: "http://20.121.40.129:8000/text-summarizer/",
     // url: "http://127.0.0.1:8000/text-summarizer/",
     json: runRequestBody
   },
