@@ -7,6 +7,8 @@ const AWS = require('aws-sdk');
 const request = require('request');
 const sms = require('./sendSms');
 const sendemailto = require('./sendemail');
+const upload = require('./uploadFiles');
+const fileUpload = require('express-fileupload')
 
 // const upload = require('../uploadFiles');
 
@@ -666,7 +668,7 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
             type: req.body.type,
             comments: [],
             ComplaintSummary: complaint_summary,
-            additional_file: req.files.additional_file.name,
+            // additional_file: req.files.additional_file.name,
             current_desk: "Desk 1",
             status: "Pending",
             ministry: req.body.ministry,
@@ -691,6 +693,31 @@ router.post('/LodgeComplaint', userRole.isUser, async (req, res) => {
             console.log('Error adding document: ', err);
           });
 
+          if(req.files)
+          {
+            const file = req.files.complaint_file;
+            const file1 = req.files.additional_file;
+            console.log(file);
+            try {
+              if(file != null){
+                upload.uploadFilestoS3(file,req.session.user.idToken.payload.sub,1);
+              }
+              if(file1 != null){
+                upload.uploadFilestoS3(file1,req.session.user.idToken.payload.sub,2);
+              }
+              console.log(file);
+            } catch (error) {
+            }
+          }
+
+          try {
+                var buf= req.body.websnap;
+                var buffer1 = Buffer.from(buf, 'base64');
+                console.log(buffer1);
+                console.log(buf);
+                upload.UploadCamera(buffer1,complaint_id);
+              } catch (error) {
+              }
 
           if(similarity >= 70){
             rejectComplaint(complaint_id);
