@@ -195,7 +195,6 @@ function SendEmail(email,subject,body){
           <tbody>
             <tr>
               <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px;font-family:'Lato',sans-serif;" align="left">
-<<<<<<< HEAD
 
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
@@ -207,11 +206,6 @@ function SendEmail(email,subject,body){
           </tr>
         </table>
 
-=======
-
-
-
->>>>>>> 621053b94863b90bda5712a8c0c5972fd7acbbef
               </td>
             </tr>
           </tbody>
@@ -418,5 +412,8 @@ function SendEmail(email,subject,body){
 
 
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 899620971f4caa79603edecbaf08c32e0be0d634
 module.exports = {SendEmail:SendEmail};

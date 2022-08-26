@@ -167,6 +167,14 @@
                     </div>
                   </div>
                   <div class="row mb-3">
+                    <label for="inputText" class="col-sm-3 ">Similarity</label>
+                    <div class="col-sm-9">
+                      <span class="badge <%=complaint.percentage>=70?'bg-danger':complaint.percentage>=40?'bg-warning':'bg-success'%>">
+                        <%=complaint.percentage>=70?'Repeated':complaint.percentage>=40?'Normal Similarity':'No Similarity'%>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
                     <label for="inputText" class="col-sm-3 ">Gender</label>
                     <div class="col-sm-9">
                       <%=EndUserData.Gender%>
@@ -202,6 +210,12 @@
                       <%=EndUserData.Phone%>
                     </div>
                   </div>
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-3 ">Complaint type</label>
+                    <div class="col-sm-9">
+                      <%=complaint.type%>
+                    </div>
+                  </div>
                   <%const dateObject=new Date(complaint.Time["_seconds"]*1000)%>
                     <%const date=dateObject.getDate();%>
                       <%const month=dateObject.getMonth() + 1;%>
@@ -213,17 +227,24 @@
                             </div>
                           </div>
                           <div class="row mb-3">
-                            <label for="inputPassword" class="col-sm-3 ">Complaint Body</label>
-                            <div class="col-sm-9">
+                            <label for="inputPassword" class="col-sm-3">Complaint Body</label>
+                            <div class="col-sm-9" style="text-align: justify;">
                               <%=complaint.ComplaintBody%>
                             </div>
                           </div>
                           <div class="row mb-3">
                             <label for="inputPassword" class="col-sm-3 ">Complaint Summary</label>
                             <div class="col-sm-9">
-                              <textarea type="text" id="summary" name="complaint_summary" class="form-control"
+                              <textarea type="text" style="text-align: justify;" id="summary" name="complaint_summary" class="form-control"
                                 rows="4"><%=complaint.ComplaintSummary%></textarea>
                               <a href="/UpdateSummary" class="btn btn-primary mt-2" id="update-summary">Update Summary</a>
+                            </div>
+                          </div>
+                          <div class="row mb-3 mt-0">
+                            <label for="inputPassword" class="col-sm-3 "></label>
+                            <div class="col-sm-9">
+                              <a href="/ViewImage?url=https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/<%=cid%>.jpg">View
+                                Document</a>
                             </div>
                           </div>
                 </form><!-- End General Form Elements -->
@@ -258,12 +279,7 @@
                       <a href="/rejectComplaint?cid=<%=`${complaint.id}`%>"><button type="button"
                           class="btn btn-primary">Reject</button></a>
                     </div>
-                    <div class="row sm-3">
-                      <label for="inputPassword" class="col-sm-3 "></label>
-                      <div class="col-sm-9">
-                          <a type="button" class="btn btn-default" href="/ViewImage?url=https://complaint-bucket-sih.s3.ap-south-1.amazonaws.com/<%=cid%>.jpg">View Document</a>
-                    </div>
-                  </div>
+                    
                   </div>
                 </form>
               </div>
