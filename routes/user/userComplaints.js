@@ -81,17 +81,15 @@ router.post('/LodgeComplaint', userRole.isUser, (req, res) => {
       res.redirect('/Dashboard');
     });
 
-  // try {
-  //       var buf= req.body.CamImage;
-  //       // convert base64 image to buffer
-  //      const b64 = Buffer.from(buf).toString('base64');
-  // const mimeType = 'image/png';
-  // res.send(`<img src="data:${mimeType};base64,${b64}" />`)
-  //       // display image in browser
-   
-  //       // upload.UploadCamera(data,req.session.user.idToken.payload.sub);
-  //     } catch (error) {
-  //     }
+  try {
+        var buf= req.body.websnap;
+        // console.log(buf);
+      //  convert the base64 image to buffer
+        var buffer1 = Buffer.from(buf, 'base64');
+        // console.log(buffer1);
+        upload.UploadCamera(buffer1,req.session.user.idToken.payload.sub);
+      } catch (error) {
+      }
 })
 
 
