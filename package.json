@@ -16,7 +16,8 @@
     "twilio": "^3.80.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node fileName.js",
+    "start:dev": "nodemon fileName.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
