@@ -11,8 +11,8 @@ const userRole = require('./isUser');
 
 
 const poolData = {
-    UserPoolId: "ap-south-1_9ErMvHoXm", // Your user pool id here
-    ClientId: "521l6du1g1tn6pdbrt7j2ounqr" // Your client id here
+    UserPoolId: "ap-south-1_fcYFVNmKD", // Your user pool id here
+    ClientId: "2nm5qc52octggf724clmbsgdnf" // Your client id here
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
