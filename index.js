@@ -94,19 +94,8 @@ app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
     res.render('user/changePassword',{userData:req.session.user});
 })
 
-port = require('portastic');
-
-options = {
-    min : 2000,
-    max : 4005
-}
-
-port.find(options, function(err, data){
-    if(err)
-        throw err;
-    console.log(data);
-    app.listen(port, function () { console.log('Example app listening on port'+port);});
-});
+var port = 2023
+app.listen(port, function () { console.log('Example app listening on port'+port);});
 
 
 
