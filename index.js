@@ -94,7 +94,7 @@ app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
     res.render('user/changePassword',{userData:req.session.user});
 })
 
-var port = 2023
+var port = 4001
 app.listen(port, function () { console.log('Example app listening on port'+port);});
 
 
