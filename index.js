@@ -94,10 +94,19 @@ app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
     res.render('user/changePassword',{userData:req.session.user});
 })
 
-const portfinder = require('portfinder');
+port = require('portastic');
 
-portfinder.getPort((err, port) => {
+options = {
+    min : 8000,
+    max : 8005
+}
+
+port.find(options, function(err, data){
+    if(err)
+        throw err;
+    console.log(data);
     app.listen(port, function () { console.log('Example app listening on port'+port);});
 });
+
 
 
