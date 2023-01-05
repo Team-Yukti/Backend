@@ -97,8 +97,8 @@ app.get('/ChangeUserPassword',userRole.isUser, (req, res) => {
 port = require('portastic');
 
 options = {
-    min : 8000,
-    max : 8005
+    min : 2000,
+    max : 4005
 }
 
 port.find(options, function(err, data){
