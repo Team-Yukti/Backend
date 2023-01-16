@@ -30,8 +30,8 @@ const { json } = require('body-parser');
 global.fetch = require('node-fetch');
 
 const poolData = {
-    UserPoolId: "ap-south-1_9ErMvHoXm", // Your user pool id here
-    ClientId: "521l6du1g1tn6pdbrt7j2ounqr" // Your client id here
+    UserPoolId: "ap-south-1_5KPHSxbX6", // Your user pool id here
+    ClientId: "68h5h635jo0282a7pl2cnjnpd7" // Your client id here
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
